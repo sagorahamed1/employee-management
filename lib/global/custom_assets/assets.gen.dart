@@ -61,6 +61,10 @@ class $AssetsImagesGen {
   /// File path: assets/images/logo.png
   AssetGenImage get logo => const AssetGenImage('assets/images/logo.png');
 
+  /// File path: assets/images/notificationImage.jpg
+  AssetGenImage get notificationImage =>
+      const AssetGenImage('assets/images/notificationImage.jpg');
+
   /// File path: assets/images/onboarding1.png
   AssetGenImage get onboarding1 =>
       const AssetGenImage('assets/images/onboarding1.png');
@@ -78,8 +82,14 @@ class $AssetsImagesGen {
       const AssetGenImage('assets/images/onboarding4.png');
 
   /// List of all assets
-  List<AssetGenImage> get values =>
-      [logo, onboarding1, onboarding2, onboarding3, onboarding4];
+  List<AssetGenImage> get values => [
+        logo,
+        notificationImage,
+        onboarding1,
+        onboarding2,
+        onboarding3,
+        onboarding4
+      ];
 }
 
 class $AssetsLottieGen {
