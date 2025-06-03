@@ -73,7 +73,7 @@ class OnboardingScreen extends StatelessWidget {
 
                   // TODO: Handle when onboarding is done
 
-                  Get.offAllNamed(AppRoutes.signUpScreen);
+                  Get.offAllNamed(AppRoutes.roleScreen);
 
                 },
                 onSkip: () {

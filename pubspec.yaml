@@ -45,6 +45,10 @@ dependencies:
   socket_io_client:
   flutter_polyline_points: ^2.1.0
   flutter_widget_from_html:
+  hero_animation: ^1.1.4
+  awesome_bottom_bar: ^1.2.4
+
+
   audio_session:
 
 

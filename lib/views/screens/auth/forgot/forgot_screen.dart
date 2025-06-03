@@ -1,6 +1,8 @@
 
+import 'package:droke/core/config/app_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 
 import '../../../../core/app_constants/app_colors.dart';
 import '../../../widgets/custom_button.dart';
@@ -61,13 +63,13 @@ class ForgotScreen extends StatelessWidget {
                   Spacer(),
 
                   CustomButton(title: "GET VERIFICATION CODE", onpress: () {
-
+                    Get.toNamed(AppRoutes.optScreen);
                   }),
 
 
 
 
-                  SizedBox(height: 60.h),
+                  SizedBox(height: 160.h),
 
                 ],
               ),

@@ -1,9 +1,11 @@
 
 
 
+import 'package:droke/core/config/app_route.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 
 import '../../../../core/app_constants/app_colors.dart';
 import '../../../widgets/custom_button.dart';
@@ -84,7 +86,7 @@ class LogInScreen extends StatelessWidget {
                             ),
                             recognizer: TapGestureRecognizer()
                               ..onTap = () {
-                                // Open Terms of Service
+                               Get.toNamed(AppRoutes.forgotScreen);
                               },
                           )
                         ],
@@ -100,7 +102,7 @@ class LogInScreen extends StatelessWidget {
                   SizedBox(height: 100.h),
 
                   CustomButton(title: "SIGN IN", onpress: () {
-
+                    Get.toNamed(AppRoutes.enableLocationScreen);
                   }),
 
 
@@ -124,7 +126,7 @@ class LogInScreen extends StatelessWidget {
                           ),
                           recognizer: TapGestureRecognizer()
                             ..onTap = () {
-                              // Open Terms of Service
+                              Get.toNamed(AppRoutes.signUpScreen);
                             },
                         )
                       ],
