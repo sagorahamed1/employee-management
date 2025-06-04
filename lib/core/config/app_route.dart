@@ -7,6 +7,7 @@ import '../../views/screens/auth/otp/opt_screen.dart';
 import '../../views/screens/auth/reset/reset_password_screen.dart';
 import '../../views/screens/auth/role/role_screen.dart';
 import '../../views/screens/auth/sing_up/sign_up_screen.dart';
+import '../../views/screens/neighbor/hub/hub_home_screen.dart';
 import '../../views/screens/neighbor/neighbor_bottom_nav_bar/neighbor_bottom_nav_bar.dart';
 import '../../views/screens/neighbor/neighbor_hub_search_screen/neighbor_hub_search_screen.dart';
 import '../../views/screens/neighbor/service_details/service_details_screen.dart';
@@ -29,6 +30,7 @@ class AppRoutes {
   static const String neighborHubSearchScreen = "/NeighborHubSearchScreen";
   static const String serviceDetailsScreen = "/ServiceDetailsScreen";
   static const String notificationScreen = "/NotificationScreen";
+  static const String hubHomeScreen = "/HubHomeScreen";
 
 
 
@@ -46,6 +48,7 @@ class AppRoutes {
     GetPage(name: neighborHubSearchScreen, page: () =>  NeighborHubSearchScreen()),
     GetPage(name: serviceDetailsScreen, page: () =>  ServiceDetailsScreen()),
     GetPage(name: notificationScreen, page: () =>  NotificationScreen()),
+    GetPage(name: hubHomeScreen, page: () =>  HubHomeScreen()),
 
   ];
 }

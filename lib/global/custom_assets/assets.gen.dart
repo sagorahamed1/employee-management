@@ -19,6 +19,9 @@ class $AssetsIconsGen {
   /// File path: assets/icons/bugIcon.svg
   SvgGenImage get bugIcon => const SvgGenImage('assets/icons/bugIcon.svg');
 
+  /// File path: assets/icons/chatIcons.svg
+  SvgGenImage get chatIcons => const SvgGenImage('assets/icons/chatIcons.svg');
+
   /// File path: assets/icons/create_buttom_na.svg
   SvgGenImage get createButtomNa =>
       const SvgGenImage('assets/icons/create_buttom_na.svg');
@@ -32,9 +35,32 @@ class $AssetsIconsGen {
   /// File path: assets/icons/hubs.svg
   SvgGenImage get hubs => const SvgGenImage('assets/icons/hubs.svg');
 
+  /// File path: assets/icons/inviteMemberIcon.svg
+  SvgGenImage get inviteMemberIcon =>
+      const SvgGenImage('assets/icons/inviteMemberIcon.svg');
+
+  /// File path: assets/icons/locationIcon.svg
+  SvgGenImage get locationIcon =>
+      const SvgGenImage('assets/icons/locationIcon.svg');
+
   /// File path: assets/icons/location_parmission.svg
   SvgGenImage get locationParmission =>
       const SvgGenImage('assets/icons/location_parmission.svg');
+
+  /// File path: assets/icons/memberIcon.svg
+  SvgGenImage get memberIcon =>
+      const SvgGenImage('assets/icons/memberIcon.svg');
+
+  /// File path: assets/icons/messageApplicationIcon.svg
+  SvgGenImage get messageApplicationIcon =>
+      const SvgGenImage('assets/icons/messageApplicationIcon.svg');
+
+  /// File path: assets/icons/paymentCardIcon.svg
+  SvgGenImage get paymentCardIcon =>
+      const SvgGenImage('assets/icons/paymentCardIcon.svg');
+
+  /// File path: assets/icons/pollIcon.svg
+  SvgGenImage get pollIcon => const SvgGenImage('assets/icons/pollIcon.svg');
 
   /// File path: assets/icons/profile.svg
   SvgGenImage get profile => const SvgGenImage('assets/icons/profile.svg');
@@ -42,16 +68,32 @@ class $AssetsIconsGen {
   /// File path: assets/icons/schedule.svg
   SvgGenImage get schedule => const SvgGenImage('assets/icons/schedule.svg');
 
+  /// File path: assets/icons/scheduleIconsHome.svg
+  SvgGenImage get scheduleIconsHome =>
+      const SvgGenImage('assets/icons/scheduleIconsHome.svg');
+
+  /// File path: assets/icons/taskIcon.svg
+  SvgGenImage get taskIcon => const SvgGenImage('assets/icons/taskIcon.svg');
+
   /// List of all assets
   List<SvgGenImage> get values => [
         bugIcon,
+        chatIcons,
         createButtomNa,
         home,
         homeIcon,
         hubs,
+        inviteMemberIcon,
+        locationIcon,
         locationParmission,
+        memberIcon,
+        messageApplicationIcon,
+        paymentCardIcon,
+        pollIcon,
         profile,
-        schedule
+        schedule,
+        scheduleIconsHome,
+        taskIcon
       ];
 }
 

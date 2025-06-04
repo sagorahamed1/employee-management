@@ -7,6 +7,7 @@ class CustomButton extends StatelessWidget {
   final VoidCallback onpress;
   final String title;
   final Color? color;
+  final Color? boderColor;
   final Color? titlecolor;
   final double? height;
   final double? width;
@@ -21,6 +22,7 @@ class CustomButton extends StatelessWidget {
     required this.title,
     required this.onpress,
     this.color,
+    this.boderColor,
     this.height,
     this.width,
     this.fontSize,
@@ -39,7 +41,7 @@ class CustomButton extends StatelessWidget {
         padding:  EdgeInsets.symmetric(horizontal: 10.w, vertical: 5.h),
         decoration: BoxDecoration(
           borderRadius:BorderRadius.circular(borderRadius ?? 100.r),
-          border: Border.all(color: AppColors.primaryColor),
+          border: Border.all(color: boderColor ?? AppColors.primaryColor),
           color: color ?? AppColors.primaryColor,
         ),
         child: Row(
