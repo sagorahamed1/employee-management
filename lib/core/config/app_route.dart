@@ -8,6 +8,9 @@ import '../../views/screens/auth/reset/reset_password_screen.dart';
 import '../../views/screens/auth/role/role_screen.dart';
 import '../../views/screens/auth/sing_up/sign_up_screen.dart';
 import '../../views/screens/neighbor/neighbor_bottom_nav_bar/neighbor_bottom_nav_bar.dart';
+import '../../views/screens/neighbor/neighbor_hub_search_screen/neighbor_hub_search_screen.dart';
+import '../../views/screens/neighbor/service_details/service_details_screen.dart';
+import '../../views/screens/notification/notification_screen.dart';
 import '../../views/screens/onboarding/onboarding_screen.dart';
 import '../../views/screens/splash/splash_screen.dart';
 
@@ -23,6 +26,9 @@ class AppRoutes {
   static const String resetPasswordScreen = "/ResetPasswordScreen";
   static const String enableLocationScreen = "/EnableLocationScreen";
   static const String neighborBottomNavBar = "/NeighborBottomNavBar";
+  static const String neighborHubSearchScreen = "/NeighborHubSearchScreen";
+  static const String serviceDetailsScreen = "/ServiceDetailsScreen";
+  static const String notificationScreen = "/NotificationScreen";
 
 
 
@@ -37,6 +43,9 @@ class AppRoutes {
     GetPage(name: resetPasswordScreen, page: () =>  ResetPasswordScreen()),
     GetPage(name: enableLocationScreen, page: () =>  EnableLocationScreen()),
     GetPage(name: neighborBottomNavBar, page: () =>  NeighborBottomNavBar()),
+    GetPage(name: neighborHubSearchScreen, page: () =>  NeighborHubSearchScreen()),
+    GetPage(name: serviceDetailsScreen, page: () =>  ServiceDetailsScreen()),
+    GetPage(name: notificationScreen, page: () =>  NotificationScreen()),
 
   ];
 }

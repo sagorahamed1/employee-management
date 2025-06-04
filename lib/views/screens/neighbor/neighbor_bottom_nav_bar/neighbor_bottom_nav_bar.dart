@@ -4,6 +4,7 @@ import 'package:droke/global/custom_assets/assets.gen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import '../hub/hub_screen.dart';
 import '../neighbor_home/neighbor_home_screen.dart';
 
 
@@ -19,7 +20,7 @@ class _NeighborBottomNavBarState extends State<NeighborBottomNavBar> {
 
   final List<Widget> _screens = [
     NeighborHomeScreen(),
-    NeighborHomeScreen(),
+    HubScreen(),
     NeighborHomeScreen(),
     NeighborHomeScreen(),
     NeighborHomeScreen(),

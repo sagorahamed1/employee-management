@@ -58,6 +58,10 @@ class $AssetsIconsGen {
 class $AssetsImagesGen {
   const $AssetsImagesGen();
 
+  /// File path: assets/images/addhubImage.jpg
+  AssetGenImage get addhubImage =>
+      const AssetGenImage('assets/images/addhubImage.jpg');
+
   /// File path: assets/images/logo.png
   AssetGenImage get logo => const AssetGenImage('assets/images/logo.png');
 
@@ -81,14 +85,25 @@ class $AssetsImagesGen {
   AssetGenImage get onboarding4 =>
       const AssetGenImage('assets/images/onboarding4.png');
 
+  /// File path: assets/images/searchImage.jpg
+  AssetGenImage get searchImage =>
+      const AssetGenImage('assets/images/searchImage.jpg');
+
+  /// File path: assets/images/serviceImage1.png
+  AssetGenImage get serviceImage1 =>
+      const AssetGenImage('assets/images/serviceImage1.png');
+
   /// List of all assets
   List<AssetGenImage> get values => [
+        addhubImage,
         logo,
         notificationImage,
         onboarding1,
         onboarding2,
         onboarding3,
-        onboarding4
+        onboarding4,
+        searchImage,
+        serviceImage1
       ];
 }
 
