@@ -105,6 +105,7 @@ class _CustomHubFeatureCardState extends State<CustomHubFeatureCard>
     );
   }
 
+
   @override
   void dispose() {
     _controller.dispose();
