@@ -14,6 +14,9 @@ class ShopTaskCard extends StatelessWidget {
   final String? peopleJoined;
   final String? organizer;
   final String? payAmount;
+  final String? btnName;
+  final bool selected;
+  final bool ignoreJoinBtn;
 
   const ShopTaskCard({
     Key? key,
@@ -24,6 +27,9 @@ class ShopTaskCard extends StatelessWidget {
     this.peopleJoined,
     this.organizer,
     this.payAmount,
+    this.btnName = "Join",
+    this.selected = false,
+    this.ignoreJoinBtn = false
   }) : super(key: key);
 
   @override
@@ -60,6 +66,67 @@ class ShopTaskCard extends StatelessWidget {
                     _buildRow("Organizer", organizer ?? ""),
                     _buildRow("You pay", payAmount ?? ""),
 
+
+                    ignoreJoinBtn ?
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: Row(
+                        children: [
+
+                          Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(20),
+                              border: Border.all(color: Colors.black87)
+                            ),
+                            child: Row(
+                              children: [
+                                CustomText(text: "4", fontSize: 11.h, left: 8.w, right: 6.w),
+                                Icon(Icons.group, size: 11.h),
+                                SizedBox(width: 8.w),
+                              ],
+                            ),
+                          ),
+
+                          SizedBox(width: 10.w),
+
+                          Container(
+                            height: 8.h,
+                            width: 90.w,
+                            color: AppColors.primaryColor,
+                          ),
+                          Container(
+                            height: 8.h,
+                            width: 40.w,
+                            color: AppColors.textColor3B3B3B,
+                          ),
+
+
+                          SizedBox(width: 10.w),
+
+
+                          Container(
+                            height: 16.h,
+                            width: 16.w,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              border: Border.all(color: selected ?  AppColors.primaryColor : Colors.black87)
+                            ),
+                            child: Center(
+                              child: Container(
+                                height: 8.h,
+                                width: 8.w,
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: selected ? AppColors.primaryColor : Colors.transparent
+                                ),
+                              ),
+                            ),
+                          )
+
+                        ],
+                      ),
+                    ) :
+
                     Align(
                         alignment: Alignment.centerRight,
                         child: Container(
@@ -70,7 +137,7 @@ class ShopTaskCard extends StatelessWidget {
                             padding: EdgeInsets.symmetric(
                                 horizontal: 14.w, vertical: 4.h),
                             child: CustomText(
-                                text: "Join",
+                                text: "$btnName",
                                 color: Colors.white,
                                 fontSize: 9.h),
                           ),
@@ -95,7 +162,7 @@ class ShopTaskCard extends StatelessWidget {
             width: 90.w,
             child: CustomText(
               textAlign: TextAlign.start,
-              text: "$label",
+              text: label.toString(),
               fontWeight: FontWeight.w600,
               fontSize: 10.h,
             ),

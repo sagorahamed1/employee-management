@@ -133,7 +133,12 @@ class _HubScreenState extends State<HubScreen> {
                     padding: EdgeInsets.only(bottom: 12.h),
                     child: GestureDetector(
                       onTap: () {
-                        Get.toNamed(AppRoutes.hubHomeScreen);
+                        if(_isHubSelected){
+                          Get.toNamed(AppRoutes.messageScreen);
+                        }else{
+                          Get.toNamed(AppRoutes.hubHomeScreen);
+                        }
+
                       },
                       child: Container(
                         decoration: BoxDecoration(

@@ -25,7 +25,7 @@ class NeighborHomeScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 CustomNetworkImage(
-                    imageUrl: "https://randomuser.me/api/portraits/men/25.jpg",
+                    imageUrl: "https://randomuser.me/api/portraits/women/24.jpg",
                     boxShape: BoxShape.circle,
                     border: Border.all(color: Colors.grey),
                     height: 40.h,

@@ -26,6 +26,9 @@ class $AssetsIconsGen {
   SvgGenImage get createButtomNa =>
       const SvgGenImage('assets/icons/create_buttom_na.svg');
 
+  /// File path: assets/icons/groupIcon.svg
+  SvgGenImage get groupIcon => const SvgGenImage('assets/icons/groupIcon.svg');
+
   /// File path: assets/icons/home.svg
   SvgGenImage get home => const SvgGenImage('assets/icons/home.svg');
 
@@ -47,6 +50,10 @@ class $AssetsIconsGen {
   SvgGenImage get locationParmission =>
       const SvgGenImage('assets/icons/location_parmission.svg');
 
+  /// File path: assets/icons/memberAddIcon.svg
+  SvgGenImage get memberAddIcon =>
+      const SvgGenImage('assets/icons/memberAddIcon.svg');
+
   /// File path: assets/icons/memberIcon.svg
   SvgGenImage get memberIcon =>
       const SvgGenImage('assets/icons/memberIcon.svg');
@@ -54,6 +61,10 @@ class $AssetsIconsGen {
   /// File path: assets/icons/messageApplicationIcon.svg
   SvgGenImage get messageApplicationIcon =>
       const SvgGenImage('assets/icons/messageApplicationIcon.svg');
+
+  /// File path: assets/icons/messages-Right.svg
+  SvgGenImage get messagesRight =>
+      const SvgGenImage('assets/icons/messages-Right.svg');
 
   /// File path: assets/icons/paymentCardIcon.svg
   SvgGenImage get paymentCardIcon =>
@@ -80,14 +91,17 @@ class $AssetsIconsGen {
         bugIcon,
         chatIcons,
         createButtomNa,
+        groupIcon,
         home,
         homeIcon,
         hubs,
         inviteMemberIcon,
         locationIcon,
         locationParmission,
+        memberAddIcon,
         memberIcon,
         messageApplicationIcon,
+        messagesRight,
         paymentCardIcon,
         pollIcon,
         profile,

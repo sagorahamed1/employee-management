@@ -1,8 +1,10 @@
 import 'package:droke/core/app_constants/app_colors.dart';
+import 'package:droke/core/config/app_route.dart';
 import 'package:droke/global/custom_assets/assets.gen.dart';
 import 'package:droke/views/widgets/custom_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 
 import '../../../widgets/cachanetwork_image.dart';
 
@@ -58,7 +60,25 @@ class HubHomeScreen extends StatelessWidget {
                   childAspectRatio: 0.811,
                 ),
                 itemBuilder: (context, index) {
-                  return CustomHubFeatureCard(icon: hubFeatures[index]["icon"], title: hubFeatures[index]["title"].toString(), isAnimated: true);
+                  return GestureDetector(
+                      onTap: () {
+                        if(index == 0){}
+                        else if(index == 1){}
+                        else if(index == 2){
+                          Get.toNamed(AppRoutes.applicationScreen);
+                        }
+                        else if(index == 3){}
+                        else if(index == 4){
+                          Get.toNamed(AppRoutes.pullScreen);
+                        }
+                        else if(index == 5){
+                          Get.toNamed(AppRoutes.memberScreen);
+                        }
+                        else if(index == 6){}
+                        else if(index == 7){}
+                        else if(index == 8){}
+                      },
+                      child: CustomHubFeatureCard(icon: hubFeatures[index]["icon"], title: hubFeatures[index]["title"].toString(), isAnimated: true));
                 },
               ),
             )

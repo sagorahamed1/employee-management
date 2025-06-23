@@ -7,7 +7,11 @@ import '../../views/screens/auth/otp/opt_screen.dart';
 import '../../views/screens/auth/reset/reset_password_screen.dart';
 import '../../views/screens/auth/role/role_screen.dart';
 import '../../views/screens/auth/sing_up/sign_up_screen.dart';
+import '../../views/screens/message/message_screen.dart';
+import '../../views/screens/neighbor/hub/application_screen.dart';
 import '../../views/screens/neighbor/hub/hub_home_screen.dart';
+import '../../views/screens/neighbor/hub/member_screen.dart';
+import '../../views/screens/neighbor/hub/pull_screen.dart';
 import '../../views/screens/neighbor/neighbor_bottom_nav_bar/neighbor_bottom_nav_bar.dart';
 import '../../views/screens/neighbor/neighbor_hub_search_screen/neighbor_hub_search_screen.dart';
 import '../../views/screens/neighbor/service_details/service_details_screen.dart';
@@ -31,6 +35,10 @@ class AppRoutes {
   static const String serviceDetailsScreen = "/ServiceDetailsScreen";
   static const String notificationScreen = "/NotificationScreen";
   static const String hubHomeScreen = "/HubHomeScreen";
+  static const String pullScreen = "/PullScreen";
+  static const String applicationScreen = "/ApplicationScreen";
+  static const String memberScreen = "/MemberScreen";
+  static const String messageScreen = "/MessageScreen";
 
 
 
@@ -49,6 +57,9 @@ class AppRoutes {
     GetPage(name: serviceDetailsScreen, page: () =>  ServiceDetailsScreen()),
     GetPage(name: notificationScreen, page: () =>  NotificationScreen()),
     GetPage(name: hubHomeScreen, page: () =>  HubHomeScreen()),
-
+    GetPage(name: pullScreen, page: () =>  PullScreen()),
+    GetPage(name: applicationScreen, page: () =>  ApplicationScreen()),
+    GetPage(name: memberScreen, page: () =>  MemberScreen()),
+    GetPage(name: messageScreen, page: () =>  MessageScreen()),
   ];
 }
