@@ -75,8 +75,12 @@ class HubHomeScreen extends StatelessWidget {
                           Get.toNamed(AppRoutes.memberScreen);
                         }
                         else if(index == 6){}
-                        else if(index == 7){}
-                        else if(index == 8){}
+                        else if(index == 7){
+                          Get.toNamed(AppRoutes.paymentScreen);
+                        }
+                        else if(index == 8){
+                          Get.toNamed(AppRoutes.taskScreen);
+                        }
                       },
                       child: CustomHubFeatureCard(icon: hubFeatures[index]["icon"], title: hubFeatures[index]["title"].toString(), isAnimated: true));
                 },

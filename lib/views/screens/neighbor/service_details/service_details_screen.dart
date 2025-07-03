@@ -34,7 +34,7 @@ class _ServiceDetailsScreenState extends State<ServiceDetailsScreen> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         title: CustomText(
-          text: "Available Hubs",
+          text: "Service Details",
           fontSize: 22.h,
           color: AppColors.textColorSecondary5EAAA8,
         ),

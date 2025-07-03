@@ -17,6 +17,7 @@ class ShopTaskCard extends StatelessWidget {
   final String? btnName;
   final bool selected;
   final bool ignoreJoinBtn;
+  final VoidCallback? onTap;
 
   const ShopTaskCard({
     Key? key,
@@ -29,7 +30,7 @@ class ShopTaskCard extends StatelessWidget {
     this.payAmount,
     this.btnName = "Join",
     this.selected = false,
-    this.ignoreJoinBtn = false
+    this.ignoreJoinBtn = false, this.onTap
   }) : super(key: key);
 
   @override
@@ -38,7 +39,7 @@ class ShopTaskCard extends StatelessWidget {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10.r),
         border: Border.all(color: AppColors.primaryColor),
-        color: Color(0x17D46A6A),
+        color: Color(0xffF4F1EE),
       ),
       child: Padding(
         padding: EdgeInsets.all(10.r),
@@ -127,19 +128,22 @@ class ShopTaskCard extends StatelessWidget {
                       ),
                     ) :
 
-                    Align(
+                  btnName == "n/a" ? SizedBox() :  Align(
                         alignment: Alignment.centerRight,
-                        child: Container(
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(8.r),
-                              color: AppColors.primaryColor),
-                          child: Padding(
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 14.w, vertical: 4.h),
-                            child: CustomText(
-                                text: "$btnName",
-                                color: Colors.white,
-                                fontSize: 9.h),
+                        child: GestureDetector(
+                          onTap: onTap,
+                          child: Container(
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(8.r),
+                                color: AppColors.primaryColor),
+                            child: Padding(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 14.w, vertical: 4.h),
+                              child: CustomText(
+                                  text: "$btnName",
+                                  color: Colors.white,
+                                  fontSize: 9.h),
+                            ),
                           ),
                         ))
                   ],

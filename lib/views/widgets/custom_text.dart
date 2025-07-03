@@ -1,3 +1,4 @@
+import 'package:droke/global/custom_assets/fonts.gen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -20,6 +21,7 @@ class CustomText extends StatelessWidget {
         this.textHeight,
         this.fontWeight = FontWeight.w400,
         this.color,
+        this.italic = false,
         this.text = ""});
 
   final double left;
@@ -35,6 +37,7 @@ class CustomText extends StatelessWidget {
   final int? maxline;
   final String? fontName;
   final double? textHeight;
+  final bool italic;
 
   @override
   Widget build(BuildContext context) {
@@ -50,7 +53,9 @@ class CustomText extends StatelessWidget {
             fontSize: fontSize ?? 14.h,
             fontFamily: fontName?? "Georigia",
             fontWeight:fontWeight == null ? FontWeight.w400 : fontWeight ,
-            color: color ?? AppColors.textColor3B3B3B
+            color: color ?? AppColors.textColor3B3B3B,
+          fontStyle: italic ? FontStyle.italic : FontStyle.normal,
+
         ),
       ),
     );
