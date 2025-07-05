@@ -14,7 +14,11 @@ class SplashScreen extends StatefulWidget {
   State<SplashScreen> createState() => _SplashScreenState();
 }
 
-class _SplashScreenState extends State<SplashScreen> {
+class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderStateMixin {
+
+
+
+  late final AnimationController _controller;
 
 
   @override
@@ -23,8 +27,21 @@ class _SplashScreenState extends State<SplashScreen> {
     Future.delayed(Duration(seconds: 2), () {
       return Get.offAllNamed(AppRoutes.onboardingScreen);
     });
+
+    _controller = AnimationController(
+      duration: const Duration(seconds: 3),
+      vsync: this,
+    )..repeat();
     super.initState();
   }
+
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +61,15 @@ class _SplashScreenState extends State<SplashScreen> {
 
 
 
-              Assets.lottie.loading.lottie(height: 60.h)
+              // Assets.lottie.loading.lottie(height: 60.h)
+
+              RotationTransition(
+                turns: _controller,
+                child: Assets.images.circle.image(
+                  width: 60.w,
+                  height: 60.h,
+                ),
+              ),
 
 
 

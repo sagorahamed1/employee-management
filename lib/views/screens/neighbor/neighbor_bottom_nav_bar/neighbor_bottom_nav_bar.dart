@@ -41,7 +41,7 @@ class _NeighborBottomNavBarState extends State<NeighborBottomNavBar> {
       label: 'Home',
     ),
     BottomNavigationBarItem(
-      icon: Assets.icons.hubs.svg(width: 24, color: _selectedIndex == 1 ? AppColors.primaryColor :  Color(0xff7C7C7C) ),
+      icon: Assets.icons.hubs.svg(),
       label: 'Hubs',
     ),
     BottomNavigationBarItem(

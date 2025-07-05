@@ -65,7 +65,7 @@ class HubHomeScreen extends StatelessWidget {
                   return GestureDetector(
                       onTap: () {
                         if(index == 0){
-                          Get.toNamed(AppRoutes.scheduleScreen);
+                          Get.toNamed(AppRoutes.scheduleScreen, parameters: {"screenType" : "hubHome"});
                         }
                         else if(index == 1){
                           Get.toNamed(AppRoutes.messageScreen);

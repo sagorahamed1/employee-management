@@ -15,6 +15,7 @@ class ScheduleScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
+        leading: Get.parameters["screenType"] == "hubHome" ? null : SizedBox(),
           shadowColor: Colors.black,
           title: CustomText(
               text: "Schedule",
@@ -24,16 +25,25 @@ class ScheduleScreen extends StatelessWidget {
         padding: EdgeInsets.symmetric(horizontal: 24.w),
         child: Column(
           children: [
-            CustomText(text: "Personal needs", bottom: 14.h),
-            CustomText(text: "Gig worker: David", fontWeight: FontWeight.w200),
-            Align(
-              alignment: Alignment.centerLeft,
-              child: CustomText(
-                  text: "Available time:  10:00Am - 04:00Pm",
-                  bottom: 24.h,
-                  top: 6.h,
-                  fontWeight: FontWeight.w200),
-            ),
+
+
+            Get.parameters["screenType"] == "hubHome" ?
+            Column(
+              children: [
+                CustomText(text: "Personal needs", bottom: 14.h),
+                CustomText(text: "Gig worker: David", fontWeight: FontWeight.w200),
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: CustomText(
+                      text: "Available time:  10:00Am - 04:00Pm",
+                      bottom: 24.h,
+                      top: 6.h,
+                      fontWeight: FontWeight.w200),
+                ),
+              ],
+            ) : SizedBox(),
+
+
             Expanded(
               child: ListView.builder(
                 itemCount: 3,

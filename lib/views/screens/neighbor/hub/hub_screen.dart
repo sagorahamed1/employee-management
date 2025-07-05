@@ -52,6 +52,7 @@ class _HubScreenState extends State<HubScreen> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
+        leading: SizedBox(),
         title: _isSearching
             ? _buildSearchField()
             : CustomText(

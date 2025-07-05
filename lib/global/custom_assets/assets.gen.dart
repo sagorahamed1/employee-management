@@ -169,6 +169,9 @@ class $AssetsImagesGen {
   AssetGenImage get addhubImage =>
       const AssetGenImage('assets/images/addhubImage.jpg');
 
+  /// File path: assets/images/circle.png
+  AssetGenImage get circle => const AssetGenImage('assets/images/circle.png');
+
   /// File path: assets/images/inviteTopImage.png
   AssetGenImage get inviteTopImage =>
       const AssetGenImage('assets/images/inviteTopImage.png');
@@ -211,6 +214,7 @@ class $AssetsImagesGen {
   /// List of all assets
   List<AssetGenImage> get values => [
         addhubImage,
+        circle,
         inviteTopImage,
         logo,
         notificationImage,
