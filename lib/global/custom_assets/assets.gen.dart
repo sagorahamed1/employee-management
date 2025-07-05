@@ -16,6 +16,13 @@ import 'package:vector_graphics/vector_graphics.dart' as _vg;
 class $AssetsIconsGen {
   const $AssetsIconsGen();
 
+  /// File path: assets/icons/Log_Out.svg
+  SvgGenImage get logOut => const SvgGenImage('assets/icons/Log_Out.svg');
+
+  /// File path: assets/icons/aboutUsIcon.svg
+  SvgGenImage get aboutUsIcon =>
+      const SvgGenImage('assets/icons/aboutUsIcon.svg');
+
   /// File path: assets/icons/bugIcon.svg
   SvgGenImage get bugIcon => const SvgGenImage('assets/icons/bugIcon.svg');
 
@@ -26,8 +33,16 @@ class $AssetsIconsGen {
   SvgGenImage get createButtomNa =>
       const SvgGenImage('assets/icons/create_buttom_na.svg');
 
+  /// File path: assets/icons/filterIcon.svg
+  SvgGenImage get filterIcon =>
+      const SvgGenImage('assets/icons/filterIcon.svg');
+
   /// File path: assets/icons/groupIcon.svg
   SvgGenImage get groupIcon => const SvgGenImage('assets/icons/groupIcon.svg');
+
+  /// File path: assets/icons/helpSupportIcon.svg
+  SvgGenImage get helpSupportIcon =>
+      const SvgGenImage('assets/icons/helpSupportIcon.svg');
 
   /// File path: assets/icons/home.svg
   SvgGenImage get home => const SvgGenImage('assets/icons/home.svg');
@@ -37,6 +52,10 @@ class $AssetsIconsGen {
 
   /// File path: assets/icons/hubs.svg
   SvgGenImage get hubs => const SvgGenImage('assets/icons/hubs.svg');
+
+  /// File path: assets/icons/inviteIcon.svg
+  SvgGenImage get inviteIcon =>
+      const SvgGenImage('assets/icons/inviteIcon.svg');
 
   /// File path: assets/icons/inviteMemberIcon.svg
   SvgGenImage get inviteMemberIcon =>
@@ -49,6 +68,9 @@ class $AssetsIconsGen {
   /// File path: assets/icons/location_parmission.svg
   SvgGenImage get locationParmission =>
       const SvgGenImage('assets/icons/location_parmission.svg');
+
+  /// File path: assets/icons/lock.svg
+  SvgGenImage get lock => const SvgGenImage('assets/icons/lock.svg');
 
   /// File path: assets/icons/memberAddIcon.svg
   SvgGenImage get memberAddIcon =>
@@ -73,8 +95,16 @@ class $AssetsIconsGen {
   /// File path: assets/icons/pollIcon.svg
   SvgGenImage get pollIcon => const SvgGenImage('assets/icons/pollIcon.svg');
 
+  /// File path: assets/icons/privacyPolicyIcon.svg
+  SvgGenImage get privacyPolicyIcon =>
+      const SvgGenImage('assets/icons/privacyPolicyIcon.svg');
+
   /// File path: assets/icons/profile.svg
   SvgGenImage get profile => const SvgGenImage('assets/icons/profile.svg');
+
+  /// File path: assets/icons/profileInfo.svg
+  SvgGenImage get profileInfo =>
+      const SvgGenImage('assets/icons/profileInfo.svg');
 
   /// File path: assets/icons/schedule.svg
   SvgGenImage get schedule => const SvgGenImage('assets/icons/schedule.svg');
@@ -83,31 +113,52 @@ class $AssetsIconsGen {
   SvgGenImage get scheduleIconsHome =>
       const SvgGenImage('assets/icons/scheduleIconsHome.svg');
 
+  /// File path: assets/icons/settings.svg
+  SvgGenImage get settings => const SvgGenImage('assets/icons/settings.svg');
+
   /// File path: assets/icons/taskIcon.svg
   SvgGenImage get taskIcon => const SvgGenImage('assets/icons/taskIcon.svg');
 
+  /// File path: assets/icons/termsServicesIcon.svg
+  SvgGenImage get termsServicesIcon =>
+      const SvgGenImage('assets/icons/termsServicesIcon.svg');
+
+  /// File path: assets/icons/wallet.svg
+  SvgGenImage get wallet => const SvgGenImage('assets/icons/wallet.svg');
+
   /// List of all assets
   List<SvgGenImage> get values => [
+        logOut,
+        aboutUsIcon,
         bugIcon,
         chatIcons,
         createButtomNa,
+        filterIcon,
         groupIcon,
+        helpSupportIcon,
         home,
         homeIcon,
         hubs,
+        inviteIcon,
         inviteMemberIcon,
         locationIcon,
         locationParmission,
+        lock,
         memberAddIcon,
         memberIcon,
         messageApplicationIcon,
         messagesRight,
         paymentCardIcon,
         pollIcon,
+        privacyPolicyIcon,
         profile,
+        profileInfo,
         schedule,
         scheduleIconsHome,
-        taskIcon
+        settings,
+        taskIcon,
+        termsServicesIcon,
+        wallet
       ];
 }
 
@@ -117,6 +168,10 @@ class $AssetsImagesGen {
   /// File path: assets/images/addhubImage.jpg
   AssetGenImage get addhubImage =>
       const AssetGenImage('assets/images/addhubImage.jpg');
+
+  /// File path: assets/images/inviteTopImage.png
+  AssetGenImage get inviteTopImage =>
+      const AssetGenImage('assets/images/inviteTopImage.png');
 
   /// File path: assets/images/logo.png
   AssetGenImage get logo => const AssetGenImage('assets/images/logo.png');
@@ -149,9 +204,14 @@ class $AssetsImagesGen {
   AssetGenImage get serviceImage1 =>
       const AssetGenImage('assets/images/serviceImage1.png');
 
+  /// File path: assets/images/uploadImage.png
+  AssetGenImage get uploadImage =>
+      const AssetGenImage('assets/images/uploadImage.png');
+
   /// List of all assets
   List<AssetGenImage> get values => [
         addhubImage,
+        inviteTopImage,
         logo,
         notificationImage,
         onboarding1,
@@ -159,7 +219,8 @@ class $AssetsImagesGen {
         onboarding3,
         onboarding4,
         searchImage,
-        serviceImage1
+        serviceImage1,
+        uploadImage
       ];
 }
 

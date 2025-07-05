@@ -10,8 +10,10 @@ import '../../views/screens/auth/sing_up/sign_up_screen.dart';
 import '../../views/screens/message/message_screen.dart';
 import '../../views/screens/neighbor/hub/application_screen.dart';
 import '../../views/screens/neighbor/hub/hub_home_screen.dart';
+import '../../views/screens/neighbor/hub/invite_screen.dart';
 import '../../views/screens/neighbor/hub/member_screen.dart';
 import '../../views/screens/neighbor/hub/pull_screen.dart';
+import '../../views/screens/neighbor/hub/schedule_screen.dart';
 import '../../views/screens/neighbor/hub/task_sreen.dart';
 import '../../views/screens/neighbor/neighbor_bottom_nav_bar/neighbor_bottom_nav_bar.dart';
 import '../../views/screens/neighbor/neighbor_hub_search_screen/neighbor_hub_search_screen.dart';
@@ -20,6 +22,11 @@ import '../../views/screens/neighbor/payment/payment_screen.dart';
 import '../../views/screens/neighbor/service_details/service_details_screen.dart';
 import '../../views/screens/notification/notification_screen.dart';
 import '../../views/screens/onboarding/onboarding_screen.dart';
+import '../../views/screens/profile/edit_profile_screen.dart';
+import '../../views/screens/profile/profile_information_screen.dart';
+import '../../views/screens/setting/change_password_screen.dart';
+import '../../views/screens/setting/privacy_policy_all_screen.dart';
+import '../../views/screens/setting/setting_screen.dart';
 import '../../views/screens/splash/splash_screen.dart';
 
 
@@ -45,6 +52,13 @@ class AppRoutes {
   static const String paymentScreen = "/PaymentScreen";
   static const String paymentDetailsScreen = "/PaymentDetailsScreen";
   static const String taskScreen = "/TaskScreen";
+  static const String inviteScreen = "/InviteScreen";
+  static const String scheduleScreen = "/ScheduleScreen";
+  static const String profileInformationScreen = "/ProfileInformationScreen";
+  static const String editProfileScreen = "/EditProfileScreen";
+  static const String settingScreen = "/SettingScreen";
+  static const String privacyPolicyAllScreen = "/PrivacyPolicyAllScreen";
+  static const String changePasswordScreen = "/ChangePasswordScreen";
 
 
 
@@ -70,5 +84,12 @@ class AppRoutes {
     GetPage(name: paymentScreen, page: () =>  PaymentScreen()),
     GetPage(name: paymentDetailsScreen, page: () =>  PaymentDetailsScreen()),
     GetPage(name: taskScreen, page: () =>  TaskScreen()),
+    GetPage(name: inviteScreen, page: () =>  InviteScreen()),
+    GetPage(name: scheduleScreen, page: () =>  ScheduleScreen()),
+    GetPage(name: profileInformationScreen, page: () =>  ProfileInformationScreen()),
+    GetPage(name: editProfileScreen, page: () =>  EditProfileScreen()),
+    GetPage(name: settingScreen, page: () =>  SettingScreen()),
+    GetPage(name: privacyPolicyAllScreen, page: () =>  PrivacyPolicyAllScreen()),
+    GetPage(name: changePasswordScreen, page: () =>  ChangePasswordScreen()),
   ];
 }

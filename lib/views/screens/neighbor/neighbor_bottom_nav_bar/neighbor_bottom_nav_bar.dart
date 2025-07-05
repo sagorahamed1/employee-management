@@ -1,9 +1,12 @@
 import 'package:awesome_bottom_bar/awesome_bottom_bar.dart';
 import 'package:droke/core/app_constants/app_colors.dart';
 import 'package:droke/global/custom_assets/assets.gen.dart';
+import 'package:droke/views/screens/neighbor/hub/schedule_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import '../../create_task/create_task_screen.dart';
+import '../../profile/profile_screen.dart';
 import '../hub/hub_screen.dart';
 import '../neighbor_home/neighbor_home_screen.dart';
 
@@ -21,9 +24,9 @@ class _NeighborBottomNavBarState extends State<NeighborBottomNavBar> {
   final List<Widget> _screens = [
     NeighborHomeScreen(),
     HubScreen(),
-    NeighborHomeScreen(),
-    NeighborHomeScreen(),
-    NeighborHomeScreen(),
+    CreateTaskScreen(),
+    ScheduleScreen(),
+    ProfileScreen(),
   ];
 
   void _onItemTapped(int index) {

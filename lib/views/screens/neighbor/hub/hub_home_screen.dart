@@ -1,7 +1,9 @@
 import 'package:droke/core/app_constants/app_colors.dart';
 import 'package:droke/core/config/app_route.dart';
 import 'package:droke/global/custom_assets/assets.gen.dart';
+import 'package:droke/views/widgets/custom_button.dart';
 import 'package:droke/views/widgets/custom_text.dart';
+import 'package:droke/views/widgets/custom_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -62,8 +64,12 @@ class HubHomeScreen extends StatelessWidget {
                 itemBuilder: (context, index) {
                   return GestureDetector(
                       onTap: () {
-                        if(index == 0){}
-                        else if(index == 1){}
+                        if(index == 0){
+                          Get.toNamed(AppRoutes.scheduleScreen);
+                        }
+                        else if(index == 1){
+                          Get.toNamed(AppRoutes.messageScreen);
+                        }
                         else if(index == 2){
                           Get.toNamed(AppRoutes.applicationScreen);
                         }
@@ -74,7 +80,50 @@ class HubHomeScreen extends StatelessWidget {
                         else if(index == 5){
                           Get.toNamed(AppRoutes.memberScreen);
                         }
-                        else if(index == 6){}
+                        else if(index == 6){
+                          TextEditingController emailCtrl = TextEditingController();
+                          showDialog(context: context, builder: (context) {
+                          return  AlertDialog(
+                            content: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+
+                                SizedBox(height: 24.h),
+                                Assets.images.inviteTopImage.image(height: 100.h, width: 149.w),
+
+
+                                CustomText(text: "Invite neighbor to the Hub", fontSize: 16.h, bottom: 16.h, top: 8.h),
+
+
+                                CustomTextField(
+                                    contentPaddingVertical: 10.h,
+                                    controller: emailCtrl, hintText: "Email Address"),
+
+                                SizedBox(height: 10.h),
+
+
+                                CustomButton(
+                                    height: 35.h,
+                                    fontSize: 14.h,
+                                    title: "Send Invitation", onpress: (){}),
+                                SizedBox(height: 20.h),
+
+                                CustomButton(
+                                  height: 35.h,
+                                    fontSize: 14.h,
+                                    color: Colors.transparent,
+                                    titlecolor: Colors.red,
+                                    title: "Find Neighbors Around Me", onpress: (){
+                                    Get.back();
+                                    Get.toNamed(AppRoutes.inviteScreen);
+                                }),
+
+
+                              ],
+                            ),
+                          );
+                          });
+                        }
                         else if(index == 7){
                           Get.toNamed(AppRoutes.paymentScreen);
                         }
