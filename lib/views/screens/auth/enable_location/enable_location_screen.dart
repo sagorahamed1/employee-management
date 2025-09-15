@@ -1,6 +1,8 @@
 import 'package:droke/core/app_constants/app_colors.dart';
+import 'package:droke/core/app_constants/app_constants.dart';
 import 'package:droke/core/config/app_route.dart';
 import 'package:droke/global/custom_assets/assets.gen.dart';
+import 'package:droke/helper/prefs_helper.dart';
 import 'package:droke/views/widgets/custom_button.dart';
 import 'package:droke/views/widgets/custom_text.dart';
 import 'package:flutter/material.dart';
@@ -43,8 +45,14 @@ class EnableLocationScreen extends StatelessWidget {
 
             Spacer(),
 
-            CustomButton(title: "Enable Location", onpress: () {
-              Get.toNamed(AppRoutes.neighborBottomNavBar);
+            CustomButton(title: "Enable Location", onpress: () async{
+              var role = await PrefsHelper.getString(AppConstants.role);
+              if(role == "freelancer"){
+                Get.toNamed(AppRoutes.freelancerBottomNavBar);
+              }else{
+                Get.toNamed(AppRoutes.neighborBottomNavBar);
+              }
+
             }),
 
 

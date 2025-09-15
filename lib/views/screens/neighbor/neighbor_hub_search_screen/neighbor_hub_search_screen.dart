@@ -5,6 +5,7 @@ import 'package:droke/views/widgets/custom_text.dart';
 import 'package:droke/views/widgets/custom_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 
 import '../../../widgets/shop_task_card.dart';
 
@@ -75,7 +76,7 @@ class _NeighborHubSearchScreenState extends State<NeighborHubSearchScreen> {
           _isSearching ? SizedBox(height: 8.h) :  Align(
               alignment: Alignment.centerLeft,
               child: CustomText(
-                  text: "On going hub in your area", left: 20.w, bottom: 12.h)),
+                  text: Get.arguments["role"] == "freelancer" ? "Hubs in your area" : "On going hub in your area", left: 20.w, bottom: 12.h)),
           Expanded(
             child: ListView.builder(
               padding: EdgeInsets.zero,
@@ -93,6 +94,7 @@ class _NeighborHubSearchScreenState extends State<NeighborHubSearchScreen> {
                     peopleJoined: "3 Neighbors joined",
                     organizer: "Maria from Pine Street",
                     payAmount: "\$5",
+                    btnName: Get.arguments["role"] == "freelancer" ? "Apply" : "Join",
                   ),
                 );
               },

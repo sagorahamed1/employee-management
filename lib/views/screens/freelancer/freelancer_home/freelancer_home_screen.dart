@@ -9,8 +9,8 @@ import 'package:get/get.dart';
 
 import '../../../widgets/shop_task_card.dart';
 
-class NeighborHomeScreen extends StatelessWidget {
-  const NeighborHomeScreen({super.key});
+class FreelancerHomeScreen extends StatelessWidget {
+  const FreelancerHomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -60,7 +60,7 @@ class NeighborHomeScreen extends StatelessWidget {
                 return GestureDetector(
                   onTap: () {
                     Get.toNamed(AppRoutes.serviceDetailsScreen, arguments: {
-                      "role" : "neighbor"
+                      "role" : "freelancer"
                     });
                   },
                   child: Container(
@@ -149,7 +149,7 @@ class NeighborHomeScreen extends StatelessWidget {
                 GestureDetector(
                   onTap: () {
                     Get.toNamed(AppRoutes.neighborHubSearchScreen, arguments: {
-                      "role" : "neighbor"
+                      "role" : "freelancer"
                     });
                   },
                   child: CustomText(
@@ -171,14 +171,20 @@ class NeighborHomeScreen extends StatelessWidget {
                 return Padding(
                   padding:  EdgeInsets.only(bottom: 10.h, right: 20.w, left: 20.w),
                   child: ShopTaskCard(
-                    imagePath:
-                        "https://img.etimg.com/thumb/width-1200,height-1200,imgsize-789754,resizemode-75,msid-73320212/small-biz/sme-sector/the-kirana-is-a-technology-shop-too.jpg",
+                    imagePath: "https://img.etimg.com/thumb/width-1200,height-1200,imgsize-789754,resizemode-75,msid-73320212/small-biz/sme-sector/the-kirana-is-a-technology-shop-too.jpg",
                     taskTitle: "Grocery run to Trader Joe's",
                     taskType: "Personal Needs",
                     scheduledTime: "9:30AM Today",
                     peopleJoined: "3 Neighbors joined",
                     organizer: "Maria from Pine Street",
                     payAmount: "\$5",
+                    btnName: "Apply",
+                    BtnOnTap: () {
+
+                    },
+                    onTap: () {
+                      print("kdkdkkdkdkdkdkdkdkdkd");
+                    },
                   ),
                 );
               },

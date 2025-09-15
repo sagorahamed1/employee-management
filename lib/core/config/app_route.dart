@@ -7,6 +7,9 @@ import '../../views/screens/auth/otp/opt_screen.dart';
 import '../../views/screens/auth/reset/reset_password_screen.dart';
 import '../../views/screens/auth/role/role_screen.dart';
 import '../../views/screens/auth/sing_up/sign_up_screen.dart';
+import '../../views/screens/freelancer/freelancer_bottom_nav_bar/freelancer_bottom_nav_bar.dart';
+import '../../views/screens/freelancer/freelancer_gig/set_schedule_screen.dart';
+import '../../views/screens/freelancer/service/service_screen.dart';
 import '../../views/screens/message/message_screen.dart';
 import '../../views/screens/neighbor/hub/application_screen.dart';
 import '../../views/screens/neighbor/hub/hub_home_screen.dart';
@@ -24,6 +27,7 @@ import '../../views/screens/notification/notification_screen.dart';
 import '../../views/screens/onboarding/onboarding_screen.dart';
 import '../../views/screens/profile/edit_profile_screen.dart';
 import '../../views/screens/profile/profile_information_screen.dart';
+import '../../views/screens/profile/wallet_screen.dart';
 import '../../views/screens/setting/change_password_screen.dart';
 import '../../views/screens/setting/privacy_policy_all_screen.dart';
 import '../../views/screens/setting/setting_screen.dart';
@@ -59,6 +63,10 @@ class AppRoutes {
   static const String settingScreen = "/SettingScreen";
   static const String privacyPolicyAllScreen = "/PrivacyPolicyAllScreen";
   static const String changePasswordScreen = "/ChangePasswordScreen";
+  static const String freelancerBottomNavBar = "/FreelancerBottomNavBar";
+  static const String setScheduleScreen = "/SetScheduleScreen";
+  static const String serviceScreen = "/ServiceScreen";
+  static const String walletScreen = "/WalletScreen";
 
 
 
@@ -91,5 +99,9 @@ class AppRoutes {
     GetPage(name: settingScreen, page: () =>  SettingScreen()),
     GetPage(name: privacyPolicyAllScreen, page: () =>  PrivacyPolicyAllScreen()),
     GetPage(name: changePasswordScreen, page: () =>  ChangePasswordScreen()),
+    GetPage(name: freelancerBottomNavBar, page: () =>  FreelancerBottomNavBar()),
+    GetPage(name: setScheduleScreen, page: () =>  SetScheduleScreen()),
+    GetPage(name: serviceScreen, page: () =>  ServiceScreen()),
+    GetPage(name: walletScreen, page: () =>  WalletScreen()),
   ];
 }

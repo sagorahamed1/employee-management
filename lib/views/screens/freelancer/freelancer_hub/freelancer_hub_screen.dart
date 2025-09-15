@@ -11,16 +11,15 @@ import 'package:get/get.dart';
 import '../../../widgets/cachanetwork_image.dart';
 import '../../../widgets/shop_task_card.dart';
 
-class HubScreen extends StatefulWidget {
-  HubScreen({super.key});
+class FreelancerHubScreen extends StatefulWidget {
+  FreelancerHubScreen({super.key});
 
   @override
-  State<HubScreen> createState() => _HubScreenState();
+  State<FreelancerHubScreen> createState() => _FreelancerHubScreenState();
 }
 
-class _HubScreenState extends State<HubScreen> {
+class _FreelancerHubScreenState extends State<FreelancerHubScreen> {
   bool _isSearching = false;
-  bool _isHubSelected = false;
 
   // <--- track search state
   TextEditingController _searchController = TextEditingController();
@@ -28,7 +27,6 @@ class _HubScreenState extends State<HubScreen> {
   Widget _buildSearchField() {
     return Column(
       children: [
-        SizedBox(height: 8.h),
         CustomTextField(
             controller: _searchController,
             hintText: "Search for hub and people",
@@ -52,7 +50,7 @@ class _HubScreenState extends State<HubScreen> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        leading: SizedBox(),
+        leading: SizedBox.shrink(),
         title: _isSearching
             ? _buildSearchField()
             : CustomText(
@@ -61,7 +59,7 @@ class _HubScreenState extends State<HubScreen> {
                 color: AppColors.textColorSecondary5EAAA8,
               ),
         actions: [
-          _isSearching ? SizedBox() : Assets.images.addhubImage.image(),
+
           _isSearching
               ? SizedBox()
               : GestureDetector(
@@ -81,45 +79,6 @@ class _HubScreenState extends State<HubScreen> {
           children: [
 
 
-            // TODO : <<< ==========  Two Button ========>>>
-
-
-            Row(
-              children: [
-                Expanded(
-                    flex: 1,
-                    child: CustomButton(
-                      height: 35.h,
-                        fontSize: 12.h,
-                        color: _isHubSelected ? Colors.transparent : AppColors.textColorSecondary5EAAA8,
-                        titlecolor: _isHubSelected ? AppColors.textColorSecondary5EAAA8 : Colors.white,
-                        boderColor: _isHubSelected ? AppColors.textColorSecondary5EAAA8 : Colors.transparent,
-                        title: "Hubs",
-                        onpress: () {
-                        _isHubSelected = false ;
-                        setState(() {});
-                        })),
-
-
-                SizedBox(width: 20.w),
-
-                Expanded(
-                    flex: 1,
-                    child: CustomButton(
-                        color: _isHubSelected ? AppColors.textColorSecondary5EAAA8 :  Colors.transparent,
-                        boderColor: _isHubSelected ? Colors.transparent : AppColors.textColorSecondary5EAAA8,
-                        titlecolor: _isHubSelected ? Colors.white : AppColors.textColorSecondary5EAAA8,
-                        height: 35.h,
-                        fontSize: 12.h,
-                        title: "People", onpress: () {
-                      _isHubSelected = true ;
-                      setState(() {});
-                    }))
-              ],
-            ),
-
-
-
 
             SizedBox(height: 16.h),
 
@@ -134,14 +93,9 @@ class _HubScreenState extends State<HubScreen> {
                     padding: EdgeInsets.only(bottom: 12.h),
                     child: GestureDetector(
                       onTap: () {
-                        if(_isHubSelected){
-                          Get.toNamed(AppRoutes.messageScreen);
-                        }else{
                           Get.toNamed(AppRoutes.hubHomeScreen, arguments: {
-                            "role" : "neighbor"
+                            "role" : "freelancer"
                           });
-                        }
-
                       },
                       child: Container(
                         decoration: BoxDecoration(
@@ -156,7 +110,7 @@ class _HubScreenState extends State<HubScreen> {
                                 height: 60.h,
                                 width: 60.w,
                                 boxShape: BoxShape.circle,
-                                imageUrl: _isHubSelected ?  "https://randomuser.me/api/portraits/men/10.jpg" : "https://img.etimg.com/thumb/width-1200,height-1200,imgsize-789754,resizemode-75,msid-73320212/small-biz/sme-sector/the-kirana-is-a-technology-shop-too.jpg"  ,
+                                imageUrl: "https://img.etimg.com/thumb/width-1200,height-1200,imgsize-789754,resizemode-75,msid-73320212/small-biz/sme-sector/the-kirana-is-a-technology-shop-too.jpg"  ,
                                 border: Border.all(
                                     color: Colors.grey, width: 0.02),
                               ),
@@ -166,7 +120,7 @@ class _HubScreenState extends State<HubScreen> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     CustomText(
-                                        text: _isHubSelected ? "Sagor Ahamed " : "Hub Name",
+                                        text: "Hub Name",
                                         bottom: 6.h,
                                         fontWeight: FontWeight.w500),
                                     CustomText(
@@ -176,12 +130,21 @@ class _HubScreenState extends State<HubScreen> {
                                   ],
                                 ),
                               ),
-                              _isHubSelected ? SizedBox() : Align(
+                              Align(
                                   alignment: Alignment.bottomRight,
                                   child: Padding(
                                     padding: EdgeInsets.only(bottom: 45.h),
-                                    child: CustomText(
-                                        text: "11:58 PM", fontSize: 9.h),
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(3.r),
+                                        color: Color(0xffD9D9D9)
+                                      ),
+                                      child: Padding(
+                                        padding:  EdgeInsets.symmetric(horizontal: 6.w, vertical: 2.h),
+                                        child: CustomText(
+                                            text: "11 Members", fontSize: 9.h),
+                                      ),
+                                    ),
                                   ))
                             ],
                           ),

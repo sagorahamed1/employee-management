@@ -21,7 +21,7 @@ class NeighborBottomNavBar extends StatefulWidget {
 class _NeighborBottomNavBarState extends State<NeighborBottomNavBar> {
  static int _selectedIndex = 0;
 
-  final List<Widget> _screens = [
+   List<Widget> _screens = [
     NeighborHomeScreen(),
     HubScreen(),
     CreateTaskScreen(),
@@ -35,41 +35,58 @@ class _NeighborBottomNavBarState extends State<NeighborBottomNavBar> {
     });
   }
 
-  final List<BottomNavigationBarItem> _navItems = [
-    BottomNavigationBarItem(
-      icon: Assets.icons.home.svg(width: 24, color: _selectedIndex == 0 ? AppColors.primaryColor :  Color(0xff7C7C7C) ),
-      label: 'Home',
-    ),
-    BottomNavigationBarItem(
-      icon: Assets.icons.hubs.svg(),
-      label: 'Hubs',
-    ),
-    BottomNavigationBarItem(
-      icon: Assets.icons.createButtomNa.svg(width: 24, color: _selectedIndex == 2 ? AppColors.primaryColor :  Color(0xff7C7C7C) ),
-      label: 'Create',
-    ),
-    BottomNavigationBarItem(
-      icon: Assets.icons.schedule.svg(width: 24, color: _selectedIndex == 3 ? AppColors.primaryColor :  Color(0xff7C7C7C) ),
-      label: 'Schedule',
-    ),
-    BottomNavigationBarItem(
-      icon: Assets.icons.profile.svg(width: 24, color: _selectedIndex == 4 ? AppColors.primaryColor :  Color(0xff7C7C7C) ),
-      label: 'Profile',
-    ),
-  ];
+ @override
+ Widget build(BuildContext context) {
+   print("===============selected index : $_selectedIndex");
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: _screens[_selectedIndex],
-      bottomNavigationBar: BottomNavigationBar(
-        type: BottomNavigationBarType.fixed,
-        currentIndex: _selectedIndex,
-        onTap: _onItemTapped,
-        selectedItemColor: AppColors.primaryColor,
-        unselectedItemColor: Color(0xff7C7C7C),
-        items: _navItems,
-      ),
-    );
-  }
+   List<BottomNavigationBarItem> _navItems = [
+     BottomNavigationBarItem(
+       icon: Assets.icons.home.svg(
+           width: 24,
+           color: _selectedIndex == 0
+               ? AppColors.primaryColor
+               : Color(0xff7C7C7C)),
+       label: 'Home',
+     ),
+     BottomNavigationBarItem(
+       icon: _selectedIndex == 1
+           ? Assets.icons.hubs.svg(color: AppColors.primaryColor)
+           : Assets.icons.hubUnSelected.svg(color: Colors.grey),
+       label: 'Hubs',
+     ),
+     BottomNavigationBarItem(
+       icon: _selectedIndex == 2
+           ? Assets.icons.createSeleted.svg(width: 24, color: AppColors.primaryColor)
+           : Assets.icons.createButtomNa.svg(width: 24, color: Colors.grey),
+       label: 'Create',
+     ),
+     BottomNavigationBarItem(
+       icon: _selectedIndex == 3
+           ? Assets.icons.scheduleSelected.svg(width: 24)
+           : Assets.icons.scheduleIconsHome.svg(width: 24),
+       label: 'Schedule',
+     ),
+     BottomNavigationBarItem(
+       icon: _selectedIndex == 4
+           ? Assets.icons.profileSelected.svg(width: 24)
+           : Assets.icons.profile.svg(width: 24),
+       label: 'Profile',
+     ),
+   ];
+
+   return Scaffold(
+     body: _screens[_selectedIndex],
+     bottomNavigationBar: BottomNavigationBar(
+       type: BottomNavigationBarType.fixed,
+       currentIndex: _selectedIndex,
+       onTap: _onItemTapped,
+       unselectedIconTheme: IconThemeData(color: Colors.grey),
+       selectedIconTheme: IconThemeData(color: AppColors.primaryColor),
+       selectedItemColor: AppColors.primaryColor,
+       unselectedItemColor: Color(0xff7C7C7C),
+       items: _navItems,
+     ),
+   );
+ }
+
 }

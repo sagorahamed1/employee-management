@@ -1,5 +1,7 @@
+import 'package:droke/core/app_constants/app_constants.dart';
 import 'package:droke/core/config/app_route.dart';
 import 'package:droke/global/custom_assets/assets.gen.dart';
+import 'package:droke/helper/prefs_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -67,6 +69,7 @@ class _RoleScreenState extends State<RoleScreen> {
                   GestureDetector(
                     onTap: () {
                       Get.toNamed(AppRoutes.logInScreen);
+                      PrefsHelper.setString(AppConstants.role, "neighbor");
                     },
                     child: Container(
                       height: 171.h,
@@ -121,6 +124,7 @@ class _RoleScreenState extends State<RoleScreen> {
                   GestureDetector(
                     onTap: () {
                       Get.toNamed(AppRoutes.logInScreen);
+                      PrefsHelper.setString(AppConstants.role, "freelancer");
                     },
                     child: Container(
                       height: 171.h,

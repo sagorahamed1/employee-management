@@ -102,135 +102,174 @@ class _ServiceDetailsScreenState extends State<ServiceDetailsScreen> {
                               text:
                               "The Daily Needs section of Neighbor Hubs connects community members with trusted local gig workers for common, everyday tasks. Whether you're short on time, temporarily unable to run errands, or just looking for a helping hand, Daily Needs makes it easy to get things done through your own neighborhood network."),
 
-                          CustomTextField(
-                            controller: nameCtrl,
-                            hintText: "Create Hub Name",
-                            labelText: "Hub name",
-                            borderColor: AppColors.textColorSecondary5EAAA8,
-                          ),
 
-                          CustomTextField(
-                            controller: nameCtrl,
-                            hintText: "Select Task Type",
-                            labelText: "Task Type",
-                            borderColor: AppColors.textColorSecondary5EAAA8,
-                            onTap: () {
-                              isDropDown= !isDropDown;
-                              setState(() {});
-                            },
-                            readOnly: true,
-                            suffixIcon: Icon(Icons.keyboard_arrow_down_rounded),
-                          ),
 
-                          isDropDown
-                              ? Container(
-                            decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius:
-                                BorderRadius.all(Radius.circular(8.r))),
-                            height: 200.h,
-                            child: ListView.builder(
-                              itemCount: dropDownList.length,
-                              itemBuilder: (context, index) {
-                                var dropDownItems = dropDownList[index];
-                                return GestureDetector(
-                                  onTap: () {
-                                    isDropDown = false;
-                                    taskTypeCtrl.text = dropDownItems;
-                                    setState(() {});
-                                  },
-                                  child: Column(
-                                    children: [
-                                      SizedBox(height: index == 0 ? 8.h : 0),
-                                      CustomText(
-                                          text: dropDownItems,
-                                          textAlign: TextAlign.center),
-                                      Divider()
-                                    ],
-                                  ),
-                                );
-                              },
-                            ),
-                          )
-                              : const SizedBox(),
+                          Get.arguments["role"] == "freelancer" ?
 
-                          CustomText(
-                              text: "Frequency of the task",
-                              fontSize: 16.h,
-                              bottom: 12.h),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
 
-                          // TODO : <<< ==========  Two Button ========>>>
+                                  CustomText(
+                                      text: "Services",
+                                      fontSize: 16.h,
+                                      bottom: 12.h),
 
-                          Row(
+                                  CustomText(text: "    • Dog Walking", fontSize: 12.h, italic: true),
+                                  CustomText(text: "    • Grocery Shopping & Delivery", fontSize: 12.h, italic: true),
+                                  CustomText(text: "    • Laundry Pickup & Drop-off", fontSize: 12.h, italic: true),
+                                  CustomText(text: "    • House Cleaning", fontSize: 12.h, italic: true),
+                                  CustomText(text: "    • Prescription Pickup", fontSize: 12.h, italic: true),
+                                  CustomText(text: "    • Package Drop-offs", fontSize: 12.h, italic: true),
+
+
+                                  SizedBox(height: 40.h),
+
+
+                                  CustomButton(title: "Explore hubs", onpress: (){})
+
+
+                                ],
+                              )
+
+                              :
+
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Expanded(
-                                flex: 1,
-                                child: CustomButton(
-                                  height: 35.h,
-                                  fontSize: 10.h,
-                                  color: _selectedPeriod == 'Daily'
-                                      ? AppColors.textColorSecondary5EAAA8
-                                      : Colors.white,
-                                  titlecolor: _selectedPeriod == 'Daily'
-                                      ? Colors.white
-                                      : AppColors.textColor3B3B3B,
-                                  boderColor: AppColors.textColorSecondary5EAAA8,
-                                  title: "Daily",
-                                  onpress: () {
-                                    setState(() {
-                                      _selectedPeriod = 'Daily';
-                                    });
+
+                              CustomTextField(
+                                controller: nameCtrl,
+                                hintText: "Create Hub Name",
+                                labelText: "Hub name",
+                                borderColor: AppColors.textColorSecondary5EAAA8,
+                              ),
+
+                              CustomTextField(
+                                controller: nameCtrl,
+                                hintText: "Select Task Type",
+                                labelText: "Task Type",
+                                borderColor: AppColors.textColorSecondary5EAAA8,
+                                onTap: () {
+                                  isDropDown= !isDropDown;
+                                  setState(() {});
+                                },
+                                readOnly: true,
+                                suffixIcon: Icon(Icons.keyboard_arrow_down_rounded),
+                              ),
+
+                              isDropDown
+                                  ? Container(
+                                decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius:
+                                    BorderRadius.all(Radius.circular(8.r))),
+                                height: 200.h,
+                                child: ListView.builder(
+                                  itemCount: dropDownList.length,
+                                  itemBuilder: (context, index) {
+                                    var dropDownItems = dropDownList[index];
+                                    return GestureDetector(
+                                      onTap: () {
+                                        isDropDown = false;
+                                        taskTypeCtrl.text = dropDownItems;
+                                        setState(() {});
+                                      },
+                                      child: Column(
+                                        children: [
+                                          SizedBox(height: index == 0 ? 8.h : 0),
+                                          CustomText(
+                                              text: dropDownItems,
+                                              textAlign: TextAlign.center),
+                                          Divider()
+                                        ],
+                                      ),
+                                    );
                                   },
                                 ),
+                              )
+                                  : const SizedBox(),
+
+                              CustomText(
+                                  text: "Frequency of the task",
+                                  fontSize: 16.h,
+                                  bottom: 12.h),
+
+                              // TODO : <<< ==========  Two Button ========>>>
+
+                              Row(
+                                children: [
+                                  Expanded(
+                                    flex: 1,
+                                    child: CustomButton(
+                                      height: 35.h,
+                                      fontSize: 10.h,
+                                      color: _selectedPeriod == 'Daily'
+                                          ? AppColors.textColorSecondary5EAAA8
+                                          : Colors.white,
+                                      titlecolor: _selectedPeriod == 'Daily'
+                                          ? Colors.white
+                                          : AppColors.textColor3B3B3B,
+                                      boderColor: AppColors.textColorSecondary5EAAA8,
+                                      title: "Daily",
+                                      onpress: () {
+                                        setState(() {
+                                          _selectedPeriod = 'Daily';
+                                        });
+                                      },
+                                    ),
+                                  ),
+                                  SizedBox(width: 7.w),
+                                  Expanded(
+                                    flex: 1,
+                                    child: CustomButton(
+                                      height: 35.h,
+                                      fontSize: 10.h,
+                                      color: _selectedPeriod == 'Weekly'
+                                          ? AppColors.textColorSecondary5EAAA8
+                                          : Colors.white,
+                                      titlecolor: _selectedPeriod == 'Weekly'
+                                          ? Colors.white
+                                          : AppColors.textColor3B3B3B,
+                                      boderColor: AppColors.textColorSecondary5EAAA8,
+                                      title: "Weekly",
+                                      onpress: () {
+                                        setState(() {
+                                          _selectedPeriod = 'Weekly';
+                                        });
+                                      },
+                                    ),
+                                  ),
+                                  SizedBox(width: 7.w),
+                                  Expanded(
+                                    flex: 1,
+                                    child: CustomButton(
+                                      height: 35.h,
+                                      fontSize: 10.h,
+                                      color: _selectedPeriod == 'Monthly'
+                                          ? AppColors.textColorSecondary5EAAA8
+                                          : Colors.white,
+                                      titlecolor: _selectedPeriod == 'Monthly'
+                                          ? Colors.white
+                                          : AppColors.textColor3B3B3B,
+                                      boderColor: AppColors.textColorSecondary5EAAA8,
+                                      title: "Monthly",
+                                      onpress: () {
+                                        setState(() {
+                                          _selectedPeriod = 'Monthly';
+                                        });
+                                      },
+                                    ),
+                                  ),
+                                ],
                               ),
-                              SizedBox(width: 7.w),
-                              Expanded(
-                                flex: 1,
-                                child: CustomButton(
-                                  height: 35.h,
-                                  fontSize: 10.h,
-                                  color: _selectedPeriod == 'Weekly'
-                                      ? AppColors.textColorSecondary5EAAA8
-                                      : Colors.white,
-                                  titlecolor: _selectedPeriod == 'Weekly'
-                                      ? Colors.white
-                                      : AppColors.textColor3B3B3B,
-                                  boderColor: AppColors.textColorSecondary5EAAA8,
-                                  title: "Weekly",
-                                  onpress: () {
-                                    setState(() {
-                                      _selectedPeriod = 'Weekly';
-                                    });
-                                  },
-                                ),
-                              ),
-                              SizedBox(width: 7.w),
-                              Expanded(
-                                flex: 1,
-                                child: CustomButton(
-                                  height: 35.h,
-                                  fontSize: 10.h,
-                                  color: _selectedPeriod == 'Monthly'
-                                      ? AppColors.textColorSecondary5EAAA8
-                                      : Colors.white,
-                                  titlecolor: _selectedPeriod == 'Monthly'
-                                      ? Colors.white
-                                      : AppColors.textColor3B3B3B,
-                                  boderColor: AppColors.textColorSecondary5EAAA8,
-                                  title: "Monthly",
-                                  onpress: () {
-                                    setState(() {
-                                      _selectedPeriod = 'Monthly';
-                                    });
-                                  },
-                                ),
-                              ),
+
+                              SizedBox(height: 35.h),
+
+                              CustomButton(title: "Create Hubs", onpress: () {}),
+
                             ],
                           ),
-
-                          SizedBox(height: 35.h),
-
-                          CustomButton(title: "Create Hubs", onpress: () {}),
 
                           SizedBox(height: 12.h)
                         ],

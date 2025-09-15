@@ -29,6 +29,10 @@ class $AssetsIconsGen {
   /// File path: assets/icons/chatIcons.svg
   SvgGenImage get chatIcons => const SvgGenImage('assets/icons/chatIcons.svg');
 
+  /// File path: assets/icons/createSeleted.svg
+  SvgGenImage get createSeleted =>
+      const SvgGenImage('assets/icons/createSeleted.svg');
+
   /// File path: assets/icons/create_buttom_na.svg
   SvgGenImage get createButtomNa =>
       const SvgGenImage('assets/icons/create_buttom_na.svg');
@@ -49,6 +53,14 @@ class $AssetsIconsGen {
 
   /// File path: assets/icons/homeIcon.svg
   SvgGenImage get homeIcon => const SvgGenImage('assets/icons/homeIcon.svg');
+
+  /// File path: assets/icons/homeUnSelected.svg
+  SvgGenImage get homeUnSelected =>
+      const SvgGenImage('assets/icons/homeUnSelected.svg');
+
+  /// File path: assets/icons/hubUnSelected.svg
+  SvgGenImage get hubUnSelected =>
+      const SvgGenImage('assets/icons/hubUnSelected.svg');
 
   /// File path: assets/icons/hubs.svg
   SvgGenImage get hubs => const SvgGenImage('assets/icons/hubs.svg');
@@ -106,12 +118,20 @@ class $AssetsIconsGen {
   SvgGenImage get profileInfo =>
       const SvgGenImage('assets/icons/profileInfo.svg');
 
+  /// File path: assets/icons/profileSelected.svg
+  SvgGenImage get profileSelected =>
+      const SvgGenImage('assets/icons/profileSelected.svg');
+
   /// File path: assets/icons/schedule.svg
   SvgGenImage get schedule => const SvgGenImage('assets/icons/schedule.svg');
 
   /// File path: assets/icons/scheduleIconsHome.svg
   SvgGenImage get scheduleIconsHome =>
       const SvgGenImage('assets/icons/scheduleIconsHome.svg');
+
+  /// File path: assets/icons/schedule_selected.svg
+  SvgGenImage get scheduleSelected =>
+      const SvgGenImage('assets/icons/schedule_selected.svg');
 
   /// File path: assets/icons/settings.svg
   SvgGenImage get settings => const SvgGenImage('assets/icons/settings.svg');
@@ -132,12 +152,15 @@ class $AssetsIconsGen {
         aboutUsIcon,
         bugIcon,
         chatIcons,
+        createSeleted,
         createButtomNa,
         filterIcon,
         groupIcon,
         helpSupportIcon,
         home,
         homeIcon,
+        homeUnSelected,
+        hubUnSelected,
         hubs,
         inviteIcon,
         inviteMemberIcon,
@@ -153,8 +176,10 @@ class $AssetsIconsGen {
         privacyPolicyIcon,
         profile,
         profileInfo,
+        profileSelected,
         schedule,
         scheduleIconsHome,
+        scheduleSelected,
         settings,
         taskIcon,
         termsServicesIcon,
@@ -207,6 +232,10 @@ class $AssetsImagesGen {
   AssetGenImage get serviceImage1 =>
       const AssetGenImage('assets/images/serviceImage1.png');
 
+  /// File path: assets/images/supportImage.png
+  AssetGenImage get supportImage =>
+      const AssetGenImage('assets/images/supportImage.png');
+
   /// File path: assets/images/uploadImage.png
   AssetGenImage get uploadImage =>
       const AssetGenImage('assets/images/uploadImage.png');
@@ -224,6 +253,7 @@ class $AssetsImagesGen {
         onboarding4,
         searchImage,
         serviceImage1,
+        supportImage,
         uploadImage
       ];
 }

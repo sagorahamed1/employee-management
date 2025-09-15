@@ -181,7 +181,7 @@ class _TaskScreenState extends State<TaskScreen> {
                                 organizer: "Maria from Pine Street",
                                 payAmount: "\$5",
                                 btnName: "Rate Freelancer",
-                                onTap: () {
+                                BtnOnTap: () {
                                   showBottomSheet(
                                     backgroundColor: Colors.white,
                                       context: context,

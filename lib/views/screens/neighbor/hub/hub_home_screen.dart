@@ -14,15 +14,15 @@ class HubHomeScreen extends StatelessWidget {
   HubHomeScreen({super.key});
 
   List hubFeatures = [
-    {"icon": Assets.icons.scheduleIconsHome.svg(), "title": "Schedule"},
+    {"icon": Assets.icons.scheduleSelected.svg(height: 40.h), "title": "Schedule"},
     {"icon": Assets.icons.chatIcons.svg(), "title": "Chat"},
-    {"icon": Assets.icons.messageApplicationIcon.svg(), "title": "Application"},
+   if(Get.arguments["role"] != "freelancer") {"icon": Assets.icons.messageApplicationIcon.svg(), "title": "Application"},
     {"icon": Assets.icons.locationIcon.svg(), "title": "Location"},
-    {"icon": Assets.icons.pollIcon.svg(), "title": "Poll"},
+    if(Get.arguments["role"] != "freelancer") {"icon": Assets.icons.pollIcon.svg(), "title": "Poll"},
     {"icon": Assets.icons.memberIcon.svg(), "title": "Member"},
-    {"icon": Assets.icons.inviteMemberIcon.svg(), "title": "Invite"},
+    if(Get.arguments["role"] != "freelancer") {"icon": Assets.icons.inviteMemberIcon.svg(), "title": "Invite"},
     {"icon": Assets.icons.paymentCardIcon.svg(), "title": "Payment"},
-    {"icon": Assets.icons.taskIcon.svg(), "title": "Task"},
+    if(Get.arguments["role"] != "freelancer") {"icon": Assets.icons.taskIcon.svg(), "title": "Task"},
   ];
 
   @override
@@ -64,23 +64,25 @@ class HubHomeScreen extends StatelessWidget {
                 itemBuilder: (context, index) {
                   return GestureDetector(
                       onTap: () {
-                        if(index == 0){
+                        if(hubFeatures[index]["title"] == "Schedule"){
                           Get.toNamed(AppRoutes.scheduleScreen, parameters: {"screenType" : "hubHome"});
                         }
-                        else if(index == 1){
+                        else if(hubFeatures[index]["title"] == "Chat"){
                           Get.toNamed(AppRoutes.messageScreen);
                         }
-                        else if(index == 2){
+                        else if(hubFeatures[index]["title"] == "Application"){
                           Get.toNamed(AppRoutes.applicationScreen);
                         }
-                        else if(index == 3){}
-                        else if(index == 4){
+                        else if(hubFeatures[index]["title"] == "Location"){
+
+                        }
+                        else if(hubFeatures[index]["title"] == "Poll"){
                           Get.toNamed(AppRoutes.pullScreen);
                         }
-                        else if(index == 5){
+                        else if(hubFeatures[index]["title"] == "Member"){
                           Get.toNamed(AppRoutes.memberScreen);
                         }
-                        else if(index == 6){
+                        else if(hubFeatures[index]["title"] == "Invite"){
                           TextEditingController emailCtrl = TextEditingController();
                           showDialog(context: context, builder: (context) {
                           return  AlertDialog(
@@ -124,10 +126,10 @@ class HubHomeScreen extends StatelessWidget {
                           );
                           });
                         }
-                        else if(index == 7){
+                        else if(hubFeatures[index]["title"] == "Payment"){
                           Get.toNamed(AppRoutes.paymentScreen);
                         }
-                        else if(index == 8){
+                        else if(hubFeatures[index]["title"] == "Task"){
                           Get.toNamed(AppRoutes.taskScreen);
                         }
                       },
