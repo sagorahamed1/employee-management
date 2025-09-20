@@ -25,7 +25,6 @@ class AuthController extends GetxController {
       "name": "$name",
       "email": "$email",
       "password": "$password",
-      "confirmPassword": "$password",
       "role": "$role"
     };
 
@@ -37,17 +36,13 @@ class AuthController extends GetxController {
 
     if (response.statusCode == 200 || response.statusCode == 201) {
       Get.toNamed(AppRoutes.optScreen, arguments: {'screenType': 'register'});
-      PrefsHelper.setString(
-          AppConstants.bearerToken, response.body['data']["verificationToken"]);
-      ToastMessageHelper.showToastMessage(
-          "Account create successful.\n \nNow you have a one time code your email");
+      PrefsHelper.setString(AppConstants.bearerToken, response.body['data']["token"]);
+      PrefsHelper.setString(AppConstants.email, email);
+      ToastMessageHelper.showToastMessage("Account create successful.\n \nNow you have a one time code your email");
       signUpLoading(false);
-    } else if (response.statusCode == 1) {
-      signUpLoading(false);
-      ToastMessageHelper.showToastMessage("Server error! \n Please try later");
     } else {
-      ToastMessageHelper.showToastMessage("${response.body["message"]}");
       signUpLoading(false);
+      ToastMessageHelper.showToastMessage("${response.body["message"]}");
     }
   }
 
@@ -64,27 +59,24 @@ class AuthController extends GetxController {
         ApiConstants.verifyEmailEndPoint, jsonEncode(body));
 
     if (response.statusCode == 200 || response.statusCode == 201) {
-      var role = await PrefsHelper.getString(AppConstants.role);
 
-      await PrefsHelper.setString(AppConstants.bearerToken, response.body["data"]["accessToken"]);
+      await PrefsHelper.setString(AppConstants.bearerToken, response.body["data"]["token"]);
 
       if (screenType == 'forgot') {
         Get.toNamed(AppRoutes.resetPasswordScreen);
       } else {
-        if(role == "user"){
-          Get.offAllNamed(AppRoutes.logInScreen);
-        }else{
-          // Get.offAllNamed(AppRoutes.fi);
-        }
+        Get.toNamed(AppRoutes.logInScreen);
 
       }
       verfyLoading(false);
-    } else if (response.statusCode == 1) {
-      verfyLoading(false);
-      // ToastMessageHelper.showToastMessage("Server error! \n Please try later");
+
+      await PrefsHelper.remove(AppConstants.email);
+      await PrefsHelper.remove(AppConstants.bearerToken);
+
     } else {
-      ToastMessageHelper.showToastMessage("${response.body["message"]}");
       verfyLoading(false);
+      ToastMessageHelper.showToastMessage("${response.body["message"]}");
+
     }
   }
 
@@ -100,6 +92,10 @@ class AuthController extends GetxController {
     var body = {
       "email": email,
       "password": password,
+      "location": {
+        "type": "Point",
+        "coordinates": [90.413, 23.456]
+      }
     };
     var response = await ApiClient.postData(
         ApiConstants.signInEndPoint, jsonEncode(body),
@@ -109,34 +105,33 @@ class AuthController extends GetxController {
       var data = response.body['data'];
 
       PrefsHelper.setString(AppConstants.role, data["user"]['role']);
-      PrefsHelper.setString(AppConstants.bearerToken, response.body["data"]['tokens']["accessToken"]);
+      PrefsHelper.setString(AppConstants.bearerToken, response.body['token']);
       PrefsHelper.setString(AppConstants.email, email);
       PrefsHelper.setString(AppConstants.name, data["user"]['name']);
-      PrefsHelper.setString(AppConstants.number, data["user"]['phone']);
       PrefsHelper.setString(AppConstants.userId, data["user"]['_id']);
       PrefsHelper.setBool(AppConstants.isLogged, true);
 
       var role = data["user"]['role'];
       print("=============role ==============? $role");
-      if (role == "provider") {
+      if (role == "freelancer") {
         print("===================user bottom nav bar");
         Get.offAllNamed(AppRoutes.freelancerBottomNavBar);
-      } else if (role == "user") {
+      } else if (role == "neighbor") {
         print("===================user bottom nav bar");
         Get.offAllNamed(AppRoutes.neighborBottomNavBar);
       }
       ToastMessageHelper.showToastMessage('Your are logged in');
 
       logInLoading(false);
-      await PrefsHelper.setString(AppConstants.image, data['user']["profileImage"]);
-      await PrefsHelper.setString(AppConstants.address, data['user']["address"]);
-      PrefsHelper.setString(AppConstants.dateOfBirth, data["user"]['dateOfBirth']);
+      await PrefsHelper.setString(AppConstants.image, data['user']["image"]);
+      // await PrefsHelper.setString(AppConstants.address, data['user']["address"]);
+      // PrefsHelper.setString(AppConstants.dateOfBirth, data["user"]['dateOfBirth']);
 
 
 
-      SocketServices socketService = SocketServices();
-      socketService.disconnect(isManual: true);
-      await socketService.init(userId: data["user"]["_id"]);
+      // SocketServices socketService = SocketServices();
+      // socketService.disconnect(isManual: true);
+      // await socketService.init(userId: data["user"]["_id"]);
 
     } else if (response.statusCode == 1) {
       logInLoading(false);
@@ -180,10 +175,7 @@ class AuthController extends GetxController {
       Get.toNamed(AppRoutes.optScreen,arguments: {'screenType' : 'forgot'});
       PrefsHelper.setString(AppConstants.bearerToken, response.body["data"]["resetPasswordToken"]);
       forgotLoading(false);
-    } else if (response.statusCode == 1) {
-      forgotLoading(false);
-      // ToastMessageHelper.showToastMessage("Server error! \n Please try later");
-    } else {
+    }  else {
       forgotLoading(false);
     }
   }
@@ -220,14 +212,17 @@ class AuthController extends GetxController {
 
   reSendOtp() async {
     resendLoading(true);
+
+    String email = await PrefsHelper.getString(AppConstants.email);
+
     var body = {};
 
     var response = await ApiClient.postData(
-        ApiConstants.resendOtpEndPoint, jsonEncode(body));
+        "${ApiConstants.resendOtpEndPoint}?email=${email}", jsonEncode(body));
 
     if (response.statusCode == 200 || response.statusCode == 201) {
       PrefsHelper.setString(
-          AppConstants.bearerToken, response.body["data"]["verificationToken"]);
+          AppConstants.bearerToken, response.body["data"]["token"]);
       ToastMessageHelper.showToastMessage(
           'You have got an one time code to your email');
       print("======>>> successful");
@@ -261,12 +256,12 @@ class AuthController extends GetxController {
     }
   }
 
-  final RxInt countdown = 60.obs;
+  final RxInt countdown = 90.obs;
   final RxBool isCountingDown = false.obs;
 
   void startCountdown() {
     isCountingDown.value = true;
-    countdown.value = 60;
+    countdown.value = 90;
     update();
     Timer.periodic(const Duration(seconds: 1), (timer) {
       if (countdown.value > 0) {

@@ -1,5 +1,5 @@
 class ErrorResponse {
-  final String? status;
+  final dynamic status;
   final int? statusCode;
   final String? message;
 

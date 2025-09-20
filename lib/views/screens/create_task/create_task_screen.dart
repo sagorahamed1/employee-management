@@ -5,8 +5,10 @@ import 'package:droke/views/widgets/custom_text.dart';
 import 'package:droke/views/widgets/custom_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 
+import '../../../controller/neighbor/neighbor_controller.dart';
 import '../../../global/custom_assets/assets.gen.dart';
 import '../../widgets/custom_button.dart';
 
@@ -19,12 +21,23 @@ class CreateTaskScreen extends StatefulWidget {
 
 class _CreateTaskScreenState extends State<CreateTaskScreen> {
 
+  NeighborController neighborController = Get.find<NeighborController>();
   int _selectedIndex = 0;
   int _selectedIndexFrequency = 0;
+  String frequency = "";
   TextEditingController nameCtrl = TextEditingController();
   TextEditingController titleCtrl = TextEditingController();
   TextEditingController descriptionCtrl = TextEditingController();
   TextEditingController dateCtrl = TextEditingController();
+
+
+  @override
+  void initState() {
+    if(neighborController.services.isEmpty){
+      neighborController.getService();
+    }
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -134,7 +147,7 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
                       boderColor: _selectedIndex == 0
                           ? Colors.transparent
                           : AppColors.textColorSecondary5EAAA8,
-                      title: "Personal Needs",
+                      title: "Contractor",
                       onpress: () {
                         setState(() {
                           _selectedIndex = 0;
@@ -162,7 +175,7 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
                       boderColor: _selectedIndex == 1
                           ? Colors.transparent
                           : AppColors.textColorSecondary5EAAA8,
-                      title: "Contractor Level task",
+                      title: "Traveling",
                       onpress: () {
                         setState(() {
                           _selectedIndex = 1;
@@ -190,8 +203,9 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
                       boderColor: _selectedIndex == 2
                           ? Colors.transparent
                           : AppColors.textColorSecondary5EAAA8,
-                      title: "Travel Related",
+                      title: "Personal Need",
                       onpress: () {
+
                         setState(() {
                           _selectedIndex = 2;
                         });
@@ -203,7 +217,54 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
           
               SizedBox(height: 12.h),
               CustomTextField(controller: nameCtrl, hintText: "Create Hub Name", labelText: "Hub name"),
-              CustomTextField(controller: titleCtrl, hintText: "Enter title", labelText: "Task Title"),
+
+              CustomTextField(
+                controller: titleCtrl,
+                hintText: "Select Task Type",
+                labelText: "Task Type",
+                borderColor: AppColors.textColorSecondary5EAAA8,
+                onTap: () {
+                  isDropDown= !isDropDown;
+                  setState(() {});
+                },
+                readOnly: true,
+                suffixIcon: Icon(Icons.keyboard_arrow_down_rounded),
+              ),
+
+              isDropDown
+                  ? Container(
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius:
+                    BorderRadius.all(Radius.circular(8.r))),
+                height: 200.h,
+                child: ListView.builder(
+                  itemCount: neighborController.services[_selectedIndex].taskList?.length,
+                  itemBuilder: (context, index) {
+                    var dropDownItems = neighborController.services[_selectedIndex].taskList?[index];
+                    return GestureDetector(
+                      onTap: () {
+                        isDropDown = false;
+                        titleCtrl.text = dropDownItems ?? "";
+                        setState(() {});
+                      },
+                      child: Column(
+                        children: [
+                          SizedBox(height: index == 0 ? 8.h : 0),
+                          CustomText(
+                              text: dropDownItems ?? "",
+                              textAlign: TextAlign.center),
+                          Divider()
+                        ],
+                      ),
+                    );
+                  },
+                ),
+              )
+                  : const SizedBox(),
+
+
+
               CustomTextField(controller: descriptionCtrl, hintText: "Write description", labelText: "Task Description"),
           
           
@@ -236,6 +297,7 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
                       onpress: () {
                         setState(() {
                           _selectedIndexFrequency = 0;
+                          frequency = "daily";
                         });
                       },
                     ),
@@ -264,6 +326,7 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
                       onpress: () {
                         setState(() {
                           _selectedIndexFrequency = 1;
+                          frequency = "weekly";
                         });
                       },
                     ),
@@ -292,6 +355,7 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
                       onpress: () {
                         setState(() {
                           _selectedIndexFrequency = 2;
+                          frequency = "monthly";
                         });
                       },
                     ),
@@ -299,37 +363,6 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
                 ],
               ),
           
-          
-              CustomText(text: "Frequency of the task", fontSize: 16.h, color: Colors.black, top: 16.h, bottom: 12.h),
-              CustomButton(
-                color: AppColors.textColorSecondary5EAAA8,
-                  boderColor: AppColors.textColorSecondary5EAAA8,
-                  height: 40.h,
-                  title: "Use my current location", onpress: (){}),
-
-
-              SizedBox(height: 16.h),
-
-              CustomTextField(
-                readOnly: true,
-                  onTap: () async{
-
-
-                    DateTime? pickedDate = await showDatePicker(
-                      context: context,
-                      initialDate: DateTime.now(),
-                      firstDate: DateTime.now(),
-                      lastDate: DateTime(2100),
-                    );
-
-                    if (pickedDate != null) {
-                      String formattedDate = "${pickedDate.year}-${pickedDate.month.toString().padLeft(2, '0')}-${pickedDate.day.toString().padLeft(2, '0')}";
-                      dateCtrl.text = formattedDate;
-                    }
-
-
-                  },
-                  controller: dateCtrl, hintText: "Select Date", labelText: "Schedule"),
 
 
               SizedBox(height: 40.h),
@@ -337,7 +370,18 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
 
               Padding(
                 padding:  EdgeInsets.symmetric(horizontal: 50.w),
-                child: CustomButton(title: "Create Task", onpress: (){}),
+                child: CustomButton(title: "Create Task", onpress: (){
+
+                  var hubInfo = {
+                    "longitude" : "90.4139501156808",
+                    "latitude" : "23.790934543802027",
+                    "hubName" : "${nameCtrl.text}",
+                    "frequency" : "${frequency}",
+                    "taskTitle" : "${titleCtrl.text}"
+                  };
+
+
+                }),
               ),
 
               SizedBox(height: 100.h),
@@ -353,7 +397,7 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
     );
   }
 
-
+  bool isDropDown = false;
   final ImagePicker _picker = ImagePicker();
 
   List<File> _images = [];

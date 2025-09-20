@@ -1,9 +1,11 @@
 import 'package:droke/core/config/app_route.dart';
+import 'package:droke/helper/toast_message_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 
+import '../../../../controller/auth_controller.dart';
 import '../../../../core/app_constants/app_colors.dart';
 import '../../../widgets/custom_button.dart';
 import '../../../widgets/custom_text.dart';
@@ -13,9 +15,12 @@ class OptScreen extends StatelessWidget {
   OptScreen({super.key});
 
   final TextEditingController pinCtrl = TextEditingController();
+  final GlobalKey<FormState> globalKey = GlobalKey<FormState>();
+  AuthController authController = Get.find<AuthController>();
 
   @override
   Widget build(BuildContext context) {
+    var data = Get.arguments;
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(
@@ -87,17 +92,42 @@ class OptScreen extends StatelessWidget {
 
 
 
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      CustomText(text: "Didn't get the code?"),
-                      CustomText(text: "Resend", color: Colors.red)
-                    ],
+                  Obx(() =>
+                     Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        CustomText(text: authController.isCountingDown.value
+                            ? "${authController.countdown.value}" : "Didn't get the code?",
+                          color: authController.isCountingDown.value ? Colors.red : Colors.black,
+                        ),
+                        GestureDetector(
+                            onTap: () {
+                              if(authController.isCountingDown.value){
+                                ToastMessageHelper.showToastMessage("Already send an otp code to your email");
+                              }else{
+                                authController.reSendOtp();
+                              }
+                            },
+                            child: CustomText(text: "Resend", color: Colors.red))
+                      ],
+                    ),
                   ),
                   Spacer(),
-                  CustomButton(title: "VERIFY", onpress: () {
-                    Get.toNamed(AppRoutes.resetPasswordScreen);
-                  }),
+                  Obx(() =>
+                     CustomButton(
+                        loading: authController.verfyLoading.value,
+                        title: "VERIFY", onpress: () {
+
+                          if(data["screenType"] == "forgot"){
+                            authController.verfyEmail(pinCtrl.text, screenType: "forgot");
+                          }else{
+                            authController.verfyEmail(pinCtrl.text, screenType: "signup");
+                          }
+
+
+
+                    }),
+                  ),
                   SizedBox(height: 160.h),
                 ],
               ),

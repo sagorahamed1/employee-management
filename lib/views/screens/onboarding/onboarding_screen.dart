@@ -52,67 +52,69 @@ class OnboardingScreen extends StatelessWidget {
 
 
     return Scaffold(
-      body: Padding(
-        padding: EdgeInsets.only(top: 80.h),
-        child: Column(
-          children: [
-
-            Assets.images.logo.image(),
-
-
-
-            SizedBox(height: 95.h),
-
-
-            // TODO: <<<==========Slider Section=========>>>
-
-            Expanded(
-              child: IntroductionScreen(
-                pages: pages,
-                onDone: () {
-
-                  // TODO: Handle when onboarding is done
-
-                  Get.offAllNamed(AppRoutes.roleScreen);
-
-                },
-                onSkip: () {
-                  // TODO: Handle skip
-                },
-                showSkipButton: true,
-                next: Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(18.r),
-                      border: Border.all(color: AppColors.primaryColor, width: 0.8)
-                    ),
-                    child: Padding(
-                      padding:  EdgeInsets.symmetric(horizontal: 16.w, vertical: 6.h),
-                      child: CustomText(text: "Skip"),
-                    )),
-                skip: Icon(Icons.arrow_forward, color: Colors.transparent),
-
-                done: Container(
-                    decoration: BoxDecoration(
+      body: SafeArea(
+        child: Padding(
+          padding: EdgeInsets.only(top: 80.h),
+          child: Column(
+            children: [
+        
+              Assets.images.logo.image(),
+        
+        
+        
+              SizedBox(height: 95.h),
+        
+        
+              // TODO: <<<==========Slider Section=========>>>
+        
+              Expanded(
+                child: IntroductionScreen(
+                  pages: pages,
+                  onDone: () {
+        
+                    // TODO: Handle when onboarding is done
+        
+                    Get.offAllNamed(AppRoutes.roleScreen);
+        
+                  },
+                  onSkip: () {
+                    // TODO: Handle skip
+                  },
+                  showSkipButton: true,
+                  next: Container(
+                      decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(18.r),
                         border: Border.all(color: AppColors.primaryColor, width: 0.8)
+                      ),
+                      child: Padding(
+                        padding:  EdgeInsets.symmetric(horizontal: 16.w, vertical: 6.h),
+                        child: CustomText(text: "Skip"),
+                      )),
+                  skip: Icon(Icons.arrow_forward, color: Colors.transparent),
+        
+                  done: Container(
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(18.r),
+                          border: Border.all(color: AppColors.primaryColor, width: 0.8)
+                      ),
+                      child: Padding(
+                    padding:  EdgeInsets.symmetric(horizontal: 16.w, vertical: 6.h),
+                    child: CustomText(text: "Done"),
+                  )),
+                  dotsDecorator: DotsDecorator(
+                    size: Size.square(10.0),
+                    activeSize: Size(20.0, 10.0),
+                    activeColor: Theme.of(context).primaryColor,
+                    color: Colors.red.withOpacity(0.5),
+                    spacing: EdgeInsets.symmetric(horizontal: 3.0),
+                    activeShape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(25.0),
                     ),
-                    child: Padding(
-                  padding:  EdgeInsets.symmetric(horizontal: 16.w, vertical: 6.h),
-                  child: CustomText(text: "Done"),
-                )),
-                dotsDecorator: DotsDecorator(
-                  size: Size.square(10.0),
-                  activeSize: Size(20.0, 10.0),
-                  activeColor: Theme.of(context).primaryColor,
-                  color: Colors.red.withOpacity(0.5),
-                  spacing: EdgeInsets.symmetric(horizontal: 3.0),
-                  activeShape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(25.0),
                   ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

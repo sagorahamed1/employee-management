@@ -1,6 +1,8 @@
+import 'package:droke/controller/profile_controller.dart';
 import 'package:droke/core/app_constants/app_colors.dart';
 import 'package:droke/core/config/app_route.dart';
 import 'package:droke/global/custom_assets/assets.gen.dart';
+import 'package:droke/services/api_constants.dart';
 import 'package:droke/views/widgets/custom_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -9,8 +11,23 @@ import 'package:get/get.dart';
 import '../../widgets/cachanetwork_image.dart';
 import '../../widgets/custom_button.dart';
 
-class ProfileScreen extends StatelessWidget {
+class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
+
+  @override
+  State<ProfileScreen> createState() => _ProfileScreenState();
+}
+
+class _ProfileScreenState extends State<ProfileScreen> {
+
+  ProfileController profileController = Get.put(ProfileController());
+
+  @override
+  void initState() {
+    profileController.getUserLocalData();
+    super.initState();
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -32,21 +49,23 @@ class ProfileScreen extends StatelessWidget {
                 SizedBox(height: 65.h),
 
 
-                ClipRRect(
-                    borderRadius: BorderRadius.circular(12.r),
-                    child: CustomNetworkImage(
-                      height: 100.h,
-                      width: 100.w,
-                      boxShape: BoxShape.circle,
-                      imageUrl: "https://randomuser.me/api/portraits/men/10.jpg",
-                      border: Border.all(color: Colors.grey, width: 0.02),
-                    )),
+                Obx(() =>
+                   ClipRRect(
+                      borderRadius: BorderRadius.circular(12.r),
+                      child: CustomNetworkImage(
+                        height: 100.h,
+                        width: 100.w,
+                        boxShape: BoxShape.circle,
+                        imageUrl: "${ApiConstants.imageBaseUrl}${profileController.image.value}",
+                        border: Border.all(color: Colors.grey, width: 0.02),
+                      )),
+                ),
 
 
-                CustomText(text: "Alexendra", fontSize: 22.h, color: AppColors.textColorSecondary5EAAA8, top: 8.h),
+                Obx(() => CustomText(text: "${profileController.name.value}", fontSize: 22.h, color: AppColors.textColorSecondary5EAAA8, top: 8.h)),
 
-                CustomText(text: "Alexendra@gmail.com", fontSize: 10.h, top: 6.h),
-                CustomText(text: "01452145641", fontSize: 10.h, bottom: 16.h),
+                Obx(() => CustomText(text: "${profileController.email.value}", fontSize: 10.h, top: 6.h)),
+                Obx(() => CustomText(text: "${profileController.phone.value}", fontSize: 10.h, bottom: 16.h)),
 
 
               ],
@@ -74,7 +93,15 @@ class ProfileScreen extends StatelessWidget {
 
                   GestureDetector(
                     onTap: (){
-                      Get.toNamed(AppRoutes.profileInformationScreen);
+                      Get.toNamed(AppRoutes.profileInformationScreen, arguments: {
+                        "name" : profileController.name.value,
+                        "image" : profileController.image.value,
+                         "email" : profileController.email.value,
+                        "phone" : profileController.phone.value,
+                        "address" : profileController.address.value
+                      })?.then((_){
+                        profileController.getUserLocalData();
+                      });
                     },
                     child: Row(
                       children: [
