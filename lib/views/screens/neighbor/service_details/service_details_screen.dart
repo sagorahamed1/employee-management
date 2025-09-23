@@ -411,7 +411,7 @@ class _ServiceDetailsScreenState extends State<ServiceDetailsScreen> {
 
 
 
-                                  neighborController.hubCreate(serviceId: data["id"], body: hubInfo, image: selectedImage);
+                                  neighborController.hubCreate(context: context,serviceId: data["id"], body: hubInfo, image: selectedImage);
 
 
 

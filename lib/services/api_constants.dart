@@ -23,6 +23,7 @@ class ApiConstants{
   static const String hubAdd = "/hubs/add";
   static const String joinHub = "/hubs/join-request";
   static const String notification = "/notification";
+  static const String myHubs = "/hubs/neighbor-hubs";
   static const String hub = "/hubs/hub-view-near?latitude=23.790934543802027&longitude=90.4139501156808";
 
 

@@ -1,8 +1,5 @@
-import 'package:awesome_bottom_bar/awesome_bottom_bar.dart';
 import 'package:droke/core/app_constants/app_colors.dart';
 import 'package:droke/global/custom_assets/assets.gen.dart';
-import 'package:droke/views/screens/neighbor/hub/schedule_screen.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../create_task/create_task_screen.dart';
@@ -12,26 +9,34 @@ import '../neighbor_home/neighbor_home_screen.dart';
 
 
 class NeighborBottomNavBar extends StatefulWidget {
-  const NeighborBottomNavBar({super.key});
+
+  final int? selectedIndex;
+  const NeighborBottomNavBar({super.key, this.selectedIndex});
 
   @override
   State<NeighborBottomNavBar> createState() => _NeighborBottomNavBarState();
 }
 
 class _NeighborBottomNavBarState extends State<NeighborBottomNavBar> {
- static int _selectedIndex = 0;
+  int _selectedIndex = 0;
+
+ @override
+  void initState() {
+    _selectedIndex = widget.selectedIndex ?? 0;
+    super.initState();
+  }
 
    List<Widget> _screens = [
     NeighborHomeScreen(),
     HubScreen(),
     CreateTaskScreen(),
-    ScheduleScreen(),
+    // ScheduleScreen(),
     ProfileScreen(),
   ];
 
   void _onItemTapped(int index) {
     setState(() {
-      _selectedIndex = index;
+      _selectedIndex= index;
     });
   }
 
@@ -60,14 +65,14 @@ class _NeighborBottomNavBarState extends State<NeighborBottomNavBar> {
            : Assets.icons.createButtomNa.svg(width: 24, color: Colors.grey),
        label: 'Create',
      ),
+     // BottomNavigationBarItem(
+     //   icon: widget.selectedIndex == 3
+     //       ? Assets.icons.scheduleSelected.svg(width: 24)
+     //       : Assets.icons.scheduleIconsHome.svg(width: 24),
+     //   label: 'Schedule',
+     // ),
      BottomNavigationBarItem(
        icon: _selectedIndex == 3
-           ? Assets.icons.scheduleSelected.svg(width: 24)
-           : Assets.icons.scheduleIconsHome.svg(width: 24),
-       label: 'Schedule',
-     ),
-     BottomNavigationBarItem(
-       icon: _selectedIndex == 4
            ? Assets.icons.profileSelected.svg(width: 24)
            : Assets.icons.profile.svg(width: 24),
        label: 'Profile',

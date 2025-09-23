@@ -29,6 +29,7 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
   TextEditingController titleCtrl = TextEditingController();
   TextEditingController descriptionCtrl = TextEditingController();
   TextEditingController dateCtrl = TextEditingController();
+  TextEditingController serviceId = TextEditingController();
 
 
   @override
@@ -242,6 +243,7 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
                   itemCount: neighborController.services[_selectedIndex].taskList?.length,
                   itemBuilder: (context, index) {
                     var dropDownItems = neighborController.services[_selectedIndex].taskList?[index];
+                   serviceId.text = neighborController.services[_selectedIndex].id.toString();
                     return GestureDetector(
                       onTap: () {
                         isDropDown = false;
@@ -264,10 +266,10 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
                   : const SizedBox(),
 
 
-
-              CustomTextField(controller: descriptionCtrl, hintText: "Write description", labelText: "Task Description"),
-          
-          
+              //
+              // CustomTextField(controller: descriptionCtrl, hintText: "Write description", labelText: "Task Description"),
+              //
+              //
           
           
               CustomText(text: "Frequency of the task", fontSize: 16.h, color: Colors.black),
@@ -380,6 +382,8 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
                     "taskTitle" : "${titleCtrl.text}"
                   };
 
+                  neighborController.hubCreate(context: context,serviceId: "${serviceId.text}", body: hubInfo, image: _images.first);
+
 
                 }),
               ),
@@ -405,12 +409,11 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
   int _currentIndex = 0;
 
   Future<void> _pickImages() async {
-    final List<XFile>? picked = await _picker.pickMultiImage();
+    final XFile? picked = await _picker.pickImage(source: ImageSource.gallery);
     if (picked != null) {
-      final newImages = picked.map((x) => File(x.path)).toList();
+      final newImages = File(picked.path);
       setState(() {
-        final remaining = 5 - _images.length;
-        _images.addAll(newImages.take(remaining));
+        _images.add(newImages);
         _currentIndex = _images.length - 1;
       });
     }

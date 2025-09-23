@@ -1,13 +1,19 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:droke/core/config/app_route.dart';
+import 'package:droke/helper/toast_message_helper.dart';
+import 'package:droke/models/my_hub_model.dart';
 import 'package:droke/models/service_details_model.dart';
 import 'package:droke/models/service_model.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../models/hub_model.dart';
 import '../../services/api_client.dart';
 import '../../services/api_constants.dart';
+import '../../views/screens/neighbor/neighbor_bottom_nav_bar/neighbor_bottom_nav_bar.dart';
 
 class NeighborController extends GetxController {
   RxBool serviceLoading = false.obs;
@@ -28,6 +34,7 @@ class NeighborController extends GetxController {
     }
   }
 
+
   RxBool serviceDetailsLoading = false.obs;
   Rx<ServiceDetailsModel> serviceDetails = ServiceDetailsModel().obs;
 
@@ -40,8 +47,8 @@ class NeighborController extends GetxController {
     print("============res : ${response.body} resCode: ${response.statusCode}");
 
     if (response.statusCode == 200 || response.statusCode == 201) {
-      serviceDetails.value =
-          ServiceDetailsModel.fromJson(response.body["data"]);
+
+      serviceDetails.value = ServiceDetailsModel.fromJson(response.body["data"]);
 
       update();
       serviceDetailsLoading(false);
@@ -53,7 +60,7 @@ class NeighborController extends GetxController {
   ///===============Hub Create================<>
   RxBool hubCreateLoading = false.obs;
 
-  hubCreate({var body, required String serviceId, File? image}) async {
+  hubCreate({var body, required String serviceId, File? image,required BuildContext context}) async {
     hubCreateLoading(true);
 
     List<MultipartBody> files = [MultipartBody("hubImage", image!)];
@@ -62,11 +69,16 @@ class NeighborController extends GetxController {
         "${ApiConstants.hubAdd}/$serviceId", body,
         multipartBody: files);
 
-    print(
-        "==================${response.body} \n response : ${response.statusCode}");
+    print("==================${response.body} \n response : ${response.statusCode}");
     if (response.statusCode == 200 || response.statusCode == 201) {
-      Get.back();
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const NeighborBottomNavBar(selectedIndex: 1),
+        ),
+      );
 
+      ToastMessageHelper.showToastMessage(response.body["message"]);
       hubCreateLoading(false);
     } else {
       hubCreateLoading(false);
@@ -79,19 +91,12 @@ class NeighborController extends GetxController {
 
 
   joinRequest({required String serviceId}) async {
-
     var response = await ApiClient.patch(
         "${ApiConstants.joinHub}/${serviceId??""}", jsonEncode({}));
-
     if (response.statusCode == 200 || response.statusCode == 201) {
-
       final hub = hubs.firstWhere((x) => x.id == serviceId);
       hub.isJoined = true;
-
       update();
-
-    } else {
-
     }
   }
 
@@ -112,6 +117,8 @@ class NeighborController extends GetxController {
 
       if(screenType == "hubHome"){
         getHubs();
+      }else if(screenType == "myHub"){
+        getMyHubs();
       }
 
       print("**********************print here");
@@ -127,6 +134,7 @@ class NeighborController extends GetxController {
 
   getHubs({String? search}) async {
     if (page.value == 1) {
+      hubs.value = [];
       getHubsLoading(true);
     }
     var response = await ApiClient.getData(
@@ -142,4 +150,34 @@ class NeighborController extends GetxController {
       getHubsLoading(false);
     }
   }
+
+
+
+
+
+  RxBool myHubLoading = false.obs;
+  RxList<MyHubModel> myHubs = <MyHubModel>[].obs;
+
+  getMyHubs({String? search}) async {
+    if (page.value == 1) {
+      myHubs.value = [];
+      myHubLoading(true);
+    }
+    var response = await ApiClient.getData(
+        '${ApiConstants.myHubs}?page=${page.value ?? ""}&searchQ=${search??""}&limit=10');
+    if (response.statusCode == 200) {
+      totalPage = jsonDecode(response.body['pagination']['totalPages'].toString()) ?? 0;
+      totalResult = jsonDecode(response.body['pagination']['totalCount'].toString()) ?? 0;
+      var data = List<MyHubModel>.from(response.body["data"].map((x) => MyHubModel.fromJson(x)));
+      myHubs.addAll(data);
+      update();
+      myHubLoading(false);
+    } else {
+      myHubLoading(false);
+    }
+  }
+
+
+
+
 }

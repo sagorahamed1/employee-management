@@ -70,15 +70,10 @@ class _NotificationScreenState extends State<NotificationScreen> {
                           )
                         : ListView.builder(
                             controller: _scrollController,
-                            itemCount:
-                                notificationsController.notifications.length +
-                                    1,
+                            itemCount: notificationsController.notifications.length + 1,
                             itemBuilder: (context, index) {
-                              if (index <
-                                  notificationsController
-                                      .notifications.length) {
-                                var notification = notificationsController
-                                    .notifications[index];
+                              if (index < notificationsController.notifications.length) {
+                                var notification = notificationsController.notifications[index];
                                 return Padding(
                                   padding: EdgeInsets.only(bottom: 12.h),
                                   child: Container(
@@ -125,8 +120,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                                     ),
                                   ),
                                 );
-                              } else if (index >=
-                                  notificationsController.totalResult) {
+                              } else if (index >= notificationsController.totalResult) {
                                 return null;
                               } else {
                                 return const CircularProgressIndicator();

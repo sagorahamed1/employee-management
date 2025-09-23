@@ -14,15 +14,15 @@ class HubHomeScreen extends StatelessWidget {
   HubHomeScreen({super.key});
 
   List hubFeatures = [
-    {"icon": Assets.icons.scheduleSelected.svg(height: 40.h), "title": "Schedule"},
+    // {"icon": Assets.icons.scheduleSelected.svg(height: 40.h), "title": "Schedule"},
     {"icon": Assets.icons.chatIcons.svg(), "title": "Chat"},
    if(Get.arguments["role"] != "freelancer") {"icon": Assets.icons.messageApplicationIcon.svg(), "title": "Application"},
-    {"icon": Assets.icons.locationIcon.svg(), "title": "Location"},
+    // {"icon": Assets.icons.locationIcon.svg(), "title": "Location"},
     if(Get.arguments["role"] != "freelancer") {"icon": Assets.icons.pollIcon.svg(), "title": "Poll"},
     {"icon": Assets.icons.memberIcon.svg(), "title": "Member"},
     if(Get.arguments["role"] != "freelancer") {"icon": Assets.icons.inviteMemberIcon.svg(), "title": "Invite"},
     {"icon": Assets.icons.paymentCardIcon.svg(), "title": "Payment"},
-    if(Get.arguments["role"] != "freelancer") {"icon": Assets.icons.taskIcon.svg(), "title": "Task"},
+    // if(Get.arguments["role"] != "freelancer") {"icon": Assets.icons.taskIcon.svg(), "title": "Task"},
   ];
 
   @override

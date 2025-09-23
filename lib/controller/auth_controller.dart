@@ -105,7 +105,7 @@ class AuthController extends GetxController {
       var data = response.body['data'];
 
       PrefsHelper.setString(AppConstants.role, data["user"]['role']);
-      PrefsHelper.setString(AppConstants.bearerToken, response.body['token']);
+      PrefsHelper.setString(AppConstants.bearerToken, response.body["data"]['token']);
       PrefsHelper.setString(AppConstants.email, email);
       PrefsHelper.setString(AppConstants.name, data["user"]['name']);
       PrefsHelper.setString(AppConstants.userId, data["user"]['_id']);
