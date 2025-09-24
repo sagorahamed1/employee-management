@@ -170,7 +170,10 @@ class _HubScreenState extends State<HubScreen> {
                           onTap: () {
 
                             Get.toNamed(AppRoutes.hubHomeScreen, arguments: {
-                              "role" : "neighbor"
+                              "role" : "neighbor",
+                              "hubId" : hub.id,
+                              "image" : "${ApiConstants.imageBaseUrl}${hub.image}",
+                              "name" : "${hub.hubName}"
                             });
 
 

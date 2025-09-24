@@ -1,3 +1,5 @@
+import 'package:droke/core/app_constants/app_constants.dart';
+import 'package:droke/helper/prefs_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -118,7 +120,9 @@ class SettingScreen extends StatelessWidget {
                               child: CustomButton(
                                   height: 50.h,
                                   title: "Cancel",
-                                  onpress: () {},
+                                  onpress: () {
+                                    Get.back();
+                                  },
                                   color: Colors.transparent,
                                   fontSize: 11.h,
                                   loaderIgnore: true,
@@ -133,8 +137,19 @@ class SettingScreen extends StatelessWidget {
                                   loaderIgnore: true,
                                   height: 50.h,
                                   title: "Yes, Delete",
-                                  onpress: () {
-                                    Get.back();
+                                  onpress: () async{
+                                    await PrefsHelper.remove(AppConstants.name);
+                                    await PrefsHelper.remove(AppConstants.email);
+                                    await PrefsHelper.remove(AppConstants.image);
+                                    await PrefsHelper.remove(AppConstants.address);
+                                    await PrefsHelper.remove(AppConstants.number);
+                                    await PrefsHelper.remove(AppConstants.bearerToken);
+                                    await PrefsHelper.remove(AppConstants.isLogged);
+                                    await PrefsHelper.remove(AppConstants.rating);
+                                    await PrefsHelper.remove(AppConstants.userId);
+                                    await PrefsHelper.remove(AppConstants.role);
+                                    await PrefsHelper.remove(AppConstants.dateOfBirth);
+                                   Get.offAllNamed(AppRoutes.roleScreen);
                                   },
                                   fontSize: 11.h),
                             ),

@@ -238,7 +238,7 @@ class AuthController extends GetxController {
 
   changePassword(String oldPassword, newPassword) async {
     changePasswordLoading(true);
-    var body = {"currentPassword": "$oldPassword", "password": "$newPassword", "confirmPassword": "$newPassword"};
+    var body = {"oldPassword": "$oldPassword", "newPassword": "$newPassword", "confirmPassword": "$newPassword"};
 
     var response = await ApiClient.postData(ApiConstants.changePassword, jsonEncode(body));
 

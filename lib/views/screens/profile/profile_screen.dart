@@ -8,6 +8,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
+import '../../../core/app_constants/app_constants.dart';
+import '../../../helper/prefs_helper.dart';
 import '../../widgets/cachanetwork_image.dart';
 import '../../widgets/custom_button.dart';
 
@@ -225,8 +227,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     loaderIgnore: true,
                                     height: 50.h,
                                     title: "Yes, Logout",
-                                    onpress: () {
-                                      Get.back();
+                                    onpress: () async{
+                                      await PrefsHelper.remove(AppConstants.name);
+                                      await PrefsHelper.remove(AppConstants.email);
+                                      await PrefsHelper.remove(AppConstants.image);
+                                      await PrefsHelper.remove(AppConstants.address);
+                                      await PrefsHelper.remove(AppConstants.number);
+                                      await PrefsHelper.remove(AppConstants.bearerToken);
+                                      await PrefsHelper.remove(AppConstants.isLogged);
+                                      await PrefsHelper.remove(AppConstants.rating);
+                                      await PrefsHelper.remove(AppConstants.userId);
+                                      await PrefsHelper.remove(AppConstants.role);
+                                      await PrefsHelper.remove(AppConstants.dateOfBirth);
+                                      Get.offAllNamed(AppRoutes.roleScreen);
                                     },
                                     fontSize: 11.h),
                               ),

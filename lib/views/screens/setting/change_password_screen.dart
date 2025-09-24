@@ -1,3 +1,4 @@
+import 'package:droke/controller/auth_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -10,6 +11,10 @@ import '../../widgets/custom_text_field.dart';
 class ChangePasswordScreen extends StatelessWidget {
   ChangePasswordScreen({super.key});
 
+  AuthController authController = Get.find<AuthController>();
+
+  final GlobalKey<FormState> globalKey = GlobalKey<FormState>();
+
   TextEditingController currentPassCtrl = TextEditingController();
   TextEditingController newPassCtrl = TextEditingController();
   TextEditingController rePassCtrl = TextEditingController();
@@ -21,101 +26,128 @@ class ChangePasswordScreen extends StatelessWidget {
       appBar: AppBar(title: CustomText(text: "Profile Information", fontSize: 22.h, color: AppColors.textColorSecondary5EAAA8)),
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 24.w),
-        child: Column(
-          children: [
-            SizedBox(height: 16.h),
-            CustomTextField(
-                controller: currentPassCtrl,
-                labelText: "Current Password",
-                hintText: "Enter old password",
-                isPassword: true,
-                contentPaddingVertical: 14.h,
-                borderColor: Color(0xff592B00),
-                hintextColor: Colors.black,
-                filColor: Colors.white),
-            CustomTextField(
-                controller: newPassCtrl,
-                labelText: "New Password",
-                hintText: "Enter new password",
-                isPassword: true,
-                contentPaddingVertical: 14.h,
-                borderColor: Color(0xff592B00),
-                hintextColor: Colors.black,
-                filColor: Colors.white),
-            CustomTextField(
-                controller: rePassCtrl,
-                labelText: "Password",
-                hintText: "Re-enter new password",
-                isPassword: true,
-                contentPaddingVertical: 14.h,
-                borderColor: Color(0xff592B00),
-                hintextColor: Colors.black,
-                filColor: Colors.white),
-            Align(
-                alignment: Alignment.centerRight,
-                child: CustomText(text: "Forget Password")),
-            Spacer(),
-            CustomButton(
-                title: "Update Password",
-                onpress: () {
-                  showDialog(
-                    context: context,
-                    builder: (context) {
-                      return AlertDialog(
-                        content: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            CustomText(
-                                text: "Update password",
-                                fontSize: 16.h,
-                                fontWeight: FontWeight.w600,
-                                top: 20.h,
-                                bottom: 12.h,
-                                color: Color(0xff592B00)),
-                            Divider(),
-                            SizedBox(height: 12.h),
-                            CustomText(
-                              maxline: 2,
-                              bottom: 20.h,
-                              text: "Do you want to sure change your password?",
-                            ),
-                            Row(
+        child: Form(
+          key: globalKey,
+          child: Column(
+            children: [
+              SizedBox(height: 16.h),
+              CustomTextField(
+                  controller: currentPassCtrl,
+                  labelText: "Current Password",
+                  hintText: "Enter old password",
+                  isPassword: true,
+                  contentPaddingVertical: 14.h,
+                  borderColor: Color(0xff592B00),
+                  hintextColor: Colors.black,
+                  filColor: Colors.white),
+              CustomTextField(
+                  controller: newPassCtrl,
+                  labelText: "New Password",
+                  hintText: "Enter new password",
+                  isPassword: true,
+                  contentPaddingVertical: 14.h,
+                  borderColor: Color(0xff592B00),
+                  hintextColor: Colors.black,
+                  filColor: Colors.white),
+              CustomTextField(
+                  controller: rePassCtrl,
+                  labelText: "Password",
+                  hintText: "Re-enter new password",
+                  isPassword: true,
+                  contentPaddingVertical: 14.h,
+                  borderColor: Color(0xff592B00),
+                  hintextColor: Colors.black,
+                  filColor: Colors.white,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Confirm password is required';
+                  } else if (value != newPassCtrl.text) {
+                    return 'Passwords do not match';
+                  }
+                  return null;
+                },
+
+
+              ),
+              Align(
+                  alignment: Alignment.centerRight,
+                  child: CustomText(text: "Forget Password")),
+              Spacer(),
+              CustomButton(
+                  title: "Update Password",
+                  onpress: () {
+
+                    if(globalKey.currentState!.validate()){
+
+                      showDialog(
+                        context: context,
+                        builder: (context) {
+                          return AlertDialog(
+                            content: Column(
+                              mainAxisSize: MainAxisSize.min,
                               children: [
-                                Expanded(
-                                  flex: 1,
-                                  child: CustomButton(
-                                      height: 50.h,
-                                      title: "Cancel",
-                                      onpress: () {},
-                                      color: Colors.transparent,
-                                      fontSize: 11.h,
-                                      loaderIgnore: true,
-                                      boderColor: Colors.black,
-                                      titlecolor: Colors.black),
+                                CustomText(
+                                    text: "Update password",
+                                    fontSize: 16.h,
+                                    fontWeight: FontWeight.w600,
+                                    top: 20.h,
+                                    bottom: 12.h,
+                                    color: Color(0xff592B00)),
+                                Divider(),
+                                SizedBox(height: 12.h),
+                                CustomText(
+                                  maxline: 2,
+                                  bottom: 20.h,
+                                  text: "Do you want to sure change your password?",
                                 ),
-                                SizedBox(width: 8.w),
-                                Expanded(
-                                  flex: 1,
-                                  child: CustomButton(
-                                      loading: false,
-                                      loaderIgnore: true,
-                                      height: 50.h,
-                                      title: "Yes",
-                                      onpress: () {
-                                        Get.back();
-                                      },
-                                      fontSize: 11.h),
-                                ),
+                                Row(
+                                  children: [
+                                    Expanded(
+                                      flex: 1,
+                                      child: CustomButton(
+                                          height: 50.h,
+                                          title: "Cancel",
+                                          onpress: () {
+                                            Get.back();
+                                          },
+                                          color: Colors.transparent,
+                                          fontSize: 11.h,
+                                          loaderIgnore: true,
+                                          boderColor: Colors.black,
+                                          titlecolor: Colors.black),
+                                    ),
+                                    SizedBox(width: 8.w),
+                                    Expanded(
+                                      flex: 1,
+                                      child: Obx(() =>
+                                         CustomButton(
+                                            loading: authController.changePasswordLoading.value,
+                                            loaderIgnore: true,
+                                            height: 50.h,
+                                            title: "Yes",
+                                            onpress: () {
+
+                                              authController.changePassword(currentPassCtrl.text, newPassCtrl.text);
+
+                                            },
+                                            fontSize: 11.h),
+                                      ),
+                                    ),
+                                  ],
+                                )
                               ],
-                            )
-                          ],
-                        ),
+                            ),
+                          );
+                        },
                       );
-                    },
-                  );
-                }),
-            SizedBox(height: 80.h)
-          ],
+
+                    }
+
+
+                  }),
+              SizedBox(height: 80.h)
+            ],
+          ),
         ),
       ),
     );

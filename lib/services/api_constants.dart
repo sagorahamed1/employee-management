@@ -20,6 +20,7 @@ class ApiConstants{
 
   static const String services = "/services";
   static const String servicesDetails = "/services/details";
+  static const String deshBoard = "/hubs/dashboard-neighbor";
   static const String hubAdd = "/hubs/add";
   static const String joinHub = "/hubs/join-request";
   static const String notification = "/notification";

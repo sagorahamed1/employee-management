@@ -10,6 +10,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../models/deshboard_model.dart';
 import '../../models/hub_model.dart';
 import '../../services/api_client.dart';
 import '../../services/api_constants.dart';
@@ -40,22 +41,39 @@ class NeighborController extends GetxController {
 
   getServiceDetails({required String serviceId}) async {
     serviceDetailsLoading(true);
-
-    var response =
-        await ApiClient.getData('${ApiConstants.servicesDetails}/${serviceId}');
-
-    print("============res : ${response.body} resCode: ${response.statusCode}");
+    var response = await ApiClient.getData('${ApiConstants.servicesDetails}/${serviceId}');
 
     if (response.statusCode == 200 || response.statusCode == 201) {
-
       serviceDetails.value = ServiceDetailsModel.fromJson(response.body["data"]);
-
       update();
       serviceDetailsLoading(false);
     } else {
       serviceDetailsLoading(false);
     }
   }
+
+
+
+
+  RxBool dashBoardLoading = false.obs;
+  Rx<DeshBoardModel> dashBoard = DeshBoardModel().obs;
+
+  getDeshBoard({required String hubId}) async {
+    dashBoardLoading(true);
+    var response = await ApiClient.getData('${ApiConstants.deshBoard}/${hubId}');
+
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      dashBoard.value = DeshBoardModel.fromJson(response.body["data"]);
+      update();
+      dashBoardLoading(false);
+    } else {
+      dashBoardLoading(false);
+    }
+  }
+
+
+
+
 
   ///===============Hub Create================<>
   RxBool hubCreateLoading = false.obs;
@@ -168,7 +186,7 @@ class NeighborController extends GetxController {
     if (response.statusCode == 200) {
       totalPage = jsonDecode(response.body['pagination']['totalPages'].toString()) ?? 0;
       totalResult = jsonDecode(response.body['pagination']['totalCount'].toString()) ?? 0;
-      var data = List<MyHubModel>.from(response.body["data"].map((x) => MyHubModel.fromJson(x)));
+      var data = List<MyHubModel>.from(response.body["data"]["hubs"].map((x) => MyHubModel.fromJson(x)));
       myHubs.addAll(data);
       update();
       myHubLoading(false);
