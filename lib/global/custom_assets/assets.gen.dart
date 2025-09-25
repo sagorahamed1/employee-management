@@ -23,6 +23,10 @@ class $AssetsIconsGen {
   SvgGenImage get aboutUsIcon =>
       const SvgGenImage('assets/icons/aboutUsIcon.svg');
 
+  /// File path: assets/icons/acceptIcon.svg
+  SvgGenImage get acceptIcon =>
+      const SvgGenImage('assets/icons/acceptIcon.svg');
+
   /// File path: assets/icons/bugIcon.svg
   SvgGenImage get bugIcon => const SvgGenImage('assets/icons/bugIcon.svg');
 
@@ -122,6 +126,10 @@ class $AssetsIconsGen {
   SvgGenImage get profileSelected =>
       const SvgGenImage('assets/icons/profileSelected.svg');
 
+  /// File path: assets/icons/rejectIcon.svg
+  SvgGenImage get rejectIcon =>
+      const SvgGenImage('assets/icons/rejectIcon.svg');
+
   /// File path: assets/icons/schedule.svg
   SvgGenImage get schedule => const SvgGenImage('assets/icons/schedule.svg');
 
@@ -150,6 +158,7 @@ class $AssetsIconsGen {
   List<SvgGenImage> get values => [
         logOut,
         aboutUsIcon,
+        acceptIcon,
         bugIcon,
         chatIcons,
         createSeleted,
@@ -177,6 +186,7 @@ class $AssetsIconsGen {
         profile,
         profileInfo,
         profileSelected,
+        rejectIcon,
         schedule,
         scheduleIconsHome,
         scheduleSelected,
@@ -203,6 +213,10 @@ class $AssetsImagesGen {
 
   /// File path: assets/images/logo.png
   AssetGenImage get logo => const AssetGenImage('assets/images/logo.png');
+
+  /// File path: assets/images/noInternet.jpg
+  AssetGenImage get noInternet =>
+      const AssetGenImage('assets/images/noInternet.jpg');
 
   /// File path: assets/images/notificationImage.jpg
   AssetGenImage get notificationImage =>
@@ -232,13 +246,12 @@ class $AssetsImagesGen {
   AssetGenImage get serviceImage1 =>
       const AssetGenImage('assets/images/serviceImage1.png');
 
-  /// File path: assets/images/supportImage.png
-  AssetGenImage get supportImage =>
-      const AssetGenImage('assets/images/supportImage.png');
-
   /// File path: assets/images/uploadImage.png
   AssetGenImage get uploadImage =>
       const AssetGenImage('assets/images/uploadImage.png');
+
+  /// File path: assets/images/wallet.png
+  AssetGenImage get wallet => const AssetGenImage('assets/images/wallet.png');
 
   /// List of all assets
   List<AssetGenImage> get values => [
@@ -246,6 +259,7 @@ class $AssetsImagesGen {
         circle,
         inviteTopImage,
         logo,
+        noInternet,
         notificationImage,
         onboarding1,
         onboarding2,
@@ -253,8 +267,8 @@ class $AssetsImagesGen {
         onboarding4,
         searchImage,
         serviceImage1,
-        supportImage,
-        uploadImage
+        uploadImage,
+        wallet
       ];
 }
 

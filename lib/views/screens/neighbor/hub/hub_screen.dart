@@ -108,6 +108,11 @@ class _HubScreenState extends State<HubScreen> {
         child: Column(
           children: [
 
+
+
+
+
+
             //
             // // TODO : <<< ==========  Two Button ========>>>
             //
@@ -147,6 +152,44 @@ class _HubScreenState extends State<HubScreen> {
             // ),
             //
             //
+
+
+            GestureDetector(
+              onTap: (){
+                Get.toNamed(AppRoutes.joinRequestScreen);
+              },
+              child: Container(
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(12.r),
+                    color: Color(0xffFCEED4)),
+                child: Padding(
+                  padding: EdgeInsets.all(12.h),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Assets.icons.memberAddIcon.svg(),
+                      SizedBox(width: 12.w),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            CustomText(
+                                text:  "Invitation Request",
+                                bottom: 6.h,
+                                color: Color(0xffD46A6A),
+                                fontWeight: FontWeight.w500),
+                            CustomText(
+                                text: "4 Invitation Pending",
+                                fontSize: 12.h,
+                                fontWeight: FontWeight.w300),
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+              ),
+            ),
 
 
             SizedBox(height: 16.h),
@@ -191,7 +234,7 @@ class _HubScreenState extends State<HubScreen> {
                                     height: 60.h,
                                     width: 60.w,
                                     boxShape: BoxShape.circle,
-                                    imageUrl: "${ApiConstants.imageBaseUrl}${hub.hubName}"  ,
+                                    imageUrl: "${ApiConstants.imageBaseUrl}${hub.image}"  ,
                                     border: Border.all(
                                         color: Colors.grey, width: 0.02),
                                   ),

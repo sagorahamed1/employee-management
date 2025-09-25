@@ -1,5 +1,7 @@
 
+import 'package:droke/core/app_constants/app_constants.dart';
 import 'package:droke/core/config/app_route.dart';
+import 'package:droke/helper/prefs_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -24,8 +26,21 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
   @override
   void initState() {
 
-    Future.delayed(Duration(seconds: 2), () {
-      return Get.offAllNamed(AppRoutes.onboardingScreen);
+    Future.delayed(Duration(seconds: 2), () async{
+      String token = await PrefsHelper.getString(AppConstants.bearerToken);
+      String role = await PrefsHelper.getString(AppConstants.role);
+      bool isLogged = await PrefsHelper.getBool(AppConstants.isLogged);
+
+      if(isLogged && token.isNotEmpty){
+        if(role == "freelancer"){
+          Get.offAllNamed(AppRoutes.freelancerBottomNavBar);
+        }else{
+          Get.offAllNamed(AppRoutes.neighborBottomNavBar);
+        }
+
+      }else{
+        Get.offAllNamed(AppRoutes.onboardingScreen);
+      }
     });
 
     _controller = AnimationController(

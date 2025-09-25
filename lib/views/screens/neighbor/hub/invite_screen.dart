@@ -1,7 +1,12 @@
+import 'dart:async';
+
+import 'package:droke/services/api_constants.dart';
 import 'package:droke/views/widgets/custom_button.dart';
+import 'package:droke/views/widgets/custom_shimmer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import '../../../../controller/neighbor/neighbor_controller.dart';
 import '../../../../core/app_constants/app_colors.dart';
 import '../../../../global/custom_assets/assets.gen.dart';
 import '../../../widgets/cachanetwork_image.dart';
@@ -16,16 +21,28 @@ class InviteScreen extends StatefulWidget {
 }
 
 class _InviteScreenState extends State<InviteScreen> {
+
+  NeighborController neighborController = Get.find<NeighborController>();
   final TextEditingController searchCtrl = TextEditingController();
-
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-
    double minPrice = 5;
-
    double maxPrice = 20;
+  Timer? debounce;
+
+
+   @override
+  void initState() {
+     WidgetsBinding.instance.addPostFrameCallback((_) {
+       neighborController.getNearNeighbors();
+     });
+
+
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
+     var data = Get.arguments;
     return Scaffold(
       key: _scaffoldKey,
       backgroundColor: Colors.white,
@@ -60,80 +77,104 @@ class _InviteScreenState extends State<InviteScreen> {
                 controller: searchCtrl,
                 borderColor: AppColors.primaryColor,
                 hintextColor: Colors.black87,
-                hintText: "Search"),
+                hintText: "Search",
+                validator: (value) {
+
+                },
+                onChanged: (value) {
+                  if (debounce?.isActive ?? false) debounce!.cancel();
+                  debounce = Timer(Duration(milliseconds: 500), () {
+                    neighborController.nearNeighbors.value = [];
+
+                    neighborController.getNearNeighbors(search: searchCtrl.text);
+
+                  });
+                }
+
+            ),
 
 
 
             Expanded(
-              child: ListView.builder(
-                itemCount: 6,
-                itemBuilder: (context, index) {
-                  return Padding(
-                    padding:  EdgeInsets.only(bottom: 12.h),
-                    child: Container(
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(12.r),
-                          color: AppColors.cardColorEBEBEB
-                      ),
+              child: Obx(() =>
+              neighborController.getNearLoading.value ? CustomShimmer() :
+              neighborController.nearNeighbors.isEmpty ? CustomText(text: "No Data Found!") :
+                 ListView.builder(
+                  itemCount: neighborController.nearNeighbors.length,
+                  itemBuilder: (context, index) {
+                    var neighbor = neighborController.nearNeighbors[index];
+                    return Padding(
+                      padding:  EdgeInsets.only(bottom: 12.h),
+                      child: Container(
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(12.r),
+                            color: AppColors.cardColorEBEBEB
+                        ),
 
-                      child: Padding(
-                        padding:  EdgeInsets.all(12.h),
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
+                        child: Padding(
+                          padding:  EdgeInsets.all(12.h),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
 
-                          children: [
+                            children: [
 
-                            ClipRRect(
-                                borderRadius: BorderRadius.circular(12.r),
-                                child: CustomNetworkImage(
-                                  height: 45.h,
-                                  width: 45.w,
-                                  boxShape: BoxShape.circle,
-                                  imageUrl: "https://randomuser.me/api/portraits/men/19.jpg",
-                                  border: Border.all(color: Colors.grey, width: 0.02),
-                                )),
+                              ClipRRect(
+                                  borderRadius: BorderRadius.circular(12.r),
+                                  child: CustomNetworkImage(
+                                    height: 45.h,
+                                    width: 45.w,
+                                    boxShape: BoxShape.circle,
+                                    imageUrl: "${ApiConstants.imageBaseUrl}${neighbor.image}",
+                                    border: Border.all(color: Colors.grey, width: 0.02),
+                                  )),
 
-                            SizedBox(width: 12.w),
-
-
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                CustomText(text: "Lio", color: Colors.black),
-                                CustomText(text: "320 Banasree", fontSize: 12.h, color: Colors.black),
-                              ],
-                            ),
-
-                            Spacer(),
-
-                            Align(
-                                alignment: Alignment.centerRight,
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(6.r),
-                                      color: AppColors.primaryColor,
-                                    boxShadow: [
-                                      BoxShadow(
-                                        blurRadius: 3,
-                                        color: Colors.black38,
-                                        offset: Offset(-3, 3)
-                                      )
-                                    ]
-                                  ),
-                                  child: Padding(
-                                    padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 4.h),
-                                    child: CustomText(
-                                        text: "Invite", color: Colors.white),
-                                  ),
-                                ))
+                              SizedBox(width: 12.w),
 
 
-                          ],
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  CustomText(text: "${neighbor.name}", color: Colors.black),
+                                  CustomText(text: "${neighbor.email}", fontSize: 12.h, color: Colors.black),
+                                ],
+                              ),
+
+                              Spacer(),
+
+                              Align(
+                                  alignment: Alignment.centerRight,
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      neighborController.invite(receiverEmail: neighbor.email.toString(), hubId: data["hubId"]);
+                                    },
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.circular(6.r),
+                                          color: AppColors.primaryColor,
+                                        boxShadow: [
+                                          BoxShadow(
+                                            blurRadius: 3,
+                                            color: Colors.black38,
+                                            offset: Offset(-3, 3)
+                                          )
+                                        ]
+                                      ),
+                                      child: Padding(
+                                        padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 4.h),
+                                        child: CustomText(
+                                            text: "Invite", color: Colors.white),
+                                      ),
+                                    ),
+                                  ))
+
+
+                            ],
+                          ),
                         ),
                       ),
-                    ),
-                  );
-                },
+                    );
+                  },
+                ),
               ),
             ),
 

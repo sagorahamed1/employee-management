@@ -12,6 +12,7 @@ import 'package:get/get.dart';
 
 import '../../models/deshboard_model.dart';
 import '../../models/hub_model.dart';
+import '../../models/near_by_neighbor_model.dart';
 import '../../services/api_client.dart';
 import '../../services/api_constants.dart';
 import '../../views/screens/neighbor/neighbor_bottom_nav_bar/neighbor_bottom_nav_bar.dart';
@@ -119,6 +120,30 @@ class NeighborController extends GetxController {
   }
 
 
+  ///===============Hub Create================<>
+
+
+  invite({required String receiverEmail, hubId}) async {
+
+    var body = {
+      "receiver" : "$receiverEmail",
+      "hub" : "$hubId"
+    };
+
+    var response = await ApiClient.postData(
+        "${ApiConstants.invite}", jsonEncode(body));
+    if (response.statusCode == 200 || response.statusCode == 201) {
+
+      Get.back();
+      ToastMessageHelper.showToastMessage(response.body["message"]);
+
+    }else{
+      ToastMessageHelper.showToastMessage(response.body["message"]);
+    }
+  }
+
+
+
 
 
 
@@ -194,6 +219,27 @@ class NeighborController extends GetxController {
       myHubLoading(false);
     }
   }
+
+
+
+  RxBool getNearLoading = false.obs;
+  RxList<NearByNeighborModel> nearNeighbors = <NearByNeighborModel>[].obs;
+
+  getNearNeighbors({String? search}) async {
+    getNearLoading(true);
+
+    var response = await ApiClient.getData(
+        '${ApiConstants.nearNeighbors}?page=1&searchQ=${search??""}&limit=1000&longitude=90.413&latitude=23.456');
+    if (response.statusCode == 200) {
+
+      nearNeighbors.value  = List<NearByNeighborModel>.from(response.body["data"].map((x) => NearByNeighborModel.fromJson(x)));
+
+      getNearLoading(false);
+    } else {
+      getNearLoading(false);
+    }
+  }
+
 
 
 

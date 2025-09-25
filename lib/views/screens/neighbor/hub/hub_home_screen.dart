@@ -1,6 +1,7 @@
 import 'package:droke/core/app_constants/app_colors.dart';
 import 'package:droke/core/config/app_route.dart';
 import 'package:droke/global/custom_assets/assets.gen.dart';
+import 'package:droke/helper/toast_message_helper.dart';
 import 'package:droke/services/api_constants.dart';
 import 'package:droke/views/widgets/custom_button.dart';
 import 'package:droke/views/widgets/custom_text.dart';
@@ -126,7 +127,15 @@ class _HubHomeScreenState extends State<HubHomeScreen> {
                               CustomButton(
                                   height: 35.h,
                                   fontSize: 14.h,
-                                  title: "Send Invitation", onpress: (){}),
+                                  title: "Send Invitation", onpress: (){
+
+                                    if(emailCtrl.text.isEmpty){
+                                      ToastMessageHelper.showToastMessage("Enter an email address", title: "Warning");
+                                    }else{
+                                      neighborController.invite(receiverEmail: emailCtrl.text, hubId: data["hubId"]);
+                                    }
+
+                              }),
                               SizedBox(height: 20.h),
 
                               CustomButton(
@@ -136,7 +145,9 @@ class _HubHomeScreenState extends State<HubHomeScreen> {
                                   titlecolor: Colors.red,
                                   title: "Find Neighbors Around Me", onpress: (){
                                   Get.back();
-                                  Get.toNamed(AppRoutes.inviteScreen);
+                                  Get.toNamed(AppRoutes.inviteScreen, arguments: {
+                                    "hubId" : data["hubId"]
+                                  });
                               }),
 
 
