@@ -34,7 +34,10 @@ class ApiConstants{
   static const String poll = "/hubs/poll";
   static const String startHub = "/hubs/start-poll";
   static const String inviteAcceptOrReject = "/hubs/update-request";
+
+
   static const String hub = "/hubs/hub-view-near?latitude=23.790934543802027&longitude=90.4139501156808";
+  static const String freelancerHub = "/hubs/view-near?latitude=23.790934543802027&longitude=90.4139501156808";
 
 
 }

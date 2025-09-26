@@ -226,8 +226,7 @@ class _NeighborHomeScreenState extends State<NeighborHomeScreen> {
                 itemBuilder: (context, index) {
                   var hub = neighborController.hubs[index];
                   return Padding(
-                    padding:
-                        EdgeInsets.only(bottom: 10.h, right: 20.w, left: 20.w),
+                    padding: EdgeInsets.only(bottom: 10.h, right: 20.w, left: 20.w),
                     child: ShopTaskCard(
                       imagePath: "${ApiConstants.imageBaseUrl}${hub.image}",
                       taskTitle: "${hub.taskTitle}",

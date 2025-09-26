@@ -15,6 +15,7 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../../../../controller/neighbor/neighbor_controller.dart';
+import '../../../../core/config/app_route.dart';
 import '../../../../services/api_client.dart';
 import '../../../../services/api_constants.dart';
 import '../../../widgets/cachanetwork_image.dart';
@@ -144,18 +145,34 @@ class _ServiceDetailsScreenState extends State<ServiceDetailsScreen> {
                                     fontSize: 16.h,
                                     bottom: 12.h),
 
-                                CustomText(text: "    • Dog Walking", fontSize: 12.h, italic: true),
-                                CustomText(text: "    • Grocery Shopping & Delivery", fontSize: 12.h, italic: true),
-                                CustomText(text: "    • Laundry Pickup & Drop-off", fontSize: 12.h, italic: true),
-                                CustomText(text: "    • House Cleaning", fontSize: 12.h, italic: true),
-                                CustomText(text: "    • Prescription Pickup", fontSize: 12.h, italic: true),
-                                CustomText(text: "    • Package Drop-offs", fontSize: 12.h, italic: true),
+                                ListView.builder(
+                                  shrinkWrap: true,
+                                  physics: NeverScrollableScrollPhysics(),
+                                  itemCount: serviceDetails.taskList?.length,
+                                    itemBuilder: (context, index) {
+                                      return  CustomText(text: "    • ${serviceDetails.taskList?[index]}", fontSize: 12.h, italic: true, textAlign: TextAlign.start);
+                                    },
+                                ),
+
+
 
 
                                 SizedBox(height: 40.h),
 
 
-                                CustomButton(title: "Explore hubs", onpress: (){})
+                                CustomButton(title: "Explore hubs", onpress: (){
+
+
+
+                                    Get.toNamed(AppRoutes.freelancerHubSearchScreen, arguments: {
+                                      "role" : "freelancer",
+                                      "category" : "${serviceDetails.taskCategory}"
+                                    });
+
+
+
+
+                                })
 
 
                               ],

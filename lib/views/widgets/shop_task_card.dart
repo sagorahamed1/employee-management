@@ -65,10 +65,10 @@ class ShopTaskCard extends StatelessWidget {
                     children: [
                       _buildRow("Task Title", taskTitle ?? ""),
                       _buildRow("Task Type", taskType ?? ""),
-                      _buildRow("Scheduled Time", scheduledTime ?? ""),
-                      _buildRow("People Joined", peopleJoined ?? ""),
-                      _buildRow("Organizer", organizer ?? ""),
-                      _buildRow("You pay", payAmount ?? ""),
+                    scheduledTime == ""  ? SizedBox() :  _buildRow("Scheduled Time", scheduledTime ?? ""),
+                      peopleJoined == ""  ? SizedBox() : _buildRow("People Joined", peopleJoined ?? ""),
+                      organizer == ""  ? SizedBox() : _buildRow("Organizer", organizer ?? ""),
+                      payAmount == ""  ? SizedBox() :  _buildRow("You pay", payAmount ?? ""),
 
 
                       ignoreJoinBtn ?

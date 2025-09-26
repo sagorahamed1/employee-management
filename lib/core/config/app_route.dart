@@ -9,6 +9,7 @@ import '../../views/screens/auth/role/role_screen.dart';
 import '../../views/screens/auth/sing_up/sign_up_screen.dart';
 import '../../views/screens/freelancer/freelancer_bottom_nav_bar/freelancer_bottom_nav_bar.dart';
 import '../../views/screens/freelancer/freelancer_gig/set_schedule_screen.dart';
+import '../../views/screens/freelancer/freelancer_home/freelancer_hub_search_screen.dart';
 import '../../views/screens/freelancer/service/service_screen.dart';
 import '../../views/screens/message/message_screen.dart';
 import '../../views/screens/neighbor/hub/application_screen.dart';
@@ -71,6 +72,7 @@ class AppRoutes {
   static const String walletScreen = "/WalletScreen";
   static const String joinRequestScreen = "/JoinRequestScreen";
   static const String invitedRequestScreen = "/InvitedRequestScreen";
+  static const String freelancerHubSearchScreen = "/FreelancerHubSearchScreen";
 
 
 
@@ -109,5 +111,6 @@ class AppRoutes {
     GetPage(name: walletScreen, page: () =>  WalletScreen()),
     GetPage(name: joinRequestScreen, page: () =>  JoinRequestScreen()),
     GetPage(name: invitedRequestScreen, page: () =>  InvitedRequestScreen()),
+    GetPage(name: freelancerHubSearchScreen, page: () =>  FreelancerHubSearchScreen()),
   ];
 }
