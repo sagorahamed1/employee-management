@@ -1,16 +1,62 @@
+import 'package:droke/services/api_constants.dart';
+import 'package:droke/views/widgets/custom_button.dart';
+import 'package:droke/views/widgets/custom_shimmer.dart';
+import 'package:droke/views/widgets/no_data_found_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 
+import '../../../../controller/neighbor/neighbor_controller.dart';
 import '../../../../core/app_constants/app_colors.dart';
 import '../../../widgets/cachanetwork_image.dart';
 import '../../../widgets/custom_text.dart';
 import '../../../widgets/shop_task_card.dart';
 
-class PullScreen extends StatelessWidget {
+class PullScreen extends StatefulWidget {
   const PullScreen({super.key});
 
   @override
+  State<PullScreen> createState() => _PullScreenState();
+}
+
+class _PullScreenState extends State<PullScreen> {
+
+
+  NeighborController neighborController = Get.find<NeighborController>();
+  final ScrollController _scrollController = ScrollController();
+
+
+
+  @override
+  void initState() {
+    var data = Get.arguments;
+    neighborController.getPoll(hubId: data["hubId"]);
+    super.initState();
+    _addScrollListener();
+  }
+
+  void _addScrollListener() {
+    _scrollController.addListener(() {
+      if (_scrollController.position.pixels ==
+          _scrollController.position.maxScrollExtent) {
+        neighborController.loadMore(screenType: "pull");
+        print("load more true");
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+
+
+
+  @override
   Widget build(BuildContext context) {
+    var data = Get.arguments;
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -39,26 +85,61 @@ class PullScreen extends StatelessWidget {
           SizedBox(height: 20.h),
 
           Expanded(
-            child: ListView.builder(
-              padding: EdgeInsets.zero,
-              itemCount: 7,
-              itemBuilder: (context, index) {
-                return Padding(
-                  padding:  EdgeInsets.only(bottom: 10.h, right: 20.w, left: 20.w),
-                  child: ShopTaskCard(
-                    imagePath:
-                    "https://img.etimg.com/thumb/width-1200,height-1200,imgsize-789754,resizemode-75,msid-73320212/small-biz/sme-sector/the-kirana-is-a-technology-shop-too.jpg",
-                    taskTitle: "Grocery run to Trader Joe's",
-                    taskType: "Personal Needs",
-                    scheduledTime: "9:30AM Today",
-                    peopleJoined: "3 Neighbors joined",
-                    organizer: "Maria from Pine Street",
-                    payAmount: "\$5",
-                    selected: true,
-                    ignoreJoinBtn: true,
-                  ),
-                );
-              },
+            child: Obx(() => neighborController.pollLoading.value ? CustomShimmer() :
+            neighborController.pollMessage.value != "" ? Padding(
+              padding:  EdgeInsets.symmetric(horizontal: 20.w),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+
+                  CustomText(text: "${neighborController.pollMessage.value}", fontSize: 17.h, maxline: 2),
+
+                  SizedBox(height: 200),
+
+
+                  neighborController.isHubOwner.value ?
+                  CustomButton(title: "Start Poll", onpress: (){
+
+                    neighborController.pollStart(hubId: data["hubId"]);
+
+                  }) : SizedBox()
+
+
+                ],
+              ),
+            ) :
+            neighborController.pulls.isEmpty ? NoDataFoundCard() :
+               ListView.builder(
+                padding: EdgeInsets.zero,
+                itemCount: neighborController.pulls.length +1,
+                itemBuilder: (context, index) {
+                  if(index < neighborController.pulls.length){
+
+                    var pull = neighborController.pulls[index];
+
+                    return Padding(
+                      padding:  EdgeInsets.only(bottom: 10.h, right: 20.w, left: 20.w),
+                      child: ShopTaskCard(
+                        imagePath:
+                        "${ApiConstants.imageBaseUrl}${pull.image}",
+                        taskTitle: "${pull.fee}",
+                        taskType: "Personal Needs",
+                        scheduledTime: "9:30AM Today",
+                        peopleJoined: "3 Neighbors joined",
+                        organizer: "Maria from Pine Street",
+                        payAmount: "\$5",
+                        selected: true,
+                        ignoreJoinBtn: true,
+                      ),
+                    );
+                  }else if(index >= neighborController.totalResult){
+                    return null;
+                  }else{
+                    return CircularProgressIndicator();
+                  }
+                },
+              ),
             ),
           ),
 

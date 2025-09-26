@@ -14,6 +14,7 @@ import '../../views/screens/message/message_screen.dart';
 import '../../views/screens/neighbor/hub/application_screen.dart';
 import '../../views/screens/neighbor/hub/hub_home_screen.dart';
 import '../../views/screens/neighbor/hub/invite_screen.dart';
+import '../../views/screens/neighbor/hub/invited_request_screen.dart';
 import '../../views/screens/neighbor/hub/join_request_screen.dart';
 import '../../views/screens/neighbor/hub/member_screen.dart';
 import '../../views/screens/neighbor/hub/pull_screen.dart';
@@ -69,6 +70,7 @@ class AppRoutes {
   static const String serviceScreen = "/ServiceScreen";
   static const String walletScreen = "/WalletScreen";
   static const String joinRequestScreen = "/JoinRequestScreen";
+  static const String invitedRequestScreen = "/InvitedRequestScreen";
 
 
 
@@ -106,5 +108,6 @@ class AppRoutes {
     GetPage(name: serviceScreen, page: () =>  ServiceScreen()),
     GetPage(name: walletScreen, page: () =>  WalletScreen()),
     GetPage(name: joinRequestScreen, page: () =>  JoinRequestScreen()),
+    GetPage(name: invitedRequestScreen, page: () =>  InvitedRequestScreen()),
   ];
 }

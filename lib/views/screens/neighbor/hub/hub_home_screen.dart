@@ -91,16 +91,22 @@ class _HubHomeScreenState extends State<HubHomeScreen> {
                         Get.toNamed(AppRoutes.messageScreen);
                       }
                       else if(hubFeatures[index]["title"] == "Application"){
-                        Get.toNamed(AppRoutes.applicationScreen);
+                        Get.toNamed(AppRoutes.applicationScreen, arguments: {
+                          "hubId" : data["hubId"]
+                        });
                       }
                       else if(hubFeatures[index]["title"] == "Location"){
 
                       }
                       else if(hubFeatures[index]["title"] == "Poll"){
-                        Get.toNamed(AppRoutes.pullScreen);
+                        Get.toNamed(AppRoutes.pullScreen, arguments: {
+                          "hubId" : data["hubId"]
+                        });
                       }
                       else if(hubFeatures[index]["title"] == "Member"){
-                        Get.toNamed(AppRoutes.memberScreen);
+                        Get.toNamed(AppRoutes.memberScreen, arguments: {
+                          "hubId" : data["hubId"]
+                        });
                       }
                       else if(hubFeatures[index]["title"] == "Invite"){
                         TextEditingController emailCtrl = TextEditingController();

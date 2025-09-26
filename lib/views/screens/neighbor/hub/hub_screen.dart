@@ -50,6 +50,8 @@ class _HubScreenState extends State<HubScreen> {
   @override
   void dispose() {
     _scrollController.dispose();
+    neighborController.page.value = 1;
+    neighborController.myHubs.value = [];
     super.dispose();
   }
 
@@ -156,7 +158,10 @@ class _HubScreenState extends State<HubScreen> {
 
             GestureDetector(
               onTap: (){
-                Get.toNamed(AppRoutes.joinRequestScreen);
+                Get.toNamed(AppRoutes.invitedRequestScreen)?.then((_){
+                  neighborController.myHubs.value = [];
+                  neighborController.getMyHubs();
+                });
               },
               child: Container(
                 decoration: BoxDecoration(
@@ -178,10 +183,12 @@ class _HubScreenState extends State<HubScreen> {
                                 bottom: 6.h,
                                 color: Color(0xffD46A6A),
                                 fontWeight: FontWeight.w500),
-                            CustomText(
-                                text: "4 Invitation Pending",
-                                fontSize: 12.h,
-                                fontWeight: FontWeight.w300),
+                            Obx(()=>
+                               CustomText(
+                                  text: "${neighborController.invitedCount.value} Invitation Pending",
+                                  fontSize: 12.h,
+                                  fontWeight: FontWeight.w300),
+                            ),
                           ],
                         ),
                       )
@@ -201,6 +208,7 @@ class _HubScreenState extends State<HubScreen> {
               neighborController.myHubLoading.value ? CustomShimmer() :
                   neighborController.myHubs.isEmpty ? CustomText(text: "No Hub Available") :
                  ListView.builder(
+                   controller: _scrollController,
                   padding: EdgeInsets.zero,
                   itemCount: neighborController.myHubs.length +1,
                   itemBuilder: (context, index) {
@@ -270,7 +278,7 @@ class _HubScreenState extends State<HubScreen> {
                     }else if(index >= neighborController.totalResult){
                       return null;
                     }else{
-                      return CircularProgressIndicator();
+                      return Center(child: CircularProgressIndicator());
                     }
 
                   },
