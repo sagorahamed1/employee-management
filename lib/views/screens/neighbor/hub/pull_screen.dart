@@ -47,6 +47,8 @@ class _PullScreenState extends State<PullScreen> {
 
   @override
   void dispose() {
+    neighborController.page.value = 1;
+    neighborController.pulls.value = [];
     _scrollController.dispose();
     super.dispose();
   }
@@ -123,13 +125,17 @@ class _PullScreenState extends State<PullScreen> {
                       child: ShopTaskCard(
                         imagePath:
                         "${ApiConstants.imageBaseUrl}${pull.image}",
-                        taskTitle: "${pull.fee}",
-                        taskType: "Personal Needs",
-                        scheduledTime: "9:30AM Today",
-                        peopleJoined: "3 Neighbors joined",
-                        organizer: "Maria from Pine Street",
-                        payAmount: "\$5",
-                        selected: true,
+                        taskTitle: "${pull.serviceTitle}",
+                        hubName: "",
+                        taskType: "${pull.taskType}",
+                        scheduledTime: "${pull.timeSlot}",
+                        peopleJoined: "",
+                        organizer: "",
+                        payAmount: "\$${pull.fee}",
+                        selected: pull.isVoted ?? false,
+                        BtnOnTap: () {
+                          neighborController.voteAdd(hubId: data["hubId"], freelancerId: pull.freelancerId);
+                        },
                         ignoreJoinBtn: true,
                       ),
                     );

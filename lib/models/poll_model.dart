@@ -1,20 +1,20 @@
 
 
-
-
 class PollModel {
   final String? freelancerId;
   final int? fee;
+  final String? taskType;
   final String? freelancer;
   final String? serviceTitle;
   final String? image;
   final int? totalVote;
   final String? timeSlot;
-  final bool? isVoted;
+   bool? isVoted;
 
   PollModel({
     this.freelancerId,
     this.fee,
+    this.taskType,
     this.freelancer,
     this.serviceTitle,
     this.image,
@@ -26,6 +26,7 @@ class PollModel {
   factory PollModel.fromJson(Map<String, dynamic> json) => PollModel(
     freelancerId: json["freelancerId"],
     fee: json["fee"],
+    taskType: json["taskType"],
     freelancer: json["freelancer"],
     serviceTitle: json["serviceTitle"],
     image: json["image"],
@@ -37,6 +38,7 @@ class PollModel {
   Map<String, dynamic> toJson() => {
     "freelancerId": freelancerId,
     "fee": fee,
+    "taskType": taskType,
     "freelancer": freelancer,
     "serviceTitle": serviceTitle,
     "image": image,

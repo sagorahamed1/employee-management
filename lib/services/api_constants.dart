@@ -22,10 +22,14 @@ class ApiConstants{
   static const String servicesDetails = "/services/details";
   static const String deshBoard = "/hubs/dashboard-neighbor";
   static const String hubAdd = "/hubs/add";
+  static const String gigAdd = "/gigs/add";
+  static const String gig = "/gigs";
   static const String joinHub = "/hubs/join-request";
+  static const String freelancerApply = "/hubs/apply";
   static const String invite = "/hubs/invite-member";
   static const String notification = "/notification";
   static const String myHubs = "/hubs/neighbor-hubs";
+  static const String freelancerAssignedHub = "/hubs/assigned";
   static const String nearNeighbors = "/hubs/view-near-members";
   static const String member = "/hubs/view-members";
   static const String getJoin = "/hubs/join-request";

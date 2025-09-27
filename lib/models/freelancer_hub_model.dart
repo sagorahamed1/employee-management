@@ -12,7 +12,7 @@ class FreelancerHubModel {
   final String? taskCategory;
   final int? pepoleJoined;
   final String? organizer;
-  final bool? isApplyed;
+  bool? isApplyed;
   final DateTime? createdAt;
 
   FreelancerHubModel({

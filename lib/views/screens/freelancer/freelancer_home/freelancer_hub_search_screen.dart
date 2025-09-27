@@ -10,12 +10,11 @@ import 'package:droke/views/widgets/custom_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-
 import '../../../../controller/freelancer/freelancer_controller.dart';
-import '../../../../controller/neighbor/neighbor_controller.dart';
 import '../../../../services/api_constants.dart';
 import '../../../widgets/custom_shimmer.dart';
 import '../../../widgets/shop_task_card.dart';
+
 
 class FreelancerHubSearchScreen extends StatefulWidget {
   FreelancerHubSearchScreen({super.key});
@@ -36,17 +35,38 @@ class _FreelancerHubSearchScreenState extends State<FreelancerHubSearchScreen> {
 
 
 
+
+
+  final ScrollController _scrollController = ScrollController();
+
+
   @override
   void initState() {
-
+    var data = Get.arguments;
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      freelancerController.getHubs();
+      freelancerController.getHubs(category: data["category"]);
     });
-
-
     super.initState();
+    _addScrollListener();
   }
 
+  void _addScrollListener() {
+    _scrollController.addListener(() {
+      if (_scrollController.position.pixels ==
+          _scrollController.position.maxScrollExtent) {
+        freelancerController.loadMore(screenType: "hubs");
+        print("load more true");
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    freelancerController.page.value = 1;
+    freelancerController.myHubs.value = [];
+    super.dispose();
+  }
 
 
   Widget _buildSearchField() {
@@ -120,24 +140,39 @@ class _FreelancerHubSearchScreenState extends State<FreelancerHubSearchScreen> {
             child: Obx(() => freelancerController.getHubsLoading.value ? CustomShimmer() :
             freelancerController.hubs.isEmpty ? CustomText(text: "No Data Found!",) :
             ListView.builder(
+              controller: _scrollController,
               padding: EdgeInsets.zero,
-              itemCount: freelancerController.hubs.length,
+              itemCount: freelancerController.hubs.length+1,
               itemBuilder: (context, index) {
-                var hub = freelancerController.hubs[index];
-                return Padding(
-                  padding:
-                  EdgeInsets.only(bottom: 10.h, right: 20.w, left: 20.w),
-                  child: ShopTaskCard(
-                    imagePath:
-                    "${ApiConstants.imageBaseUrl}${hub.image}",
-                    taskTitle: "${hub.taskTitle}",
-                    taskType: "${hub.taskCategory}",
-                    scheduledTime: "",
-                    peopleJoined: "${hub.pepoleJoined} Neighbors joined",
-                    organizer: "${hub.organizer}",
-                    payAmount: "",
-                  ),
-                );
+
+                if(index < freelancerController.hubs.length){
+                  var hub = freelancerController.hubs[index];
+                  return Padding(
+                    padding:
+                    EdgeInsets.only(bottom: 10.h, right: 20.w, left: 20.w),
+                    child: ShopTaskCard(
+                      imagePath:
+                      "${ApiConstants.imageBaseUrl}${hub.image}",
+                      taskTitle: "${hub.taskTitle}",
+                      taskType: "${hub.taskCategory}",
+                      scheduledTime: "",
+                      peopleJoined: "${hub.pepoleJoined} Neighbors joined",
+                      hubName: "${hub.hubName}",
+                      organizer: "${hub.organizer}",
+                      payAmount: "",
+                      btnName: hub.isApplyed ?? false ? "Applied" : "Apply",
+                      BtnOnTap: () {
+                        freelancerController.apply(serviceId: "${hub.id}");
+                      },
+                    ),
+                  );
+                }else if(index >= freelancerController.totalResult){
+                  return null;
+                }else{
+                  return Center(child: CircularProgressIndicator());
+                }
+
+
               },
             ),
             ),

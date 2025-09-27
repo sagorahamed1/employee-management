@@ -49,14 +49,14 @@ class _FreelancerHomeScreenState extends State<FreelancerHomeScreen> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                // Obx(() =>
-                //     CustomNetworkImage(
-                //         imageUrl: "${ApiConstants.imageBaseUrl}",
-                //         boxShape: BoxShape.circle,
-                //         border: Border.all(color: Colors.grey),
-                //         height: 40.h,
-                //         width: 40.w),
-                // ),
+                Obx(() =>
+                    CustomNetworkImage(
+                        imageUrl: "${ApiConstants.imageBaseUrl}${profileController.image}",
+                        boxShape: BoxShape.circle,
+                        border: Border.all(color: Colors.grey),
+                        height: 40.h,
+                        width: 40.w),
+                ),
                 GestureDetector(
                     onTap: () {
                       Get.toNamed(AppRoutes.notificationScreen);
@@ -188,8 +188,12 @@ class _FreelancerHomeScreenState extends State<FreelancerHomeScreen> {
                   var service = neighborController.services[index];
                   return GestureDetector(
                     onTap: () {
+                      print("=============Tapped");
                       Get.toNamed(AppRoutes.serviceDetailsScreen,
-                          arguments: {"role": "freelancer", "id" : service.id});
+                          arguments: {"role": "freelancer", "id" : service.id})?.then((_){
+                        neighborController.getService();
+                        freelancerController.getHubs();
+                      });
                     },
                     child: Container(
                       margin: EdgeInsets.only(
@@ -215,13 +219,11 @@ class _FreelancerHomeScreenState extends State<FreelancerHomeScreen> {
                           crossAxisAlignment:
                           CrossAxisAlignment.start,
                           children: [
-                            // Image.asset("assets/images/serviceImage1.png",
-                            //     width: 154.w),
+
 
                             CustomNetworkImage(
                                 borderRadius: BorderRadius.circular(10.r),
-                                imageUrl: "",
-                                // "${ApiConstants.imageBaseUrl}${service.image}",
+                                imageUrl: "${ApiConstants.imageBaseUrl}${service.image}",
                                 width: 154.w,
                                 height: 87.h),
 
@@ -229,21 +231,33 @@ class _FreelancerHomeScreenState extends State<FreelancerHomeScreen> {
                                 text: "${service.taskCategory}",
                                 fontSize: 10.h),
 
-                            ListView.builder(
-                                padding: EdgeInsets.zero,
-                                shrinkWrap: true,
-                                physics:
-                                NeverScrollableScrollPhysics(),
-                                itemCount: service.taskList?.length,
-                                itemBuilder: (context, index) {
-                                  return CustomText(
-                                      text:
-                                      "• ${service.taskList?[index]}",
-                                      fontSize: 10.h,
-                                      textAlign: TextAlign.start);
-                                }),
+                            // ListView.builder(
+                            //     padding: EdgeInsets.zero,
+                            //     shrinkWrap: true,
+                            //     physics: NeverScrollableScrollPhysics(),
+                            //     itemCount: service.taskList?.length,
+                            //     itemBuilder: (context, index) {
+                            //       return CustomText(
+                            //           text:
+                            //           "• ${service.taskList?[index]}",
+                            //           fontSize: 10.h,
+                            //           textAlign: TextAlign.start);
+                            //     }),
 
-                            SizedBox(height: 12.h),
+
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: service.taskList?.map((task) {
+                                return CustomText(
+                                  text: "• $task",
+                                  fontSize: 10.h,
+                                  textAlign: TextAlign.start,
+                                );
+                              }).toList() ?? [],
+                            ),
+
+
+                            Spacer(),
                             Align(
                               alignment: Alignment.centerRight,
                               child: Container(
@@ -306,6 +320,9 @@ class _FreelancerHomeScreenState extends State<FreelancerHomeScreen> {
                     Get.toNamed(AppRoutes.freelancerHubSearchScreen, arguments: {
                       "role" : "freelancer",
                       "category" : ""
+                    })?.then((_){
+                      neighborController.getService();
+                      freelancerController.getHubs();
                     });
                   },
                   child: CustomText(
@@ -332,15 +349,16 @@ class _FreelancerHomeScreenState extends State<FreelancerHomeScreen> {
                     padding:  EdgeInsets.only(bottom: 10.h, right: 20.w, left: 20.w),
                     child: ShopTaskCard(
                       imagePath: "${ApiConstants.imageBaseUrl}${hub.image}",
+                      hubName: "${hub.hubName}",
                       taskTitle: "${hub.taskTitle}",
                       taskType: "${hub.taskCategory}",
                       peopleJoined: "${hub.pepoleJoined} Neighbors joined",
                       organizer: "${hub.organizer}",
                       scheduledTime: "",
                       payAmount: "",
-                      btnName: "Apply",
+                      btnName: hub.isApplyed ?? false ? "Applied" : "Apply",
                       BtnOnTap: () {
-
+                        freelancerController.apply(serviceId: "${hub.id}");
                       },
                       onTap: () {
                         print("kdkdkkdkdkdkdkdkdkdkd");

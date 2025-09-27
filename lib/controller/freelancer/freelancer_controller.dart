@@ -19,6 +19,7 @@ import 'package:get/get.dart';
 import '../../models/application_model.dart';
 import '../../models/deshboard_model.dart';
 import '../../models/freelancer_hub_model.dart';
+import '../../models/gig_model.dart';
 import '../../models/hub_model.dart';
 import '../../models/invited_request_model.dart';
 import '../../models/join_request_model.dart';
@@ -50,32 +51,36 @@ class FreelancerController extends GetxController {
 
 
 
-
-  ///===============Hub Create================<>
-  RxBool hubCreateLoading = false.obs;
-
-  hubCreate({var body, required String serviceId, File? image,required BuildContext context}) async {
-    hubCreateLoading(true);
-
-    List<MultipartBody> files = [MultipartBody("hubImage", image!)];
-
-    var response = await ApiClient.postMultipartData(
-        "${ApiConstants.hubAdd}/$serviceId", body,
-        multipartBody: files);
-
-    print("==================${response.body} \n response : ${response.statusCode}");
+  apply({required String serviceId}) async {
+    var response = await ApiClient.postData(
+        "${ApiConstants.freelancerApply}/${serviceId}", jsonEncode({}));
     if (response.statusCode == 200 || response.statusCode == 201) {
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => const NeighborBottomNavBar(selectedIndex: 1),
-        ),
-      );
+      final hub = hubs.firstWhere((x) => x.id == serviceId);
+      hub.isApplyed = true;
+      update();
+      ToastMessageHelper.showToastMessage(response.body["message"]);
+    }else{
+      ToastMessageHelper.showToastMessage(response.body["message"], title: "Error");
+    }
+  }
+
+
+
+  ///===============Gig Create================<>
+  RxBool gigCreateLoading = false.obs;
+
+  gigCreate({var body}) async {
+    gigCreateLoading(true);
+
+
+    var response = await ApiClient.postData(
+        "${ApiConstants.gigAdd}", jsonEncode(body));
+    if (response.statusCode == 200 || response.statusCode == 201) {
 
       ToastMessageHelper.showToastMessage(response.body["message"]);
-      hubCreateLoading(false);
+      gigCreateLoading(false);
     } else {
-      hubCreateLoading(false);
+      gigCreateLoading(false);
     }
   }
 
@@ -122,7 +127,7 @@ class FreelancerController extends GetxController {
     if (totalPage > page.value) {
       page.value += 1;
 
-      if(screenType == "hubHome"){
+      if(screenType == "hubs"){
         getHubs();
       }else if(screenType == "myHub"){
         getMyHubs();
@@ -144,17 +149,19 @@ class FreelancerController extends GetxController {
 
   RxBool getHubsLoading = false.obs;
   RxList<FreelancerHubModel> hubs = <FreelancerHubModel>[].obs;
+  RxString dummyCategory = "".obs;
 
-  getHubs({String? search}) async {
+  getHubs({String? search, category}) async {
     if (page.value == 1) {
       hubs.value = [];
+      dummyCategory.value = category ?? "";
       getHubsLoading(true);
     }
     var response = await ApiClient.getData(
-        '${ApiConstants.freelancerHub}&page=${page.value ?? ""}&searchQ=${search??""}');
+        '${ApiConstants.freelancerHub}&page=${page.value ?? ""}&searchQ=${search??""}&categorie=${dummyCategory??""}');
     if (response.statusCode == 200) {
-      totalPage = jsonDecode(response.body['pagination']['totalPages'].toString()) ?? 0;
-      totalResult = jsonDecode(response.body['pagination']['totalCount'].toString()) ?? 0;
+      totalPage = jsonDecode(response.body['pagination']['totalPage'].toString()) ?? 0;
+      totalResult = jsonDecode(response.body['pagination']['totalItem'].toString()) ?? 0;
       var data = List<FreelancerHubModel>.from(response.body["data"].map((x) => FreelancerHubModel.fromJson(x)));
       hubs.addAll(data);
       update();
@@ -170,7 +177,7 @@ class FreelancerController extends GetxController {
 
   RxBool myHubLoading = false.obs;
   RxList<MyHubModel> myHubs = <MyHubModel>[].obs;
-  RxString invitedCount = ''.obs;
+
 
   getMyHubs({String? search}) async {
     if (page.value == 1) {
@@ -178,14 +185,13 @@ class FreelancerController extends GetxController {
       myHubLoading(true);
     }
     var response = await ApiClient.getData(
-        '${ApiConstants.myHubs}?page=${page.value ?? ""}&searchQ=${search??""}&limit=10');
+        '${ApiConstants.freelancerAssignedHub}?page=${page.value ?? ""}&searchQ=${search??""}&limit=10');
     if (response.statusCode == 200) {
       totalPage = jsonDecode(response.body['pagination']['totalPage'].toString()) ?? 0;
       totalResult = jsonDecode(response.body['pagination']['totalData'].toString()) ?? 0;
-      var data = List<MyHubModel>.from(response.body["data"]["hubs"].map((x) => MyHubModel.fromJson(x)));
+      var data = List<MyHubModel>.from(response.body["data"].map((x) => MyHubModel.fromJson(x)));
 
       myHubs.addAll(data);
-      invitedCount.value = response.body["data"]["joinRequest"].toString();
       update();
 
       myHubLoading(false);
@@ -196,21 +202,20 @@ class FreelancerController extends GetxController {
 
 
 
-  RxBool getNearLoading = false.obs;
-  RxList<NearByNeighborModel> nearNeighbors = <NearByNeighborModel>[].obs;
+  RxBool gigLoading = false.obs;
+  RxList<GigModel> gig = <GigModel>[].obs;
 
-  getNearNeighbors({String? search}) async {
-    getNearLoading(true);
+  geGig() async {
+    gigLoading(true);
 
-    var response = await ApiClient.getData(
-        '${ApiConstants.nearNeighbors}?page=1&searchQ=${search??""}&limit=1000&longitude=90.413&latitude=23.456');
+    var response = await ApiClient.getData('${ApiConstants.gig}');
     if (response.statusCode == 200) {
 
-      nearNeighbors.value  = List<NearByNeighborModel>.from(response.body["data"].map((x) => NearByNeighborModel.fromJson(x)));
+      gig.value  = List<GigModel>.from(response.body["data"].map((x) => GigModel.fromJson(x)));
 
-      getNearLoading(false);
+      gigLoading(false);
     } else {
-      getNearLoading(false);
+      gigLoading(false);
     }
   }
 

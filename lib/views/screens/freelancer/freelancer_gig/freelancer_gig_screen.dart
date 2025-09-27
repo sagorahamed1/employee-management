@@ -1,13 +1,18 @@
 import 'package:contained_tab_bar_view/contained_tab_bar_view.dart';
+import 'package:droke/controller/neighbor/neighbor_controller.dart';
 import 'package:droke/core/app_constants/app_colors.dart';
 import 'package:droke/core/config/app_route.dart';
+import 'package:droke/services/api_constants.dart';
+import 'package:droke/views/widgets/cachanetwork_image.dart';
 import 'package:droke/views/widgets/custom_text.dart';
 import 'package:droke/views/widgets/custom_text_field.dart';
+import 'package:droke/views/widgets/no_data_found_card.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
+import '../../../../controller/freelancer/freelancer_controller.dart';
 import '../../../widgets/custom_button.dart';
 
 class FreelancerGigScreen extends StatefulWidget {
@@ -18,7 +23,13 @@ class FreelancerGigScreen extends StatefulWidget {
 }
 
 class _FreelancerGigScreenState extends State<FreelancerGigScreen> {
+  FreelancerController freelancerController = Get.find<FreelancerController>();
+  NeighborController neighborController = Get.find<NeighborController>();
+
+  int _selectedIndex = 0;
+  String selectedCategory = '';
   TextEditingController descriptionCtrl = TextEditingController();
+  TextEditingController feeCtrl = TextEditingController();
   TextEditingController titleCtrl = TextEditingController();
   TextEditingController rentCtrl = TextEditingController();
   int startHour = 10, startMinute = 0, endHour = 4, endMinute = 0;
@@ -26,14 +37,15 @@ class _FreelancerGigScreenState extends State<FreelancerGigScreen> {
   List<int> hours = List.generate(12, (index) => index + 1);
   List<int> minutes = List.generate(60, (index) => index);
   List<String> periods = ['AM', 'PM'];
+  bool isDropDown = false;
 
-
-  final List<String> _options = ['Personal Needs', "Contractor level service", "Travel related service"];
-  String _selected = 'Personal Needs';
-
-
-  final List<String> rentOptions = ['Daily', "Weekly", "Monthly"];
-  String rentSelected = 'Daily';
+  @override
+  void initState() {
+    if (neighborController.services.isEmpty) {
+      neighborController.getService();
+    }
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -64,8 +76,6 @@ class _FreelancerGigScreenState extends State<FreelancerGigScreen> {
               Text('                  My Gig                  '),
             ],
             views: [
-
-
               SingleChildScrollView(
                 child: Container(
                   margin: EdgeInsets.symmetric(horizontal: 6.w, vertical: 18.h),
@@ -89,69 +99,172 @@ class _FreelancerGigScreenState extends State<FreelancerGigScreen> {
                           width: double.infinity,
                           clipBehavior: Clip.antiAlias,
                           decoration: BoxDecoration(shape: BoxShape.circle),
-                          child: Image.asset(
-                              "assets/images/serviceImage1.png",
+                          child: CustomNetworkImage(
+                              imageUrl:
+                                  "${ApiConstants.imageBaseUrl}${neighborController.services[_selectedIndex].image}",
                               height: 100.h,
-                              width: 100.w,
-                              fit: BoxFit.cover),
+                              width: 100.w),
                         ),
                         CustomText(
                             text: "Choose Service Category",
                             fontSize: 16.h,
                             top: 16.h,
                             bottom: 8.h),
-
-
-
-                        Align(
-                          alignment: Alignment.centerLeft,
-                          child: Container(
-                            height: 35.h,
-                            padding:  EdgeInsets.symmetric(horizontal: 12.w),
-                            decoration: BoxDecoration(
-                              color: AppColors.textColorSecondary5EAAA8,
-                              borderRadius: BorderRadius.circular(20),
-                            ),
-                            child: DropdownButtonHideUnderline(
-                              child: DropdownButton<String>(
-                                value: _selected,
-                                icon: const Icon(Icons.arrow_drop_down, color: Colors.black),
-                                dropdownColor: Colors.white,
-                                borderRadius: BorderRadius.circular(16),
-                                style: const TextStyle(color: AppColors.textColor3B3B3B),
-                                onChanged: (String? newValue) {
-                                  if (newValue != null) {
-                                    setState(() {
-                                      _selected = newValue;
-                                    });
-                                  }
+                        Row(
+                          children: [
+                            // Pending Button
+                            Expanded(
+                              child: CustomButton(
+                                loaderIgnore: true,
+                                borderRadius: 12,
+                                height: 35.h,
+                                fontSize: 10.h,
+                                loading: false,
+                                color: _selectedIndex == 0
+                                    ? AppColors.textColorSecondary5EAAA8
+                                    : Colors.transparent,
+                                titlecolor: _selectedIndex == 0
+                                    ? Colors.white
+                                    : AppColors.textColorSecondary5EAAA8,
+                                boderColor: _selectedIndex == 0
+                                    ? Colors.transparent
+                                    : AppColors.textColorSecondary5EAAA8,
+                                title: "Contractor",
+                                onpress: () {
+                                  setState(() {
+                                    _selectedIndex = 0;
+                                    selectedCategory = "Contractor";
+                                    titleCtrl.clear();
+                                  });
                                 },
-                                items: _options.map((String item) {
-                                  return DropdownMenuItem<String>(
-                                    value: item,
-                                    child: Text(item),
-                                  );
-                                }).toList(),
                               ),
                             ),
-                          ),
+
+                            SizedBox(width: 8.w),
+
+                            // In Progress Button
+                            Expanded(
+                              child: CustomButton(
+                                borderRadius: 12,
+                                loaderIgnore: true,
+                                height: 35.h,
+                                fontSize: 10.h,
+                                loading: false,
+                                color: _selectedIndex == 1
+                                    ? AppColors.textColorSecondary5EAAA8
+                                    : Colors.transparent,
+                                titlecolor: _selectedIndex == 1
+                                    ? Colors.white
+                                    : AppColors.textColorSecondary5EAAA8,
+                                boderColor: _selectedIndex == 1
+                                    ? Colors.transparent
+                                    : AppColors.textColorSecondary5EAAA8,
+                                title: "Traveling",
+                                onpress: () {
+                                  setState(() {
+                                    _selectedIndex = 1;
+                                    selectedCategory = "Traveling";
+                                    titleCtrl.clear();
+                                  });
+                                },
+                              ),
+                            ),
+
+                            SizedBox(width: 8.w),
+
+                            // Completed Button
+                            Expanded(
+                              child: CustomButton(
+                                loading: false,
+                                borderRadius: 12,
+                                loaderIgnore: true,
+                                height: 35.h,
+                                fontSize: 10.h,
+                                color: _selectedIndex == 2
+                                    ? AppColors.textColorSecondary5EAAA8
+                                    : Colors.transparent,
+                                titlecolor: _selectedIndex == 2
+                                    ? Colors.white
+                                    : AppColors.textColorSecondary5EAAA8,
+                                boderColor: _selectedIndex == 2
+                                    ? Colors.transparent
+                                    : AppColors.textColorSecondary5EAAA8,
+                                title: "Personal Need",
+                                onpress: () {
+                                  setState(() {
+                                    _selectedIndex = 2;
+                                    selectedCategory = "Personal";
+                                    titleCtrl.clear();
+                                  });
+                                },
+                              ),
+                            ),
+                          ],
                         ),
-
                         SizedBox(height: 12.h),
-
-
-
-
+                        CustomTextField(
+                          suffixIcon: Icon(Icons.keyboard_arrow_down_rounded),
+                          controller: titleCtrl,
+                          labelText: "Service Title",
+                          borderColor: AppColors.textColorSecondary5EAAA8,
+                          hintText: "service title",
+                          onTap: () {
+                            isDropDown = !isDropDown;
+                            setState(() {});
+                          },
+                          readOnly: true,
+                        ),
+                        isDropDown
+                            ? Container(
+                                decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(8.r))),
+                                height: 200.h,
+                                child: ListView.builder(
+                                  itemCount: neighborController
+                                      .services[_selectedIndex]
+                                      .taskList
+                                      ?.length,
+                                  itemBuilder: (context, index) {
+                                    var dropDownItems = neighborController
+                                        .services[_selectedIndex]
+                                        .taskList?[index];
+                                    titleCtrl.text = neighborController
+                                        .services[_selectedIndex].id
+                                        .toString();
+                                    return GestureDetector(
+                                      onTap: () {
+                                        isDropDown = false;
+                                        titleCtrl.text = dropDownItems ?? "";
+                                        setState(() {});
+                                      },
+                                      child: Column(
+                                        children: [
+                                          SizedBox(
+                                              height: index == 0 ? 8.h : 0),
+                                          CustomText(
+                                              text: dropDownItems ?? "",
+                                              textAlign: TextAlign.center),
+                                          Divider()
+                                        ],
+                                      ),
+                                    );
+                                  },
+                                ),
+                              )
+                            : const SizedBox(),
+                        CustomTextField(
+                            keyboardType: TextInputType.number,
+                            controller: feeCtrl,
+                            labelText: "Amount",
+                            borderColor: AppColors.textColorSecondary5EAAA8,
+                            hintText: "Amount"),
                         CustomTextField(
                             controller: descriptionCtrl,
                             labelText: "Description",
                             borderColor: AppColors.textColorSecondary5EAAA8,
                             hintText: "Description"),
-                        CustomTextField(
-                            controller: titleCtrl,
-                            labelText: "Service Title",
-                            borderColor: AppColors.textColorSecondary5EAAA8,
-                            hintText: "service title"),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
@@ -179,19 +292,17 @@ class _FreelancerGigScreenState extends State<FreelancerGigScreen> {
                               decoration: pickerDecoration,
                             ),
                             Padding(
-                              padding:
-                                  EdgeInsets.symmetric(horizontal: 7.w),
+                              padding: EdgeInsets.symmetric(horizontal: 7.w),
                               child: Text('-',
                                   style: TextStyle(
                                       fontSize: 20.h,
-                                      color: AppColors
-                                          .textColorSecondary5EAAA8)),
+                                      color:
+                                          AppColors.textColorSecondary5EAAA8)),
                             ),
                             _buildPicker(
                               items: hours,
                               selected: endHour,
-                              onChanged: (val) =>
-                                  setState(() => endHour = val),
+                              onChanged: (val) => setState(() => endHour = val),
                               decoration: pickerDecoration,
                             ),
                             SizedBox(width: 3.w),
@@ -212,198 +323,128 @@ class _FreelancerGigScreenState extends State<FreelancerGigScreen> {
                             ),
                           ],
                         ),
-                        CustomText(
-                            text: "Location",
-                            fontWeight: FontWeight.w500,
-                            color: Colors.black,
-                            top: 12.h,
-                            bottom: 8.h),
+                        SizedBox(height: 35.h),
                         CustomButton(
-                            color: AppColors.textColorSecondary5EAAA8,
-                            boderColor: AppColors.textColorSecondary5EAAA8,
-                            height: 40.h,
-                            title: "Use my current location",
-                            onpress: () {}),
-
-
-                        SizedBox(height: 12.h),
-
-                        Align(
-                          alignment: Alignment.centerLeft,
-                          child: Container(
-                            height: 35.h,
-                            padding:  EdgeInsets.symmetric(horizontal: 12.w),
-                            decoration: BoxDecoration(
-                              color: AppColors.bgColorWhite,
-                              border: Border.all(color: AppColors.textColorSecondary5EAAA8),
-                              borderRadius: BorderRadius.circular(20),
-                            ),
-                            child: DropdownButtonHideUnderline(
-                              child: DropdownButton<String>(
-                                value: rentSelected,
-                                icon: const Icon(Icons.arrow_drop_down, color: Colors.black),
-                                dropdownColor: Colors.white,
-                                borderRadius: BorderRadius.circular(16),
-                                style: const TextStyle(color: AppColors.textColor3B3B3B),
-                                onChanged: (String? newValue) {
-                                  if (newValue != null) {
-                                    setState(() {
-                                      rentSelected = newValue;
-                                    });
-                                  }
+                            height: 45.h,
+                            title: "Create Gig",
+                            onpress: () {
+                              Map<String, dynamic> data = {
+                                "category": "Personal",
+                                "serviceTittle": "${titleCtrl.text}",
+                                "description": "${descriptionCtrl.text}",
+                                "timeSlot":
+                                    "${startHour}:${startMinute} ${startPeriod} - ${endHour}:${endMinute} ${endPeriod}",
+                                "location": {
+                                  "type": "Point",
+                                  "coordinates": [90.413, 23.456]
                                 },
-                                items: rentOptions.map((String x) {
-                                  return DropdownMenuItem<String>(
-                                    value: x,
-                                    child: Text(x),
-                                  );
-                                }).toList(),
-                              ),
-                            ),
-                          ),
-                        ),
+                                "fee": feeCtrl.text
+                              };
 
-
-
-                        SizedBox(height: 35.h),
-
-                        CustomButton(
-                            height: 45.h,
-                            title: "Create Gig", onpress: () {
-
-                        }),
-
+                              freelancerController.gigCreate(body: data);
+                            }),
                         SizedBox(height: 10.h)
-
                       ],
                     ),
                   ),
                 ),
               ),
-
-
-
-
-
-
-              SingleChildScrollView(
-                child: Container(
-                  margin: EdgeInsets.symmetric(horizontal: 6.w, vertical: 18.h),
-                  decoration: BoxDecoration(
-                      color: AppColors.bgColor,
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withOpacity(0.5),
-                          blurRadius: 3,
-                          offset: Offset(0, 0),
-                        ),
-                      ],
-                      borderRadius: BorderRadius.circular(24.r)),
-                  child: Padding(
-                    padding: EdgeInsets.all(10.r),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        SizedBox(height: 28.h),
-                        Container(
-                          width: double.infinity,
-                          clipBehavior: Clip.antiAlias,
-                          decoration: BoxDecoration(shape: BoxShape.circle),
-                          child: Image.asset(
-                              "assets/images/serviceImage1.png",
-                              height: 100.h,
-                              width: 100.w,
-                              fit: BoxFit.cover),
-                        ),
-                        CustomText(
-                            text: "I’m David, your go-to helping hand for everyday tasks around the neighborhood. I’m available for grocery shopping, dog walking, laundry pickup, pharmacy runs, and other daily errands you might need help with.",
-                            fontSize: 12.h,
-                            textAlign: TextAlign.start,
-                            maxline: 15,
-                            top: 16.h,
-                            bottom: 8.h),
-
-
-
-                        keyValueText(
-                          keyText: "Freelancer",
-                          valueText: "Sagor"
-                        ),
-
-                        keyValueText(
-                            keyText: "Service Title",
-                            valueText: "Grocery run to trader Joe's"
-                        ),
-
-
-
-                        keyValueText(
-                            keyText: "Service Category",
-                            valueText: "Personal Needs"
-                        ),
-
-                        keyValueText(
-                            keyText: "Available Time",
-                            valueText: "10:00Am - 4:00PM"
-                        ),
-
-
-                        keyValueText(
-                            keyText: "Location",
-                            valueText: "Pine Street"
-                        ),
-
-
-
-                        keyValueText(
-                            keyText: "Rent",
-                            valueText: "25\$"
-                        ),
-
-
-                        keyValueText(
-                            keyText: "Rating",
-                            valueText: "★★★★"
-                        ),
-
-
-
-
-
-
-                        SizedBox(height: 35.h),
-
-                        CustomButton(
-                            height: 45.h,
-                            title: "Set Schedule", onpress: () {
-
-                              Get.toNamed(AppRoutes.setScheduleScreen);
-
-                        }),
-
-                        SizedBox(height: 10.h)
-
-                      ],
-                    ),
-                  ),
-                ),
-              ),
+              Expanded(
+                  child: Obx(
+                () => freelancerController.gigLoading.value
+                    ? Center(child: CircularProgressIndicator())
+                    : freelancerController.gig.isEmpty
+                        ? NoDataFoundCard()
+                        : ListView.builder(
+                            itemCount: freelancerController.gig.length,
+                            itemBuilder: (context, index) {
+                              var gig = freelancerController.gig[index];
+                              return Container(
+                                margin: EdgeInsets.symmetric(
+                                    horizontal: 6.w, vertical: 18.h),
+                                decoration: BoxDecoration(
+                                    color: AppColors.bgColor,
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.black.withOpacity(0.5),
+                                        blurRadius: 3,
+                                        offset: Offset(0, 0),
+                                      ),
+                                    ],
+                                    borderRadius: BorderRadius.circular(24.r)),
+                                child: Padding(
+                                  padding: EdgeInsets.all(10.r),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      SizedBox(height: 28.h),
+                                      Container(
+                                        width: double.infinity,
+                                        clipBehavior: Clip.antiAlias,
+                                        decoration: BoxDecoration(
+                                            shape: BoxShape.circle),
+                                        child: CustomNetworkImage(
+                                            imageUrl:
+                                                "${ApiConstants.imageBaseUrl}${gig.image}",
+                                            height: 100.h,
+                                            width: 100.w),
+                                      ),
+                                      CustomText(
+                                          text: "${gig.description}",
+                                          fontSize: 12.h,
+                                          textAlign: TextAlign.start,
+                                          maxline: 15,
+                                          top: 16.h,
+                                          bottom: 8.h),
+                                      keyValueText(
+                                          keyText: "Freelancer",
+                                          valueText: "${gig.name}"),
+                                      keyValueText(
+                                          keyText: "Service Title",
+                                          valueText: "${gig.serviceType}"),
+                                      keyValueText(
+                                          keyText: "Service Category",
+                                          valueText: "${gig.category}"),
+                                      keyValueText(
+                                          keyText: "Available Time",
+                                          valueText: "${gig.timeSlot}"),
+                                      keyValueText(
+                                          keyText: "Location",
+                                          valueText: "${gig.location}"),
+                                      keyValueText(
+                                          keyText: "Rent",
+                                          valueText: "${gig.fee}"),
+                                      keyValueText(
+                                          keyText: "Rating", valueText: "★★★★"),
+                                      SizedBox(height: 10.h)
+                                    ],
+                                  ),
+                                ),
+                              );
+                            }),
+              ))
             ],
-            onChange: (index) => print("Tab index changed to $index"),
+            onChange: (index) {
+              if (index == 1) {
+                freelancerController.gig.value = [];
+                freelancerController.geGig();
+              }
+
+              print("======================$index");
+            },
           ),
         ));
   }
 
-  keyValueText({required String keyText, valueText}){
-    return                  Padding(
+  keyValueText({required String keyText, valueText}) {
+    return Padding(
       padding: EdgeInsets.symmetric(vertical: 4.h),
       child: Row(
         children: [
           SizedBox(
               width: 120.w,
               child: CustomText(text: "$keyText", textAlign: TextAlign.start)),
-
-
           CustomText(text: ":  $valueText", italic: true)
         ],
       ),

@@ -13,6 +13,7 @@ import '../../views/screens/freelancer/freelancer_home/freelancer_hub_search_scr
 import '../../views/screens/freelancer/service/service_screen.dart';
 import '../../views/screens/message/message_screen.dart';
 import '../../views/screens/neighbor/hub/application_screen.dart';
+import '../../views/screens/neighbor/hub/freelancer_profile_screen.dart';
 import '../../views/screens/neighbor/hub/hub_home_screen.dart';
 import '../../views/screens/neighbor/hub/invite_screen.dart';
 import '../../views/screens/neighbor/hub/invited_request_screen.dart';
@@ -73,6 +74,7 @@ class AppRoutes {
   static const String joinRequestScreen = "/JoinRequestScreen";
   static const String invitedRequestScreen = "/InvitedRequestScreen";
   static const String freelancerHubSearchScreen = "/FreelancerHubSearchScreen";
+  static const String freelancerProfileScreen = "/FreelancerProfileScreen";
 
 
 
@@ -112,5 +114,6 @@ class AppRoutes {
     GetPage(name: joinRequestScreen, page: () =>  JoinRequestScreen()),
     GetPage(name: invitedRequestScreen, page: () =>  InvitedRequestScreen()),
     GetPage(name: freelancerHubSearchScreen, page: () =>  FreelancerHubSearchScreen()),
+    GetPage(name: freelancerProfileScreen, page: () =>  FreelancerProfileScreen()),
   ];
 }

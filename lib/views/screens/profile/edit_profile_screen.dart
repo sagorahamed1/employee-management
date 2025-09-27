@@ -50,99 +50,102 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       appBar: AppBar(title: CustomText(text: "Edit Profile", fontSize: 22.h, color: AppColors.textColorSecondary5EAAA8)),
       body: Padding(
         padding:  EdgeInsets.symmetric(horizontal: 24.w),
-        child: Column(
-          children: [
-            SizedBox(height: 70.h),
-
-            GestureDetector(
-              onTap: (){
-                showImagePickerOption(context);
-              },
-              child: SizedBox(
-                height: 86.h,
-                child: Stack(
-                  children: [
-
-
-                    _image != null ?
-                    CircleAvatar(
-                        radius: 85.r,
-                        backgroundImage: MemoryImage(_image!)) :
-                    CustomNetworkImage(
-                      imageUrl: "${ApiConstants.imageBaseUrl}${imageCtrl.text}",
-                      height: 85.h,
-                      width: 85.w,
-                      boxShape: BoxShape.circle,
-                    ),
-
-
-                    Positioned(
-                      bottom: 7.h,
-                        left: 30.w,
-                        child: Icon(Icons.camera_alt_outlined, color: Colors.white)
-
-                    )
-                  ],
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              SizedBox(height: 70.h),
+          
+              GestureDetector(
+                onTap: (){
+                  showImagePickerOption(context);
+                },
+                child: SizedBox(
+                  height: 86.h,
+                  child: Stack(
+                    children: [
+          
+          
+                      _image != null ?
+                      CircleAvatar(
+                          radius: 85.r,
+                          backgroundImage: MemoryImage(_image!)) :
+                      CustomNetworkImage(
+                        imageUrl: "${ApiConstants.imageBaseUrl}${imageCtrl.text}",
+                        height: 85.h,
+                        width: 85.w,
+                        boxShape: BoxShape.circle,
+                      ),
+          
+          
+                      Positioned(
+                        bottom: 7.h,
+                          left: 30.w,
+                          child: Icon(Icons.camera_alt_outlined, color: Colors.white)
+          
+                      )
+                    ],
+                  ),
                 ),
               ),
-            ),
-
-
-            SizedBox(height: 16.h),
-
-
-            CustomTextField(
-              controller: nameCtrl,
-              hintText: "Enter Name",
-              labelText: "Your Name",
-              contentPaddingVertical: 10.h,
-              borderColor: Color(0xff592B00),
-              hintextColor: Colors.black,
-            ),
-
-
-
-            CustomTextField(
-              controller: phoneCtrl,
-              hintText: "Enter Phone No.",
-              labelText: "Phone No.",
-              borderColor: Color(0xff592B00),
-              hintextColor: Colors.black,
-              contentPaddingVertical: 10.h,
-            ),
-
-
-
-            CustomTextField(
-              controller: addressCtrl,
-              hintText: "Enter Address",
-              labelText: "Address",
-              borderColor: Color(0xff592B00),
-              hintextColor: Colors.black,
-              contentPaddingVertical: 10.h,
-            ),
-
-
-
-            Spacer(),
-
-
-            CustomButton(title: "Update Profile", onpress: (){
-
-              profileController.updateUserProfile(
-                address: addressCtrl.text,
-                phone: phoneCtrl.text,
-                name: nameCtrl.text,
-                profileImage: selectedIMage
-              );
-
-
-            }),
-
-            SizedBox(height: 100.h)
-
-
-          ],
+          
+          
+              SizedBox(height: 16.h),
+          
+          
+              CustomTextField(
+                controller: nameCtrl,
+                hintText: "Enter Name",
+                labelText: "Your Name",
+                contentPaddingVertical: 10.h,
+                borderColor: Color(0xff592B00),
+                hintextColor: Colors.black,
+              ),
+          
+          
+          
+              CustomTextField(
+                keyboardType: TextInputType.number,
+                controller: phoneCtrl,
+                hintText: "Enter Phone No.",
+                labelText: "Phone No.",
+                borderColor: Color(0xff592B00),
+                hintextColor: Colors.black,
+                contentPaddingVertical: 10.h,
+              ),
+          
+          
+          
+              CustomTextField(
+                controller: addressCtrl,
+                hintText: "Enter Address",
+                labelText: "Address",
+                borderColor: Color(0xff592B00),
+                hintextColor: Colors.black,
+                contentPaddingVertical: 10.h,
+              ),
+          
+          
+          
+                 SizedBox(height: 200.h),
+          
+          
+              CustomButton(title: "Update Profile", onpress: (){
+          
+                profileController.updateUserProfile(
+                  address: addressCtrl.text,
+                  phone: phoneCtrl.text,
+                  name: nameCtrl.text,
+                  profileImage: selectedIMage
+                );
+          
+          
+              }),
+          
+              SizedBox(height: 100.h)
+          
+          
+            ],
+          ),
         ),
       ),
     );

@@ -218,6 +218,10 @@ class $AssetsImagesGen {
   AssetGenImage get noInternet =>
       const AssetGenImage('assets/images/noInternet.jpg');
 
+  /// File path: assets/images/nodataImage.jpg
+  AssetGenImage get nodataImage =>
+      const AssetGenImage('assets/images/nodataImage.jpg');
+
   /// File path: assets/images/notificationImage.jpg
   AssetGenImage get notificationImage =>
       const AssetGenImage('assets/images/notificationImage.jpg');
@@ -260,6 +264,7 @@ class $AssetsImagesGen {
         inviteTopImage,
         logo,
         noInternet,
+        nodataImage,
         notificationImage,
         onboarding1,
         onboarding2,

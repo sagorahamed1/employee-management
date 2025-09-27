@@ -10,6 +10,7 @@ class ShopTaskCard extends StatelessWidget {
   final String? imagePath;
   final String? taskTitle;
   final String? taskType;
+  final String? hubName;
   final String? scheduledTime;
   final String? peopleJoined;
   final String? organizer;
@@ -31,7 +32,7 @@ class ShopTaskCard extends StatelessWidget {
     this.payAmount,
     this.btnName = "Join",
     this.selected = false,
-    this.ignoreJoinBtn = false, this.BtnOnTap, this.onTap
+    this.ignoreJoinBtn = false, this.BtnOnTap, this.onTap, this.hubName
   }) : super(key: key);
 
   @override
@@ -65,6 +66,7 @@ class ShopTaskCard extends StatelessWidget {
                     children: [
                       _buildRow("Task Title", taskTitle ?? ""),
                       _buildRow("Task Type", taskType ?? ""),
+                    hubName == ""  ? SizedBox() :  _buildRow("Hub Name", hubName ?? ""),
                     scheduledTime == ""  ? SizedBox() :  _buildRow("Scheduled Time", scheduledTime ?? ""),
                       peopleJoined == ""  ? SizedBox() : _buildRow("People Joined", peopleJoined ?? ""),
                       organizer == ""  ? SizedBox() : _buildRow("Organizer", organizer ?? ""),
@@ -91,37 +93,28 @@ class ShopTaskCard extends StatelessWidget {
                               ),
                             ),
 
-                            SizedBox(width: 10.w),
-
-                            Container(
-                              height: 8.h,
-                              width: 90.w,
-                              color: AppColors.primaryColor,
-                            ),
-                            Container(
-                              height: 8.h,
-                              width: 40.w,
-                              color: AppColors.textColor3B3B3B,
-                            ),
 
 
-                            SizedBox(width: 10.w),
+                           Spacer(),
 
 
-                            Container(
-                              height: 16.h,
-                              width: 16.w,
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                border: Border.all(color: selected ?  AppColors.primaryColor : Colors.black87)
-                              ),
-                              child: Center(
-                                child: Container(
-                                  height: 8.h,
-                                  width: 8.w,
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: selected ? AppColors.primaryColor : Colors.transparent
+                            GestureDetector(
+                              onTap: BtnOnTap,
+                              child: Container(
+                                height: 22.h,
+                                width: 22.w,
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  border: Border.all(color: selected ?  AppColors.primaryColor : Colors.black87)
+                                ),
+                                child: Center(
+                                  child: Container(
+                                    height: 12.h,
+                                    width: 12.w,
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: selected ? AppColors.primaryColor : Colors.transparent
+                                    ),
                                   ),
                                 ),
                               ),

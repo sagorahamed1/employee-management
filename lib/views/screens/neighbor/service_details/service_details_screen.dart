@@ -145,15 +145,26 @@ class _ServiceDetailsScreenState extends State<ServiceDetailsScreen> {
                                     fontSize: 16.h,
                                     bottom: 12.h),
 
-                                ListView.builder(
-                                  shrinkWrap: true,
-                                  physics: NeverScrollableScrollPhysics(),
-                                  itemCount: serviceDetails.taskList?.length,
-                                    itemBuilder: (context, index) {
-                                      return  CustomText(text: "    • ${serviceDetails.taskList?[index]}", fontSize: 12.h, italic: true, textAlign: TextAlign.start);
-                                    },
-                                ),
+                                // ListView.builder(
+                                //   shrinkWrap: true,
+                                //   physics: NeverScrollableScrollPhysics(),
+                                //   itemCount: serviceDetails.taskList?.length,
+                                //     itemBuilder: (context, index) {
+                                //       return  CustomText(text: "    • ${serviceDetails.taskList?[index]}", fontSize: 12.h, italic: true, textAlign: TextAlign.start);
+                                //     },
+                                // ),
 
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: serviceDetails.taskList?.map((task) {
+                                    return CustomText(
+                                      text: "• $task",
+                                      fontSize: 12.h,
+                                      italic: true,
+                                      textAlign: TextAlign.start,
+                                    );
+                                  }).toList() ?? [],
+                                ),
 
 
 
@@ -205,14 +216,10 @@ class _ServiceDetailsScreenState extends State<ServiceDetailsScreen> {
                                 ),
 
                                 isDropDown
-                                    ? Container(
-                                  decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      borderRadius:
-                                      BorderRadius.all(Radius.circular(8.r))),
+                                    ? SizedBox(
                                   height: 200.h,
                                   child: ListView.builder(
-                                    itemCount: serviceDetails.taskList?.length,
+                                    itemCount: serviceDetails.taskList?.length ?? 0,
                                     itemBuilder: (context, index) {
                                       var dropDownItems = serviceDetails.taskList?[index];
                                       return GestureDetector(
@@ -235,6 +242,7 @@ class _ServiceDetailsScreenState extends State<ServiceDetailsScreen> {
                                   ),
                                 )
                                     : const SizedBox(),
+
 
                                 CustomText(
                                     text: "Frequency of the task",
@@ -459,12 +467,21 @@ class _ServiceDetailsScreenState extends State<ServiceDetailsScreen> {
   File? selectedImage;
 
   Future<void> _pickImageFromGallery() async {
+    // final returnImage = await ImagePicker().pickImage(source: ImageSource.gallery);
+    // if (returnImage == null) return;
+    // setState(() {
+    //   selectedImage = File(returnImage.path);
+    //   _image = File(returnImage.path).readAsBytesSync();
+    // });
+
     final returnImage = await ImagePicker().pickImage(source: ImageSource.gallery);
     if (returnImage == null) return;
+    final bytes = await File(returnImage.path).readAsBytes();
     setState(() {
       selectedImage = File(returnImage.path);
-      _image = File(returnImage.path).readAsBytesSync();
+      _image = bytes;
     });
+
   }
 
 

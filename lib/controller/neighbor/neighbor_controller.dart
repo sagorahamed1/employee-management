@@ -180,6 +180,26 @@ class NeighborController extends GetxController {
   }
 
 
+  voteAdd({required String hubId, freelancerId}) async {
+
+    var body = {
+      "freelancerId" : "$freelancerId"
+    };
+
+    var response = await ApiClient.postData("${ApiConstants.poll}/$hubId", jsonEncode(body));
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      ToastMessageHelper.showToastMessage(response.body["message"]);
+     var item = pulls.firstWhere((e) => e.freelancerId == freelancerId);
+     item.isVoted = true;
+     update();
+
+
+    }else{
+      ToastMessageHelper.showToastMessage(response.body["message"], title: "info");
+    }
+  }
+
+
 
   acceptJoinRequest({required String hubId, status}) async {
 
@@ -328,9 +348,8 @@ class NeighborController extends GetxController {
   getApplication({String? hubId}) async {
 
     if (page.value == 1) {
-      dummyHubId.value = hubId.toString();
-      application.value = [];
       applicationLoading(true);
+      dummyHubId.value = hubId.toString();
     }
 
 
@@ -371,13 +390,13 @@ class NeighborController extends GetxController {
 
 
     var response = await ApiClient.getData(
-        '${ApiConstants.poll}/${dummyHubId??""}?page=1&limit=10');
+        '${ApiConstants.poll}/${dummyHubId??""}?page=1&limit=1000');
     if (response.statusCode == 200) {
 
 
-      totalPage = jsonDecode(response.body['pagination']['totalPages'].toString()) ?? 0;
-      totalResult = jsonDecode(response.body['pagination']['totalCount'].toString()) ?? 0;
-      var data  = List<PollModel>.from(response.body["data"].map((x) => PollModel.fromJson(x)));
+      // totalPage = jsonDecode(response.body['pagination']['totalPage'].toString()) ?? 0;
+      // totalResult = jsonDecode(response.body['pagination']['totalItem'].toString()) ?? 0;
+      var data  = List<PollModel>.from(response.body["data"]["response"].map((x) => PollModel.fromJson(x)));
       pulls.addAll(data);
       update();
       pollLoading(false);
