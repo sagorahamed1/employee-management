@@ -189,8 +189,13 @@ class NeighborController extends GetxController {
     var response = await ApiClient.postData("${ApiConstants.poll}/$hubId", jsonEncode(body));
     if (response.statusCode == 200 || response.statusCode == 201) {
       ToastMessageHelper.showToastMessage(response.body["message"]);
-     var item = pulls.firstWhere((e) => e.freelancerId == freelancerId);
-     item.isVoted = true;
+
+      var index = pulls.indexWhere((e) => e.freelancerId == freelancerId);
+      if (index != -1) {
+        pulls[index].isVoted = true;
+        pulls.refresh();
+      }
+
      update();
 
 
@@ -377,6 +382,7 @@ class NeighborController extends GetxController {
   RxBool isHubOwner = false.obs;
   RxList<PollModel> pulls = <PollModel>[].obs;
   RxString pollMessage = ''.obs;
+  RxBool isOwner = false.obs;
 
 
   getPoll({String? hubId}) async {
@@ -398,6 +404,8 @@ class NeighborController extends GetxController {
       // totalResult = jsonDecode(response.body['pagination']['totalItem'].toString()) ?? 0;
       var data  = List<PollModel>.from(response.body["data"]["response"].map((x) => PollModel.fromJson(x)));
       pulls.addAll(data);
+
+      isOwner.value = response.body["data"]["isHubOwner"];
       update();
       pollLoading(false);
     }else if(response.statusCode == 202){

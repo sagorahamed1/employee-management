@@ -1,5 +1,7 @@
 
 
+import 'package:get/get.dart';
+
 class PollModel {
   final String? freelancerId;
   final int? fee;

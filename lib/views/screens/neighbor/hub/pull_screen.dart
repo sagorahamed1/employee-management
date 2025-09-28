@@ -53,6 +53,8 @@ class _PullScreenState extends State<PullScreen> {
     super.dispose();
   }
 
+  int selectedIndex = -1;
+
 
 
 
@@ -122,32 +124,68 @@ class _PullScreenState extends State<PullScreen> {
 
                     return Padding(
                       padding:  EdgeInsets.only(bottom: 10.h, right: 20.w, left: 20.w),
-                      child: ShopTaskCard(
-                        imagePath:
-                        "${ApiConstants.imageBaseUrl}${pull.image}",
-                        taskTitle: "${pull.serviceTitle}",
-                        hubName: "",
-                        taskType: "${pull.taskType}",
-                        scheduledTime: "${pull.timeSlot}",
-                        peopleJoined: "",
-                        organizer: "",
-                        payAmount: "\$${pull.fee}",
-                        selected: pull.isVoted ?? false,
-                        BtnOnTap: () {
-                          neighborController.voteAdd(hubId: data["hubId"], freelancerId: pull.freelancerId);
-                        },
-                        ignoreJoinBtn: true,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          border: Border.all(color: selectedIndex == index ? Colors.green : Colors.transparent),
+                          borderRadius: BorderRadius.circular(12.r)
+                        ),
+                        child: ShopTaskCard(
+                          imagePath:
+                          "${ApiConstants.imageBaseUrl}${pull.image}",
+                          taskTitle: "${pull.serviceTitle}",
+                          hubName: "",
+                          taskType: "${pull.taskType}",
+                          scheduledTime: "${pull.timeSlot}",
+                          peopleJoined: "",
+                          organizer: "",
+                          payAmount: "\$${pull.fee}",
+                          selected: pull.isVoted ?? false,
+                          BtnOnTap: () {
+                            neighborController.voteAdd(hubId: data["hubId"], freelancerId: pull.freelancerId);
+                          },
+                          ignoreJoinBtn: true,
+                          onTap: (){
+
+
+                            setState(() {
+                              selectedIndex = index;
+                            });
+                          },
+                        ),
                       ),
                     );
                   }else if(index >= neighborController.totalResult){
                     return null;
                   }else{
-                    return CircularProgressIndicator();
+                    return  null;//Center(child: CircularProgressIndicator());
                   }
                 },
               ),
             ),
           ),
+
+
+
+
+          Obx((){
+              if(neighborController.isOwner.value) {
+                return Padding(
+                  padding:  EdgeInsets.symmetric(horizontal: 20.w),
+                  child: CustomButton(title: "Assign", onpress: (){}),
+                );
+              }
+              return SizedBox();
+
+          }),
+
+          Obx((){
+            if(neighborController.isOwner.value) {
+              return SizedBox(height: 120.h);
+            }
+            return SizedBox();
+
+          }),
+
 
 
         ],
