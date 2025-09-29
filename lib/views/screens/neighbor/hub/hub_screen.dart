@@ -222,7 +222,7 @@ class _HubScreenState extends State<HubScreen> {
 
                             Get.toNamed(AppRoutes.hubHomeScreen, arguments: {
                               "role" : "neighbor",
-                              "hubId" : hub.id,
+                              "hubId" : hub.id ?? "",
                               "image" : "${ApiConstants.imageBaseUrl}${hub.image}",
                               "name" : "${hub.hubName}"
                             });

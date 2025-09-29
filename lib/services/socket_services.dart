@@ -22,7 +22,7 @@ class SocketServices {
 
   SocketServices._internal();
 
-  Future<void> init({String? userId, fcmToken, BuildContext? context}) async {
+  Future<void> init({String? token, BuildContext? context}) async {
 
     // if(socket.connected){
     //   disconnect(isManual: true);
@@ -30,22 +30,16 @@ class SocketServices {
 
 
     socket = IO.io(
-        '${ApiConstants.socketBaseUrl}',
-        // '${ApiConstants.imageBaseUrl}?token=$token',
+        ApiConstants.socketBaseUrl.toString(),
         IO.OptionBuilder()
             .setTransports(['websocket'])
             .enableReconnection()
+            .setExtraHeaders({"token" : "$token"})
             .enableForceNew()
             .build()
     );
 
     _setupSocketListeners(token.toString(), context);
-    socket.onConnect((_){
-      socket.emit("user-connected",{
-        "userId" : "$userId",
-        "fcmToken" : "$fcmToken"
-      });
-    }); // Ensure connection starts
   }
 
   void _setupSocketListeners(String token, BuildContext? context) {

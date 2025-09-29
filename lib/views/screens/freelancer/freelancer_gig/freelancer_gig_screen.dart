@@ -329,7 +329,7 @@ class _FreelancerGigScreenState extends State<FreelancerGigScreen> {
                             title: "Create Gig",
                             onpress: () {
                               Map<String, dynamic> data = {
-                                "category": "Personal",
+                                "category": "${selectedCategory}",
                                 "serviceTittle": "${titleCtrl.text}",
                                 "description": "${descriptionCtrl.text}",
                                 "timeSlot":

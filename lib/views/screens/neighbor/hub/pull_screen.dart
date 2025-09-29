@@ -53,7 +53,7 @@ class _PullScreenState extends State<PullScreen> {
     super.dispose();
   }
 
-  int selectedIndex = -1;
+  String selectedIndex = "";
 
 
 
@@ -126,7 +126,7 @@ class _PullScreenState extends State<PullScreen> {
                       padding:  EdgeInsets.only(bottom: 10.h, right: 20.w, left: 20.w),
                       child: Container(
                         decoration: BoxDecoration(
-                          border: Border.all(color: selectedIndex == index ? Colors.green : Colors.transparent),
+                          border: Border.all(color: selectedIndex == pull.freelancerId.toString() ? Colors.green : Colors.transparent),
                           borderRadius: BorderRadius.circular(12.r)
                         ),
                         child: ShopTaskCard(
@@ -148,7 +148,7 @@ class _PullScreenState extends State<PullScreen> {
 
 
                             setState(() {
-                              selectedIndex = index;
+                              selectedIndex = pull.freelancerId.toString();
                             });
                           },
                         ),
@@ -171,7 +171,12 @@ class _PullScreenState extends State<PullScreen> {
               if(neighborController.isOwner.value) {
                 return Padding(
                   padding:  EdgeInsets.symmetric(horizontal: 20.w),
-                  child: CustomButton(title: "Assign", onpress: (){}),
+                  child: CustomButton(
+                      title: "Assign", onpress: (){
+                    
+                    neighborController.assignPull(id: selectedIndex.toString(), hubId: data["hubId"]);
+                    
+                  }),
                 );
               }
               return SizedBox();

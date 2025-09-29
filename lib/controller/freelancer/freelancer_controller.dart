@@ -7,6 +7,7 @@ import 'dart:io';
 
 import 'package:droke/core/config/app_route.dart';
 import 'package:droke/helper/toast_message_helper.dart';
+import 'package:droke/models/freelancer_hub_history_model.dart';
 import 'package:droke/models/member_model.dart';
 import 'package:droke/models/my_hub_model.dart';
 import 'package:droke/models/poll_model.dart';
@@ -18,6 +19,7 @@ import 'package:get/get.dart';
 
 import '../../models/application_model.dart';
 import '../../models/deshboard_model.dart';
+import '../../models/freelancer_dashboard_model.dart';
 import '../../models/freelancer_hub_model.dart';
 import '../../models/gig_model.dart';
 import '../../models/hub_model.dart';
@@ -33,14 +35,18 @@ class FreelancerController extends GetxController {
 
 
   RxBool dashBoardLoading = false.obs;
-  Rx<DeshBoardModel> dashBoard = DeshBoardModel().obs;
+  Rx<FreelancerDashboardModel> dashBoard = FreelancerDashboardModel().obs;
+  RxString dashboardMessage = ''.obs;
+  RxBool isTodayJob = false.obs;
 
   getDeshBoard({required String hubId}) async {
     dashBoardLoading(true);
-    var response = await ApiClient.getData('${ApiConstants.deshBoard}/${hubId}');
+    var response = await ApiClient.getData('${ApiConstants.freelancerDashboard}/${hubId}');
 
     if (response.statusCode == 200 || response.statusCode == 201) {
-      dashBoard.value = DeshBoardModel.fromJson(response.body["data"]);
+      dashBoard.value = FreelancerDashboardModel.fromJson(response.body["data"]);
+      dashboardMessage.value = response.body["data"]["workStatus"];
+      isTodayJob.value = response.body["data"]["isTodayJob"];
       update();
       dashBoardLoading(false);
     } else {
@@ -55,9 +61,32 @@ class FreelancerController extends GetxController {
     var response = await ApiClient.postData(
         "${ApiConstants.freelancerApply}/${serviceId}", jsonEncode({}));
     if (response.statusCode == 200 || response.statusCode == 201) {
-      final hub = hubs.firstWhere((x) => x.id == serviceId);
-      hub.isApplyed = true;
+
+
+      var index = hubs.indexWhere((x) => x.id == serviceId);
+      if (index != -1) {
+        hubs[index].isApplyed = true;
+        // hubs.refresh(); // if you are using RxList in GetX
+      }
+
+
       update();
+      ToastMessageHelper.showToastMessage(response.body["message"]);
+    }else{
+      ToastMessageHelper.showToastMessage(response.body["message"], title: "Error");
+    }
+  }
+
+
+
+
+  startHub({required String hubId, status}) async {
+    var response = await ApiClient.patch(
+        "${ApiConstants.start}/${hubId}?status=${status}", jsonEncode({}));
+    if (response.statusCode == 200 || response.statusCode == 201) {
+
+      getDeshBoard(hubId: hubId);
+
       ToastMessageHelper.showToastMessage(response.body["message"]);
     }else{
       ToastMessageHelper.showToastMessage(response.body["message"], title: "Error");
@@ -240,6 +269,26 @@ class FreelancerController extends GetxController {
     }
   }
 
+
+
+
+  RxBool historyLoading = false.obs;
+  RxList<FreelancerHubHistoryModel> history = <FreelancerHubHistoryModel>[].obs;
+
+  getHistory({String? status}) async {
+    historyLoading(true);
+
+    var response = await ApiClient.getData(
+        '${ApiConstants.history}?status=$status');
+    if (response.statusCode == 200) {
+
+      history.value  = List<FreelancerHubHistoryModel>.from(response.body["data"].map((x) => FreelancerHubHistoryModel.fromJson(x)));
+
+      historyLoading(false);
+    } else {
+      historyLoading(false);
+    }
+  }
 
 
 

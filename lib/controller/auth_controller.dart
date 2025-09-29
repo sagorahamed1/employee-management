@@ -66,16 +66,17 @@ class AuthController extends GetxController {
         Get.toNamed(AppRoutes.resetPasswordScreen);
       } else {
         Get.toNamed(AppRoutes.logInScreen);
+        await PrefsHelper.remove(AppConstants.email);
+        await PrefsHelper.remove(AppConstants.bearerToken);
 
       }
       verfyLoading(false);
 
-      await PrefsHelper.remove(AppConstants.email);
-      await PrefsHelper.remove(AppConstants.bearerToken);
+
 
     } else {
       verfyLoading(false);
-      ToastMessageHelper.showToastMessage("${response.body["message"]}");
+      ToastMessageHelper.showToastMessage("${response.body["message"]}", title: "Warning");
 
     }
   }
@@ -129,19 +130,17 @@ class AuthController extends GetxController {
 
 
 
-      // SocketServices socketService = SocketServices();
-      // socketService.disconnect(isManual: true);
-      // await socketService.init(userId: data["user"]["_id"]);
+      SocketServices socketServices = SocketServices();
+      socketServices.init();
 
-    } else if (response.statusCode == 1) {
-      logInLoading(false);
-      ToastMessageHelper.showToastMessage("${response.body["message"]}");
-    } else {
+    }else {
       ///******** When user do not able to verify their account thay have to verify there account then they can go to the app********
-      if (response.body["message"] == "Please verify your account") {
+      if (response.body["message"] == "We've sent an OTP to your email to verify your profile.") {
 
         ToastMessageHelper.showToastMessage(
             "your account create is successful but you don't verify your email. \n \n Please verify your account");
+        Get.toNamed(AppRoutes.optScreen, arguments: {'screenType': 'register'});
+
       }
 
       ///******** if user as a employee go to the otp verify screen or more information screen************///
@@ -173,10 +172,11 @@ class AuthController extends GetxController {
     if (response.statusCode == 200 || response.statusCode == 201) {
 
       Get.toNamed(AppRoutes.optScreen,arguments: {'screenType' : 'forgot'});
-      PrefsHelper.setString(AppConstants.bearerToken, response.body["data"]["resetPasswordToken"]);
+      PrefsHelper.setString(AppConstants.bearerToken, response.body["data"]["token"]);
       forgotLoading(false);
     }  else {
       forgotLoading(false);
+      ToastMessageHelper.showToastMessage(response.body["message"]);
     }
   }
 
@@ -199,9 +199,6 @@ class AuthController extends GetxController {
       ToastMessageHelper.showToastMessage('Password Changed');
       print("======>>> successful");
       setPasswordLoading(false);
-    } else if (response.statusCode == 1) {
-      setPasswordLoading(false);
-      ToastMessageHelper.showToastMessage("Server error! \n Please try later");
     } else {
       setPasswordLoading(false);
     }
@@ -221,11 +218,11 @@ class AuthController extends GetxController {
         "${ApiConstants.resendOtpEndPoint}?email=${email}", jsonEncode(body));
 
     if (response.statusCode == 200 || response.statusCode == 201) {
-      PrefsHelper.setString(
-          AppConstants.bearerToken, response.body["data"]["token"]);
+
       ToastMessageHelper.showToastMessage(
           'You have got an one time code to your email');
       print("======>>> successful");
+      startCountdown();
       resendLoading(false);
     } else {
       ToastMessageHelper.showToastMessage("${response.body["message"]}");
@@ -256,12 +253,12 @@ class AuthController extends GetxController {
     }
   }
 
-  final RxInt countdown = 90.obs;
+  final RxInt countdown = 180.obs;
   final RxBool isCountingDown = false.obs;
 
   void startCountdown() {
     isCountingDown.value = true;
-    countdown.value = 90;
+    countdown.value = 180;
     update();
     Timer.periodic(const Duration(seconds: 1), (timer) {
       if (countdown.value > 0) {

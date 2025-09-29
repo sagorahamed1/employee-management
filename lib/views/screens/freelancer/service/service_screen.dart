@@ -1,11 +1,17 @@
 import 'package:droke/core/app_constants/app_colors.dart';
+import 'package:droke/services/api_constants.dart';
 import 'package:droke/views/widgets/custom_button.dart';
+import 'package:droke/views/widgets/custom_shimmer.dart';
 import 'package:droke/views/widgets/custom_text.dart';
+import 'package:droke/views/widgets/no_data_found_card.dart';
 import 'package:droke/views/widgets/shop_task_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 
+import '../../../../controller/freelancer/freelancer_controller.dart';
+import '../../../../core/config/app_route.dart';
 import '../../../widgets/cachanetwork_image.dart';
 
 class ServiceScreen extends StatefulWidget {
@@ -16,7 +22,18 @@ class ServiceScreen extends StatefulWidget {
 }
 
 class _ServiceScreenState extends State<ServiceScreen> {
+
+  FreelancerController freelancerController = Get.find<FreelancerController>();
+
   int _selectedIndex = 0; // 0: Pending, 1: In Progress, 2: Completed
+
+
+  @override
+  void initState() {
+    freelancerController.history.value = [];
+    freelancerController.getHistory(status: "pending");
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -50,6 +67,8 @@ class _ServiceScreenState extends State<ServiceScreen> {
                         : AppColors.textColorSecondary5EAAA8,
                     title: "Pending",
                     onpress: () {
+                      freelancerController.history.value = [];
+                      freelancerController.getHistory(status: "pending");
                       setState(() {
                         _selectedIndex = 0;
                       });
@@ -76,6 +95,8 @@ class _ServiceScreenState extends State<ServiceScreen> {
                         : AppColors.textColorSecondary5EAAA8,
                     title: "In Progress",
                     onpress: () {
+                      freelancerController.history.value = [];
+                      freelancerController.getHistory(status: "inprogress");
                       setState(() {
                         _selectedIndex = 1;
                       });
@@ -102,6 +123,8 @@ class _ServiceScreenState extends State<ServiceScreen> {
                         : AppColors.textColorSecondary5EAAA8,
                     title: "Completed",
                     onpress: () {
+                      freelancerController.history.value = [];
+                      freelancerController.getHistory(status: "completed");
                       setState(() {
                         _selectedIndex = 2;
                       });
@@ -115,73 +138,113 @@ class _ServiceScreenState extends State<ServiceScreen> {
 
             // TODO : <<< ==========  List view ========>>>
 
-            _selectedIndex == 0
-                ? Expanded(
-              child: ListView.builder(
-                padding: EdgeInsets.zero,
-                itemCount: 15,
-                itemBuilder: (context, index) {
-                  return Padding(
-                    padding: EdgeInsets.only(bottom: 10.h),
-                    child: ShopTaskCard(
-                      imagePath:
-                      "https://img.etimg.com/thumb/width-1200,height-1200,imgsize-789754,resizemode-75,msid-73320212/small-biz/sme-sector/the-kirana-is-a-technology-shop-too.jpg",
-                      taskTitle: "Grocery run to Trader Joe's",
-                      taskType: "Personal Needs",
-                      scheduledTime: "9:30AM Today",
-                      peopleJoined: "3 Neighbors joined",
-                      organizer: "Maria from Pine Street",
-                      payAmount: "\$5",
-                      btnName: "Start",
-                    ),
-                  );
-                },
-              ),
-            )
-                : _selectedIndex == 1
-                ? Expanded(
-              child: ListView.builder(
-                padding: EdgeInsets.zero,
-                itemCount: 15,
-                itemBuilder: (context, index) {
-                  return Padding(
-                    padding: EdgeInsets.only(bottom: 10.h),
-                    child: ShopTaskCard(
+
+            Expanded(
+              child: Obx(()=> freelancerController.historyLoading.value ? CustomShimmer() :
+                  freelancerController.history.isEmpty ? NoDataFoundCard() :
+                 ListView.builder(
+                  padding: EdgeInsets.zero,
+                  itemCount: freelancerController.history.length,
+                  itemBuilder: (context, index) {
+                    var data = freelancerController.history[index];
+                    return Padding(
+                      padding: EdgeInsets.only(bottom: 10.h),
+                      child: ShopTaskCard(
                         imagePath:
-                        "https://img.etimg.com/thumb/width-1200,height-1200,imgsize-789754,resizemode-75,msid-73320212/small-biz/sme-sector/the-kirana-is-a-technology-shop-too.jpg",
-                        taskTitle: "Grocery run to Trader Joe's",
-                        taskType: "Personal Needs",
-                        scheduledTime: "9:30AM Today",
-                        peopleJoined: "3 Neighbors joined",
-                        organizer: "Maria from Pine Street",
-                        payAmount: "\$5",
-                        btnName: "Complete"),
-                  );
-                },
+                        "${ApiConstants.imageBaseUrl}${data.image}",
+                        taskTitle: "${data.taskTitle}",
+                        taskType: "",
+                        scheduledTime: "${data.timeSlot}",
+                        peopleJoined: "",
+                        organizer: "",
+                        hubName: "${data.hubName}",
+                        payAmount: "\$${data.fee}",
+                        btnName: "${data.status}",
+                        onTap: () {
+
+
+                          Get.toNamed(AppRoutes.freelancerHubHomeScreen, arguments: {
+                            "role" : "freelancer",
+                            "hubId" : data.hubId,
+                            "image" : "${ApiConstants.imageBaseUrl}${data.image}",
+                            "name" : "${data.hubName}"
+                          });
+
+                        },
+                      ),
+                    );
+                  },
+                ),
               ),
             )
-                : Expanded(
-              child: ListView.builder(
-                padding: EdgeInsets.zero,
-                itemCount: 15,
-                itemBuilder: (context, index) {
-                  return Padding(
-                    padding: EdgeInsets.only(bottom: 10.h),
-                    child: ShopTaskCard(
-                      imagePath:
-                      "https://img.etimg.com/thumb/width-1200,height-1200,imgsize-789754,resizemode-75,msid-73320212/small-biz/sme-sector/the-kirana-is-a-technology-shop-too.jpg",
-                      taskTitle: "Grocery run to Trader Joe's",
-                      taskType: "Personal Needs",
-                      scheduledTime: "9:30AM Today",
-                      peopleJoined: "3 Neighbors joined",
-                      organizer: "Maria from Pine Street",
-                      payAmount: "\$5",
-                      btnName: "n/a",
-                    ),
-                  );
-                },
-              ),
-            ),
+
+            // _selectedIndex == 0
+            //     ? Expanded(
+            //   child: ListView.builder(
+            //     padding: EdgeInsets.zero,
+            //     itemCount: 15,
+            //     itemBuilder: (context, index) {
+            //       return Padding(
+            //         padding: EdgeInsets.only(bottom: 10.h),
+            //         child: ShopTaskCard(
+            //           imagePath:
+            //           "https://img.etimg.com/thumb/width-1200,height-1200,imgsize-789754,resizemode-75,msid-73320212/small-biz/sme-sector/the-kirana-is-a-technology-shop-too.jpg",
+            //           taskTitle: "Grocery run to Trader Joe's",
+            //           taskType: "Personal Needs",
+            //           scheduledTime: "9:30AM Today",
+            //           peopleJoined: "3 Neighbors joined",
+            //           organizer: "Maria from Pine Street",
+            //           payAmount: "\$5",
+            //           btnName: "Start",
+            //         ),
+            //       );
+            //     },
+            //   ),
+            // )
+            //     : _selectedIndex == 1
+            //     ? Expanded(
+            //   child: ListView.builder(
+            //     padding: EdgeInsets.zero,
+            //     itemCount: 15,
+            //     itemBuilder: (context, index) {
+            //       return Padding(
+            //         padding: EdgeInsets.only(bottom: 10.h),
+            //         child: ShopTaskCard(
+            //             imagePath:
+            //             "https://img.etimg.com/thumb/width-1200,height-1200,imgsize-789754,resizemode-75,msid-73320212/small-biz/sme-sector/the-kirana-is-a-technology-shop-too.jpg",
+            //             taskTitle: "Grocery run to Trader Joe's",
+            //             taskType: "Personal Needs",
+            //             scheduledTime: "9:30AM Today",
+            //             peopleJoined: "3 Neighbors joined",
+            //             organizer: "Maria from Pine Street",
+            //             payAmount: "\$5",
+            //             btnName: "Complete"),
+            //       );
+            //     },
+            //   ),
+            // )
+            //     : Expanded(
+            //   child: ListView.builder(
+            //     padding: EdgeInsets.zero,
+            //     itemCount: 15,
+            //     itemBuilder: (context, index) {
+            //       return Padding(
+            //         padding: EdgeInsets.only(bottom: 10.h),
+            //         child: ShopTaskCard(
+            //           imagePath:
+            //           "https://img.etimg.com/thumb/width-1200,height-1200,imgsize-789754,resizemode-75,msid-73320212/small-biz/sme-sector/the-kirana-is-a-technology-shop-too.jpg",
+            //           taskTitle: "Grocery run to Trader Joe's",
+            //           taskType: "Personal Needs",
+            //           scheduledTime: "9:30AM Today",
+            //           peopleJoined: "3 Neighbors joined",
+            //           organizer: "Maria from Pine Street",
+            //           payAmount: "\$5",
+            //           btnName: "n/a",
+            //         ),
+            //       );
+            //     },
+            //   ),
+            // ),
           ],
         ),
       ),

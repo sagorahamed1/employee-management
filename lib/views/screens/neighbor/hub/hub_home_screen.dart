@@ -12,7 +12,8 @@ import 'package:get/get.dart';
 
 import '../../../../controller/neighbor/neighbor_controller.dart';
 import '../../../widgets/cachanetwork_image.dart';
-import '../../../widgets/shop_task_card.dart';
+
+
 
 class HubHomeScreen extends StatefulWidget {
   HubHomeScreen({super.key});
@@ -88,7 +89,11 @@ class _HubHomeScreenState extends State<HubHomeScreen> {
                         Get.toNamed(AppRoutes.scheduleScreen, parameters: {"screenType" : "hubHome"});
                       }
                       else if(hubFeatures[index]["title"] == "Chat"){
-                        Get.toNamed(AppRoutes.messageScreen);
+                        Get.toNamed(AppRoutes.messageScreen,arguments:  {
+                          "hubId" : data["hubId"],
+                          "name" : data["name"],
+                          "image" : data["image"]
+                        });
                       }
                       else if(hubFeatures[index]["title"] == "Application"){
                         Get.toNamed(AppRoutes.applicationScreen, arguments: {
@@ -210,6 +215,17 @@ class _HubHomeScreenState extends State<HubHomeScreen> {
                           ),
                         ),
                       ),
+
+
+
+                      GestureDetector(
+
+                          onTap: () {
+                            Get.toNamed(AppRoutes.hubMapScreen, arguments: {
+                              "hubId" : data["hubId"]
+                            });
+                          },
+                          child: Assets.icons.locationIconSvg_.svg()),
                     ],
                   ),
                 ),

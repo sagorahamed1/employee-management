@@ -302,7 +302,7 @@ class _FreelancerHubScreenState extends State<FreelancerHubScreen> {
                       child: GestureDetector(
                         onTap: () {
 
-                          Get.toNamed(AppRoutes.hubHomeScreen, arguments: {
+                          Get.toNamed(AppRoutes.freelancerHubHomeScreen, arguments: {
                             "role" : "freelancer",
                             "hubId" : hub.id,
                             "image" : "${ApiConstants.imageBaseUrl}${hub.image}",

@@ -78,8 +78,12 @@ class $AssetsIconsGen {
       const SvgGenImage('assets/icons/inviteMemberIcon.svg');
 
   /// File path: assets/icons/locationIcon.svg
-  SvgGenImage get locationIcon =>
+  SvgGenImage get locationIconSvg =>
       const SvgGenImage('assets/icons/locationIcon.svg');
+
+  /// File path: assets/icons/location_icon.svg
+  SvgGenImage get locationIconSvg_ =>
+      const SvgGenImage('assets/icons/location_icon.svg');
 
   /// File path: assets/icons/location_parmission.svg
   SvgGenImage get locationParmission =>
@@ -173,7 +177,8 @@ class $AssetsIconsGen {
         hubs,
         inviteIcon,
         inviteMemberIcon,
-        locationIcon,
+        locationIconSvg,
+        locationIconSvg_,
         locationParmission,
         lock,
         memberAddIcon,

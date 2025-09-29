@@ -1,16 +1,42 @@
+import 'package:droke/core/app_constants/app_constants.dart';
 import 'package:droke/core/config/app_route.dart';
+import 'package:droke/helper/prefs_helper.dart';
 import 'package:droke/views/widgets/custom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 import '../../../../core/app_constants/app_colors.dart';
-import '../../../../global/custom_assets/assets.gen.dart';
 import '../../../widgets/cachanetwork_image.dart';
 import '../../../widgets/custom_text.dart';
 
-class PaymentScreen extends StatelessWidget {
+
+
+class PaymentScreen extends StatefulWidget {
   const PaymentScreen({super.key});
+
+  @override
+  State<PaymentScreen> createState() => _PaymentScreenState();
+}
+
+class _PaymentScreenState extends State<PaymentScreen> {
+
+  TextEditingController roleCtrl = TextEditingController();
+
+
+  @override
+  void initState() {
+    getRole();
+    super.initState();
+  }
+
+  getRole()async{
+    roleCtrl.text = await PrefsHelper.getString(AppConstants.role);
+    setState(() {
+
+    });
+
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -100,6 +126,9 @@ class PaymentScreen extends StatelessWidget {
 
 
 
+
+
+            if(roleCtrl.text != "freelancer")
             CustomButton(title: "Make Payment", onpress: () {
               Get.toNamed(AppRoutes.paymentDetailsScreen);
             }),

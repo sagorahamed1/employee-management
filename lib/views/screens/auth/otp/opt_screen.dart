@@ -11,12 +11,29 @@ import '../../../widgets/custom_button.dart';
 import '../../../widgets/custom_text.dart';
 import '../../../widgets/custom_text_field.dart';
 
-class OptScreen extends StatelessWidget {
+class OptScreen extends StatefulWidget {
   OptScreen({super.key});
 
+  @override
+  State<OptScreen> createState() => _OptScreenState();
+}
+
+class _OptScreenState extends State<OptScreen> {
   final TextEditingController pinCtrl = TextEditingController();
+
   final GlobalKey<FormState> globalKey = GlobalKey<FormState>();
+
   AuthController authController = Get.find<AuthController>();
+
+
+  @override
+  void initState() {
+    super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      authController.startCountdown();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -106,6 +123,8 @@ class OptScreen extends StatelessWidget {
                                 ToastMessageHelper.showToastMessage("Already send an otp code to your email");
                               }else{
                                 authController.reSendOtp();
+
+                                pinCtrl.text = "";
                               }
                             },
                             child: CustomText(text: "Resend", color: Colors.red))

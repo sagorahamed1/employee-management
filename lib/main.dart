@@ -161,3 +161,8 @@ class NoInterNetScreen extends StatelessWidget {
     );
   }
 }
+
+
+
+// neighbor: bafona2508@cerisun.com
+// freelancer: jejijir334@mv6a.com

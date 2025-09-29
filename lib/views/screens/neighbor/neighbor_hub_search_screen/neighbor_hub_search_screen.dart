@@ -131,6 +131,10 @@ class _NeighborHubSearchScreenState extends State<NeighborHubSearchScreen> {
                     peopleJoined: "${hub.pepoleJoined} Neighbors joined",
                     organizer: "${hub.organizer}",
                     payAmount: "\$5",
+                    btnName: hub.isJoined ?? false ? "joined" : "join",
+                    BtnOnTap: () {
+                      neighborController.joinRequest(serviceId: "${hub.id}");
+                    },
                   ),
                 );
               },

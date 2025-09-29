@@ -1,7 +1,9 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:droke/core/app_constants/app_constants.dart';
 import 'package:droke/core/config/app_route.dart';
+import 'package:droke/helper/prefs_helper.dart';
 import 'package:droke/helper/toast_message_helper.dart';
 import 'package:droke/models/member_model.dart';
 import 'package:droke/models/my_hub_model.dart';
@@ -118,8 +120,14 @@ class NeighborController extends GetxController {
     var response = await ApiClient.patch(
         "${ApiConstants.joinHub}/${serviceId??""}", jsonEncode({}));
     if (response.statusCode == 200 || response.statusCode == 201) {
-      final hub = hubs.firstWhere((x) => x.id == serviceId);
-      hub.isJoined = true;
+
+
+      var index = hubs.indexWhere((x) => x.id == serviceId);
+      if (index != -1) {
+        hubs[index].isJoined = true;
+        hubs.refresh();
+      }
+
       update();
     }
   }
@@ -174,6 +182,18 @@ class NeighborController extends GetxController {
     if (response.statusCode == 200 || response.statusCode == 201) {
       ToastMessageHelper.showToastMessage(response.body["message"]);
       getPoll(hubId: hubId);
+    }else{
+      ToastMessageHelper.showToastMessage(response.body["message"], title: "info");
+    }
+  }
+
+
+  assignPull({required String id, hubId}) async {
+
+    var response = await ApiClient.patch("${ApiConstants.assign}/$hubId?status=accepted&freelancerId=$id", jsonEncode({}));
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      Get.back();
+      ToastMessageHelper.showToastMessage(response.body["message"]);
     }else{
       ToastMessageHelper.showToastMessage(response.body["message"], title: "info");
     }
@@ -469,4 +489,87 @@ class NeighborController extends GetxController {
 
 
 
+
+
+  RxBool mapLoading = false.obs;
+  RxList<MapModel> map = <MapModel>[].obs;
+
+  getMap({String? hubId}) async {
+    inviteRequestLoading(true);
+    var role = await PrefsHelper.getString(AppConstants.role);
+
+    var response = await ApiClient.getData(
+        '${ApiConstants.map}/${role == "freelancer" ? "neighbor-tracking" : "freelancer-tracking"}/${hubId}');
+    if (response.statusCode == 200) {
+
+      map.value  = List<MapModel>.from(response.body["data"].map((x) => MapModel.fromJson(x)));
+
+      mapLoading(false);
+    } else {
+      mapLoading(false);
+    }
+  }
+
+
+
+
+
+}
+
+
+class MapModel {
+  String? id;
+  String? name;
+  LocationModel? location;
+
+  MapModel({
+    this.id,
+    this.name,
+    this.location,
+  });
+
+  factory MapModel.fromJson(Map<String, dynamic> json) {
+    return MapModel(
+      id: json["_id"] ?? "",
+      name: json["name"] ?? "",
+      location: json["location"] != null
+          ? LocationModel.fromJson(json["location"])
+          : null,
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      "_id": id,
+      "name": name,
+      "location": location?.toJson(),
+    };
+  }
+}
+
+class LocationModel {
+  String? type;
+  List<double>? coordinates;
+
+  LocationModel({this.type, this.coordinates});
+
+  factory LocationModel.fromJson(Map<String, dynamic> json) {
+    return LocationModel(
+      type: json["type"] ?? "",
+      coordinates: json["coordinates"] != null
+          ? List<double>.from(json["coordinates"].map((x) => x.toDouble()))
+          : [],
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      "type": type,
+      "coordinates": coordinates,
+    };
+  }
+
+  /// Helper method to get LatLng (Google Maps uses LatLng(lat, lng))
+  double? get lat => coordinates != null && coordinates!.length > 1 ? coordinates![1] : null;
+  double? get lng => coordinates != null && coordinates!.isNotEmpty ? coordinates![0] : null;
 }
